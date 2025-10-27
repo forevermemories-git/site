@@ -115,6 +115,9 @@ export default function HeroSection() {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
+                  width="1920"
+                  height="1080"
                   className="w-full h-full object-cover"
                 >
                   <source src={videos[currentVideo]} type="video/mp4" />

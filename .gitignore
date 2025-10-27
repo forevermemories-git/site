@@ -33,4 +33,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# lighthouse reports
+lighthouse-report.json
+analyze-lighthouse.js
