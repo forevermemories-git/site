@@ -14,7 +14,7 @@ export interface BlogArticle {
 export const blogArticles: BlogArticle[] = [
   {
     slug: 'photobooth-360-vs-glambot-mariage-2025',
-    title: 'Photobooth 360 ou Glambot Robot : La Nouvelle Génération pour Votre Mariage 2025',
+    title: 'Photobooth 360 ou Glambot robot : la nouvelle génération pour votre mariage 2025',
     excerpt: 'Photobooth 360 classique ou Glambot robot ? Découvrez la différence entre ces deux technologies et pourquoi le Glambot révolutionne les mariages en 2025.',
     category: 'Comparaison',
     date: '27 octobre 2025',
@@ -26,7 +26,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: 'animation-mariage-slow-motion-booth-glambot-france',
-    title: 'Animation Mariage 2025 : Le Slow Motion Booth Glambot Arrive en France',
+    title: 'Animation mariage 2025 : le slow motion booth Glambot arrive en France',
     excerpt: 'L\'animation qu\'on voit aux Oscars débarque enfin en Île-de-France ! Découvrez le slow motion booth nouvelle génération qui révolutionne les mariages.',
     category: 'Tendances',
     date: '26 octobre 2025',
@@ -38,7 +38,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: 'location-photobooth-paris-robot-glambot',
-    title: 'Location Photobooth Paris : Pourquoi le Robot Glambot Révolutionne les Événements',
+    title: 'Location photobooth Paris : pourquoi le robot Glambot révolutionne les événements',
     excerpt: 'Vous cherchez à louer un photobooth à Paris ? Découvrez pourquoi le Glambot robot est l\'alternative premium qui transforme vos événements en expérience Hollywood.',
     category: 'Guide Pratique',
     date: '25 octobre 2025',
@@ -49,7 +49,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: '360-photo-booth-vs-glambot-5-differences',
-    title: '360 Photo Booth vs Glambot : 5 Différences Qui Changent Tout',
+    title: '360 photo booth vs Glambot : 5 différences qui changent tout',
     excerpt: 'Plateforme rotative vs bras robotique : comprendre les vraies différences entre un 360 photo booth classique et un Glambot pour faire le bon choix.',
     category: 'Comparaison',
     date: '24 octobre 2025',
@@ -72,7 +72,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: 'experience-tapis-rouge-glambot-celebrites',
-    title: 'Expérience Tapis Rouge : Louez le Glambot des Célébrités pour Votre Événement',
+    title: 'Expérience tapis rouge : louez le Glambot des célébrités pour votre événement',
     excerpt: 'Emma Stone, Zendaya... et maintenant VOUS ! Offrez à vos invités l\'expérience glamour du tapis rouge avec un Glambot comme aux grandes cérémonies.',
     category: 'Inspiration',
     date: '22 octobre 2025',
@@ -83,7 +83,7 @@ export const blogArticles: BlogArticle[] = [
   },
   {
     slug: 'glambot-ile-de-france-technologie-rare-exclusive',
-    title: 'Le Glambot en Île-de-France : Technologie Rare et Exclusive en 2025',
+    title: 'Le Glambot en Île-de-France : technologie rare et exclusive en 2025',
     excerpt: 'Pourquoi cette technologie Hollywood est-elle quasi-introuvable en France ? Découvrez l\'exclusivité du Glambot et les rares prestataires qui le proposent.',
     category: 'Exclusivité',
     date: '21 octobre 2025',
