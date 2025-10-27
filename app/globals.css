@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-poppins: 'Poppins', system-ui, sans-serif;
+    --font-outfit: 'Outfit', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-white text-dark;
+    font-family: var(--font-outfit);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-poppins);
+    font-weight: 700;
+  }
+
+  html {
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent;
+  }
+
+  .section-padding {
+    @apply py-20 px-4 md:py-32 md:px-8;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 md:px-8;
+  }
+}
