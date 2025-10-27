@@ -14,6 +14,10 @@ npm run dev
 # Ouvrir http://localhost:3000 dans votre navigateur
 ```
 
+## 🌐 Déploiement
+
+Le site est automatiquement déployé sur Vercel à chaque push sur la branche `main`.
+
 ## 🛠️ Stack Technique
 
 - **Next.js 15** - Framework React avec App Router
