@@ -21,6 +21,29 @@
   html {
     scroll-behavior: auto; /* Lenis handles smooth scroll */
   }
+
+  /* Accessibilité: Links distinguishables */
+  main a:not([class*="btn"]):not([class*="button"]) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Focus visible pour accessibilité clavier */
+  *:focus-visible {
+    outline: 2px solid #A42396;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Amélioration contraste pour les textes gris */
+  .text-gray-600 {
+    color: #4B5563 !important; /* Contraste amélioré */
+  }
+
+  .text-gray-500 {
+    color: #6B7280 !important; /* Contraste amélioré */
+  }
 }
 
 @layer utilities {

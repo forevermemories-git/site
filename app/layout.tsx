@@ -6,6 +6,7 @@ import StructuredData from './components/seo/StructuredData'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import SkipToContent from './components/ui/SkipToContent'
+import CookieConsent from './components/ui/CookieConsent'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -20,6 +21,12 @@ const outfit = Outfit({
   display: 'swap',
   variable: '--font-outfit',
 })
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://forevermemories.fr'),
@@ -97,6 +104,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </SmoothScroll>
+        <CookieConsent />
       </body>
     </html>
   )
