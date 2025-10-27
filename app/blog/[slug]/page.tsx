@@ -11,8 +11,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const article = blogArticles.find(a => a.slug === params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const article = blogArticles.find(a => a.slug === slug)
 
   if (!article) {
     return {
@@ -33,15 +34,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function BlogArticlePage({ params }: { params: { slug: string } }) {
-  const article = blogArticles.find(a => a.slug === params.slug)
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const article = blogArticles.find(a => a.slug === slug)
 
   if (!article) {
     notFound()
   }
 
-  const articleContent = getArticleContent(params.slug)
-  const currentIndex = blogArticles.findIndex(a => a.slug === params.slug)
+  const articleContent = getArticleContent(slug)
+  const currentIndex = blogArticles.findIndex(a => a.slug === slug)
   const prevArticle = currentIndex > 0 ? blogArticles[currentIndex - 1] : null
   const nextArticle = currentIndex < blogArticles.length - 1 ? blogArticles[currentIndex + 1] : null
 
