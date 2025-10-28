@@ -40,6 +40,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'ForeverMemories', url: 'https://forevermemories.fr' }],
   creator: 'ForeverMemories',
   publisher: 'ForeverMemories',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
   robots: {
     index: true,
     follow: true,
