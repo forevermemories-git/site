@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react'
+import { trackConversion } from '@/app/lib/gtag'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -35,6 +38,7 @@ export default function Footer() {
               </a>
               <a
                 href="mailto:hello@forevermemories.fr"
+                onClick={() => trackConversion.emailClick()}
                 className="hover:text-primary-gold transition-colors"
                 aria-label="Email"
               >
@@ -104,7 +108,11 @@ export default function Footer() {
               <li className="flex items-start space-x-3">
                 <Phone size={20} className="text-primary-gold mt-1 flex-shrink-0" />
                 <div>
-                  <a href="tel:+33676815953" className="text-gray-400 hover:text-primary-gold transition-colors">
+                  <a
+                    href="tel:+33676815953"
+                    onClick={() => trackConversion.phoneClick()}
+                    className="text-gray-400 hover:text-primary-gold transition-colors"
+                  >
                     06 76 81 59 53
                   </a>
                 </div>
@@ -112,7 +120,11 @@ export default function Footer() {
               <li className="flex items-start space-x-3">
                 <Mail size={20} className="text-primary-gold mt-1 flex-shrink-0" />
                 <div>
-                  <a href="mailto:hello@forevermemories.fr" className="text-gray-400 hover:text-primary-gold transition-colors">
+                  <a
+                    href="mailto:hello@forevermemories.fr"
+                    onClick={() => trackConversion.emailClick()}
+                    className="text-gray-400 hover:text-primary-gold transition-colors"
+                  >
                     hello@forevermemories.fr
                   </a>
                 </div>

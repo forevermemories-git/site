@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Calendar, Phone, Mail } from 'lucide-react'
+import { trackConversion } from '@/app/lib/gtag'
 
 export default function CTASection() {
   return (
@@ -22,14 +23,24 @@ export default function CTASection() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
-            <button className="group px-8 py-4 bg-white text-primary rounded-full font-medium hover:bg-white/90 transition-all flex items-center justify-center gap-2 shadow-2xl">
+            <button
+              onClick={() => {
+                trackConversion.devisClick('cta_section_hero')
+                window.location.href = '/contact'
+              }}
+              className="group px-8 py-4 bg-white text-primary rounded-full font-medium hover:bg-white/90 transition-all flex items-center justify-center gap-2 shadow-2xl"
+            >
               <Calendar size={24} />
               Réserver maintenant
             </button>
-            <button className="px-8 py-4 border-2 border-white text-white rounded-full font-medium hover:bg-white hover:text-primary transition-all flex items-center justify-center gap-2">
+            <a
+              href="tel:+33676815953"
+              onClick={() => trackConversion.phoneClick()}
+              className="px-8 py-4 border-2 border-white text-white rounded-full font-medium hover:bg-white hover:text-primary transition-all flex items-center justify-center gap-2"
+            >
               <Phone size={24} />
               Nous appeler
-            </button>
+            </a>
           </div>
 
         </motion.div>
@@ -41,14 +52,26 @@ export default function CTASection() {
               <Phone size={24} />
             </div>
             <h3 className="font-semibold text-base mb-1 text-dark">Téléphone</h3>
-            <a href="tel:+33676815953" className="text-gray-600 hover:text-primary transition-colors">06 76 81 59 53</a>
+            <a
+              href="tel:+33676815953"
+              onClick={() => trackConversion.phoneClick()}
+              className="text-gray-600 hover:text-primary transition-colors"
+            >
+              06 76 81 59 53
+            </a>
           </div>
           <div className="flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">
               <Mail size={24} />
             </div>
             <h3 className="font-semibold text-base mb-1 text-dark">Email</h3>
-            <a href="mailto:hello@forevermemories.fr" className="text-gray-600 hover:text-primary transition-colors text-sm">hello@forevermemories.fr</a>
+            <a
+              href="mailto:hello@forevermemories.fr"
+              onClick={() => trackConversion.emailClick()}
+              className="text-gray-600 hover:text-primary transition-colors text-sm"
+            >
+              hello@forevermemories.fr
+            </a>
           </div>
           <div className="flex flex-col items-center text-center">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-3">

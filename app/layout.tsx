@@ -7,6 +7,7 @@ import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import SkipToContent from './components/ui/SkipToContent'
 import CookieConsent from './components/ui/CookieConsent'
+import GoogleAnalytics from './components/analytics/GoogleAnalytics'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -96,6 +97,7 @@ export default function RootLayout({
         <StructuredData />
       </head>
       <body className="antialiased">
+        <GoogleAnalytics />
         <SkipToContent />
         <SmoothScroll>
           <Header />
