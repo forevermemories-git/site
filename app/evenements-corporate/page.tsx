@@ -27,7 +27,7 @@ export default function EvenementsCorporatePage() {
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto font-light">
-            Valorisez votre marque et engagez vos collaborateurs avec des vidéos slow-motion de qualité professionnelle
+            Une prestation unique en France : valorisez votre marque, engagez vos collaborateurs et donnez un côté ultra-professionnel à vos événements avec notre technologie exclusive
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -50,7 +50,7 @@ export default function EvenementsCorporatePage() {
               Pourquoi intégrer la Starcam à vos événements corporate ?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Un outil puissant d'activation de marque et d'engagement
+              Une technologie rare et exclusive pour marquer les esprits et différencier vos événements
             </p>
           </div>
 
@@ -59,9 +59,9 @@ export default function EvenementsCorporatePage() {
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 mx-auto">
                 <Share2 size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark text-center">Viralité garantie</h3>
+              <h3 className="text-xl font-semibold mb-3 text-dark text-center">Prestation exclusive</h3>
               <p className="text-gray-700 text-center">
-                Vos collaborateurs et invités partagent leurs vidéos sur les réseaux sociaux, multipliant la visibilité de votre marque
+                Quasi aucun autre prestataire en France ne propose cette technologie. Démarquez-vous avec une animation que vos concurrents n'ont pas
               </p>
             </div>
 
@@ -69,9 +69,9 @@ export default function EvenementsCorporatePage() {
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 mx-auto">
                 <Sparkles size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark text-center">Activation de marque</h3>
+              <h3 className="text-xl font-semibold mb-3 text-dark text-center">Branding puissant</h3>
               <p className="text-gray-700 text-center">
-                Personnalisez les vidéos avec votre logo et vos couleurs. Un souvenir mémorable associé à votre entreprise
+                Créez une association forte entre votre marque et l'innovation. Vos vidéos personnalisées deviennent un outil de branding mémorable
               </p>
             </div>
 
@@ -79,9 +79,9 @@ export default function EvenementsCorporatePage() {
               <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 mx-auto">
                 <TrendingUp size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark text-center">ROI mesurable</h3>
+              <h3 className="text-xl font-semibold mb-3 text-dark text-center">Impact professionnel</h3>
               <p className="text-gray-700 text-center">
-                Statistiques détaillées : nombre de vidéos, partages, engagement. Mesurez l'impact de votre événement
+                Donnez un côté ultra-professionnel et prestigieux à vos événements. Engagez vos collaborateurs avec une expérience qu'ils ne verront nulle part ailleurs
               </p>
             </div>
           </div>

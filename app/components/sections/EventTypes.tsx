@@ -18,7 +18,7 @@ export default function EventTypes() {
       icon: <Building2 size={32} />,
       title: 'Événements Corporate',
       description: 'Valorisez votre marque avec des vidéos professionnelles spectaculaires',
-      features: ['Branding personnalisé', 'ROI mesurable', 'Viralité garantie'],
+      features: ['Branding personnalisé', 'Visibilité accrue', 'Viralité garantie'],
       href: '/evenements-corporate',
       color: 'from-blue-500 to-indigo-600'
     },

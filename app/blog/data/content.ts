@@ -109,7 +109,7 @@ export function getArticleContent(slug: string): string {
       <p>Non. Pour vos invités, l'expérience est identique : ils se positionnent, posent, et repartent avec leur vidéo. Notre équipe gère toute la partie technique du robot.</p>
 
       <h3>Combien de personnes peuvent passer en même temps ?</h3>
-      <p>Le Glambot peut capturer 1 à 4 personnes simultanément, exactement comme un photobooth 360.</p>
+      <p>Le Glambot peut capturer jusqu'à 30 personnes simultanément pour des prises de groupe spectaculaires.</p>
 
       <h3>Les vidéos sont-elles partagées immédiatement ?</h3>
       <p>Oui. Chaque invité reçoit sa vidéo par email, SMS ou QR code dans les 30 secondes suivant la prise. Les vidéos peuvent être partagées instantanément sur Instagram, TikTok ou Facebook.</p>
@@ -247,7 +247,7 @@ export function getArticleContent(slug: string): string {
       <p>Oui, le Glambot peut être installé en extérieur si l'espace est couvert et protégé des intempéries. L'idéal reste un espace intérieur ou sous un barnum.</p>
 
       <h3>Combien de personnes peuvent passer ensemble ?</h3>
-      <p>Le Glambot peut capturer de 1 à 4 personnes simultanément. C'est parfait pour des passages de couples, groupes d'amis, ou familles.</p>
+      <p>Le Glambot peut capturer jusqu'à 30 personnes simultanément. C'est parfait pour des passages individuels, couples, groupes d'amis, familles ou même des grands groupes.</p>
 
       <h2>Pourquoi C'est le Moment d'Adopter Cette Tendance</h2>
       <p>En 2025, le Glambot est encore rare en France. C'est une fenêtre d'opportunité unique : vos invités n'en ont probablement jamais vu, et votre mariage sera parmi les premiers à proposer cette expérience Hollywood.</p>
@@ -759,7 +759,7 @@ export function getArticleContent(slug: string): string {
       <p>20 à 30 secondes après la capture. Le traitement est quasi-instantané. L'invité reçoit sa vidéo par email, SMS ou via un QR code, prête à être partagée immédiatement sur les réseaux sociaux.</p>
 
       <h3>Peut-on passer à plusieurs devant le Glambot ?</h3>
-      <p>Oui. Le Glambot peut capturer de 1 à 4 personnes simultanément. C'est parfait pour des couples, groupes d'amis, ou familles. Les poses de groupe créent souvent les vidéos les plus fun et mémorables.</p>
+      <p>Oui. Le Glambot peut capturer jusqu'à 30 personnes simultanément. C'est parfait pour des passages individuels, couples, groupes d'amis, familles ou même des événements de groupe spectaculaires. Les poses de groupe créent souvent les vidéos les plus fun et mémorables.</p>
 
       <h3>Le Glambot fonctionne-t-il en extérieur ?</h3>
       <p>Oui, si l'espace est couvert ou protégé. Le matériel électronique doit être à l'abri de la pluie. Un barnum ou une pergola suffit. L'idéal reste un espace intérieur pour une qualité optimale.</p>
