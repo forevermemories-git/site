@@ -41,8 +41,8 @@ export const metadata: Metadata = {
   creator: 'ForeverMemories',
   publisher: 'ForeverMemories',
   icons: {
-    icon: '/icon.svg',
-    apple: '/icon.svg',
+    icon: '/icon.png',
+    apple: '/icon.png',
   },
   robots: {
     index: true,
