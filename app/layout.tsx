@@ -84,6 +84,9 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@forevermemories',
   },
+  verification: {
+    google: '7xpPgJvgPad12C8l5xgsCfuy5PfUwHcq8LaIw7Oh4mk',
+  },
   category: 'Events & Entertainment',
 }
 
