@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Clock, Instagram, Facebook, MessageCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, Instagram, Facebook, MessageCircle } from 'lucide-react'
 import ContactForm from '../components/forms/ContactForm'
 
 export const metadata: Metadata = {
@@ -37,8 +37,7 @@ export default function ContactPage() {
                 <Phone size={28} />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-dark">Téléphone</h3>
-              <p className="text-2xl font-bold text-primary mb-2">06 76 81 59 53</p>
-              <p className="text-gray-600 text-sm">Lun-Sam : 9h-20h</p>
+              <p className="text-2xl font-bold text-primary">06 76 81 59 53</p>
             </a>
 
             <a href="mailto:hello@forevermemories.fr" className="bg-gradient-to-br from-primary/5 to-primary/10 p-8 rounded-3xl border-2 border-primary/20 hover:shadow-lg transition-all group text-center">
@@ -55,8 +54,8 @@ export default function ContactPage() {
                 <MapPin size={28} />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-dark">Localisation</h3>
-              <p className="text-lg font-bold text-primary mb-2">Pierre-Levée</p>
-              <p className="text-gray-600 text-sm">Seine-et-Marne (77)</p>
+              <p className="text-lg font-bold text-primary mb-2">Île-de-France</p>
+              <p className="text-gray-600 text-sm">Paris et région parisienne</p>
             </div>
           </div>
         </div>
@@ -71,26 +70,6 @@ export default function ContactPage() {
 
             {/* Informations complémentaires */}
             <div className="space-y-8">
-              <div className="bg-white p-8 rounded-3xl border border-gray-200">
-                <h3 className="text-2xl font-bold mb-6 text-dark">Horaires de contact</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Clock size={24} className="text-primary flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-dark mb-1">Lundi - Samedi</div>
-                      <div className="text-gray-700">9h00 - 20h00</div>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Clock size={24} className="text-primary flex-shrink-0 mt-1" />
-                    <div>
-                      <div className="font-semibold text-dark mb-1">Dimanche</div>
-                      <div className="text-gray-700">Sur rendez-vous uniquement</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div className="bg-white p-8 rounded-3xl border border-gray-200">
                 <h3 className="text-2xl font-bold mb-6 text-dark">Suivez-nous</h3>
                 <div className="space-y-4">
@@ -108,7 +87,9 @@ export default function ContactPage() {
                   </a>
 
                   <a
-                    href="#"
+                    href="https://www.facebook.com/profile.php?id=61583156844468"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-primary/10 transition-all group"
                   >
                     <Facebook size={32} className="text-primary group-hover:scale-110 transition-transform" />

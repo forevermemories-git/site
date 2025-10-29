@@ -30,7 +30,9 @@ export default function Footer() {
                 <Instagram size={24} />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61583156844468"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-primary-gold transition-colors"
                 aria-label="Facebook"
               >
@@ -132,7 +134,7 @@ export default function Footer() {
               <li className="flex items-start space-x-3">
                 <MapPin size={20} className="text-primary-gold mt-1 flex-shrink-0" />
                 <div className="text-gray-400">
-                  Pierre-Levée, Seine-et-Marne
+                  Île-de-France
                 </div>
               </li>
             </ul>

@@ -84,9 +84,6 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@forevermemories',
   },
-  verification: {
-    google: 'votre-code-verification-google',
-  },
   category: 'Events & Entertainment',
 }
 

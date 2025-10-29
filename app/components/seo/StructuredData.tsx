@@ -5,24 +5,26 @@ export default function StructuredData() {
     "name": "ForeverMemories",
     "alternateName": "ForeverMemories Starcam",
     "url": "https://forevermemories.fr",
-    "logo": "https://forevermemories.fr/logo.png",
+    "logo": "https://forevermemories.fr/images/ForeverMemories-logo.png",
     "description": "Location de robot Glambot Starcam professionnel pour événements, mariages et soirées corporate. Vidéos slow-motion Full HD de qualité cinématographique.",
     "address": {
       "@type": "PostalAddress",
-      "addressCountry": "FR",
-      "addressLocality": "Paris"
+      "streetAddress": "20 rue des Houis",
+      "postalCode": "77580",
+      "addressLocality": "Pierre-Levée",
+      "addressRegion": "Seine-et-Marne",
+      "addressCountry": "FR"
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+33-1-23-45-67-89",
+      "telephone": "+33676815953",
       "contactType": "Customer Service",
-      "email": "contact@forevermemories.com",
+      "email": "hello@forevermemories.fr",
       "availableLanguage": ["French"]
     },
     "sameAs": [
-      "https://www.instagram.com/forevermemories.off",
-      "https://www.facebook.com/forevermemories",
-      "https://www.tiktok.com/@forevermemories"
+      "https://www.instagram.com/forevermemories.off/",
+      "https://www.facebook.com/profile.php?id=61583156844468"
     ]
   }
 
@@ -53,33 +55,23 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "ForeverMemories",
-    "image": "https://forevermemories.fr/logo.png",
+    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
     "@id": "https://forevermemories.fr",
     "url": "https://forevermemories.fr",
-    "telephone": "+33-1-23-45-67-89",
+    "telephone": "+33676815953",
     "priceRange": "€€€",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "20 rue des Houis",
+      "postalCode": "77580",
+      "addressLocality": "Pierre-Levée",
+      "addressRegion": "Seine-et-Marne",
       "addressCountry": "FR"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 48.8566,
-      "longitude": 2.3522
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-      ],
-      "opens": "09:00",
-      "closes": "19:00"
+      "latitude": 48.9204,
+      "longitude": 2.9850
     },
     "aggregateRating": {
       "@type": "AggregateRating",

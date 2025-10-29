@@ -45,7 +45,7 @@ export default function AProposPage() {
             </p>
 
             <p className="text-lg text-gray-700 mb-6">
-              Basés à Pierre-Levée en Seine-et-Marne, nous intervenons dans toute l'Île-de-France avec une mission claire :
+              Basés en Île-de-France, nous intervenons dans toute la région parisienne avec une mission claire :
               offrir à chaque client une expérience premium et des souvenirs cinématographiques inoubliables.
             </p>
 
@@ -193,7 +193,7 @@ export default function AProposPage() {
             Notre zone d'intervention
           </h2>
           <p className="text-lg text-gray-700 mb-8">
-            Basés à Pierre-Levée en Seine-et-Marne, nous intervenons dans toute l'Île-de-France :
+            Basés en Île-de-France, nous intervenons dans toute la région parisienne :
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             <span className="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">Paris (75)</span>
