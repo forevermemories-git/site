@@ -228,9 +228,6 @@ export default function AboutStarcamEnhanced() {
 
                 {/* Gradient overlay au hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <p className="text-sm font-medium">Voir en action</p>
-                  </div>
                 </div>
 
                 {/* Badge numéro */}

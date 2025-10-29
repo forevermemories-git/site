@@ -186,44 +186,6 @@ export default function AProposPage() {
         </div>
       </section>
 
-      {/* Agence ÜMAIN */}
-      <section className="py-12 md:py-16 px-4 md:px-8 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-dark">
-              Agence ÜMAIN
-            </h2>
-            <p className="text-lg text-gray-600">
-              Forever Memories est un service de l'agence ÜMAIN
-            </p>
-          </div>
-
-          <div className="bg-white p-8 md:p-12 rounded-3xl border border-gray-200">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-semibold mb-4 text-dark">Informations légales</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>Raison sociale :</strong> Agence ÜMAIN</p>
-                  <p><strong>Forme juridique :</strong> SASU</p>
-                  <p><strong>Capital social :</strong> 500€</p>
-                  <p><strong>Date de création :</strong> 04 août 2025</p>
-                  <p><strong>RCS :</strong> 989 982 913 R.C.S. Meaux</p>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold mb-4 text-dark">Coordonnées</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>Siège social :</strong><br />20 rue des Houis<br />77580 Pierre-Levée, France</p>
-                  <p><strong>Téléphone :</strong> <a href="tel:+33676815953" className="text-primary hover:underline">06 76 81 59 53</a></p>
-                  <p><strong>Email :</strong> <a href="mailto:hello@forevermemories.fr" className="text-primary hover:underline">hello@forevermemories.fr</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Notre zone d'intervention */}
       <section className="py-12 md:py-16 px-4 md:px-8 bg-white">
         <div className="max-w-4xl mx-auto text-center">
