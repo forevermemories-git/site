@@ -15,7 +15,9 @@ export default function ContactForm() {
     setSubmitStatus('idle')
     setErrorMessage('')
 
-    const formData = new FormData(e.currentTarget)
+    // Stocker la référence au formulaire avant les opérations async
+    const form = e.currentTarget
+    const formData = new FormData(form)
 
     // Ajouter l'access key Web3Forms
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
@@ -56,7 +58,7 @@ export default function ContactForm() {
       if (data.success) {
         setSubmitStatus('success')
         // Réinitialiser le formulaire
-        e.currentTarget.reset()
+        form.reset()
 
         // Scroll vers le haut pour voir le message
         window.scrollTo({ top: 0, behavior: 'smooth' })
