@@ -221,7 +221,7 @@ export default function EvenementsCorporatePage() {
                 {[
                   'Installation et démontage complets',
                   'Opérateur professionnel dédié',
-                  'Vidéos slow-motion et accéléré Full HD',
+                  'Vidéos slow-motion et accélérées Full HD',
                   'Livraison instantanée pour chaque participant',
                   'Galerie en ligne privée sous 48h',
                   'Personnalisation logo et couleurs',

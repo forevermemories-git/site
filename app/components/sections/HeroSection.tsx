@@ -2,53 +2,135 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
 
 export default function HeroSection() {
   const [currentVideo, setCurrentVideo] = useState(0)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
+  const isDragging = useRef(false)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
 
   const videos = [
-    '/videos/video-al-groupe.mp4',
-    '/videos/video-chezrose-girls.mp4',
-    '/videos/video-corcorans-groupe.mp4',
-    '/videos/video-mamakutty-groupe.mp4',
-    '/videos/video-mp-groupe.mp4',
-    '/videos/video-sambavam-groupe.mp4',
+    '/videos/video-al-groupe.webm',
+    '/videos/video-chezrose-girls.webm',
+    '/videos/video-corcorans-groupe.webm',
+    '/videos/video-mamakutty-groupe.webm',
+    '/videos/video-mp-groupe.webm',
+    '/videos/video-sambavam-groupe.webm',
   ]
 
+  // Détecter le scroll pour mettre à jour l'indicateur actif
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentVideo((prev) => (prev + 1) % videos.length)
-    }, 8000) // Change toutes les 8 secondes
+    const container = scrollContainerRef.current
+    if (!container) return
 
-    return () => clearInterval(interval)
-  }, [])
-
-  useEffect(() => {
-    // Recharger la vidéo quand elle change
-    const playVideo = async () => {
-      if (videoRef.current) {
-        try {
-          // Arrêter la vidéo actuelle
-          videoRef.current.pause()
-          // Charger la nouvelle
-          videoRef.current.load()
-          // Attendre un peu que le chargement commence
-          await new Promise(resolve => setTimeout(resolve, 100))
-          // Jouer avec gestion d'erreur
-          await videoRef.current.play()
-        } catch (error) {
-          // Ignorer les erreurs AbortError qui sont normales lors du changement rapide
-          if (error instanceof Error && error.name !== 'AbortError') {
-            console.warn('Erreur de lecture vidéo:', error)
-          }
-        }
-      }
+    const handleScroll = () => {
+      const scrollLeftValue = container.scrollLeft
+      const cardWidth = container.offsetWidth
+      const newIndex = Math.round(scrollLeftValue / cardWidth)
+      setCurrentVideo(newIndex)
     }
 
-    playVideo()
-  }, [currentVideo])
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Drag to scroll à la souris
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isDragging.current = true
+      startX.current = e.pageX - container.offsetLeft
+      scrollLeft.current = container.scrollLeft
+      container.style.cursor = 'grabbing'
+      container.style.userSelect = 'none'
+    }
+
+    const handleMouseLeave = () => {
+      isDragging.current = false
+      container.style.cursor = 'grab'
+    }
+
+    const handleMouseUp = () => {
+      isDragging.current = false
+      container.style.cursor = 'grab'
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+      e.preventDefault()
+      const x = e.pageX - container.offsetLeft
+      const walk = (x - startX.current) * 2 // Vitesse de scroll
+      container.scrollLeft = scrollLeft.current - walk
+    }
+
+    container.style.cursor = 'grab'
+    container.addEventListener('mousedown', handleMouseDown)
+    container.addEventListener('mouseleave', handleMouseLeave)
+    container.addEventListener('mouseup', handleMouseUp)
+    container.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      container.removeEventListener('mousedown', handleMouseDown)
+      container.removeEventListener('mouseleave', handleMouseLeave)
+      container.removeEventListener('mouseup', handleMouseUp)
+      container.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [])
+
+  // Jouer la vidéo visible et passer à la suivante quand elle se termine
+  useEffect(() => {
+    const observers: IntersectionObserver[] = []
+
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Vidéo visible, la jouer depuis le début
+              video.currentTime = 0
+              video.play().catch(() => {})
+            } else {
+              // Vidéo non visible, l'arrêter
+              video.pause()
+            }
+          })
+        },
+        { threshold: 0.5 }
+      )
+
+      observer.observe(video)
+      observers.push(observer)
+    })
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect())
+    }
+  }, [])
+
+  // Quand une vidéo se termine, passer à la suivante automatiquement
+  const handleVideoEnded = (index: number) => {
+    const nextIndex = (index + 1) % videos.length
+    scrollToVideo(nextIndex)
+  }
+
+  const scrollToVideo = (index: number) => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const cardWidth = container.offsetWidth
+    container.scrollTo({
+      left: cardWidth * index,
+      behavior: 'smooth'
+    })
+  }
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center px-4 md:px-8 bg-white pt-24 md:pt-28">
@@ -61,7 +143,7 @@ export default function HeroSection() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-light text-sm font-medium text-secondary mb-8"
         >
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          Vidéo slow-motion et accéléré
+          Vidéos slow-motion et accélérées
         </motion.div>
 
         {/* Titre principal - ÉPURÉ */}
@@ -88,10 +170,10 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-xl md:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto font-light leading-relaxed"
         >
-          Des vidéos slow-motion et accéléré cinématographiques qui immortalisent vos moments les plus précieux
+          Des vidéos slow-motion et accélérées cinématographiques qui immortalisent vos moments les plus précieux
         </motion.p>
 
-        {/* Lecteur vidéo moderne */}
+        {/* Carousel vidéo scrollable */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,35 +183,41 @@ export default function HeroSection() {
           {/* Container avec bordure gradient */}
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary p-[3px] shadow-2xl">
             <div className="relative rounded-3xl overflow-hidden bg-black">
-              {/* Vidéo avec transition */}
-              <motion.div
-                key={currentVideo}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="relative aspect-square md:aspect-video"
+              {/* Carousel scrollable */}
+              <div
+                ref={scrollContainerRef}
+                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  width="1920"
-                  height="1080"
-                  className="w-full h-full object-cover"
-                >
-                  <source src={videos[currentVideo]} type="video/mp4" />
-                </video>
-              </motion.div>
+                {videos.map((video, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 w-full snap-center"
+                  >
+                    <div className="relative aspect-square md:aspect-video">
+                      <video
+                        ref={(el) => { videoRefs.current[index] = el }}
+                        muted
+                        playsInline
+                        preload="metadata"
+                        onEnded={() => handleVideoEnded(index)}
+                        width="1920"
+                        height="1080"
+                        className="w-full h-full object-cover"
+                      >
+                        <source src={video} type="video/webm" />
+                      </video>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
               {/* Indicateurs de vidéo */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                 {videos.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setCurrentVideo(index)}
+                    onClick={() => scrollToVideo(index)}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       currentVideo === index
                         ? 'w-8 bg-white'
@@ -155,11 +243,17 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
+          <Link href="/contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
             Réserver mon événement
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-          <button className="px-8 py-4 text-dark font-medium hover:text-primary transition-colors">
+          </Link>
+          <button
+            onClick={() => {
+              const gallery = document.getElementById('nos-realisations')
+              gallery?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="px-8 py-4 text-dark font-medium hover:text-primary transition-colors"
+          >
             Voir nos réalisations
           </button>
         </motion.div>
@@ -169,19 +263,19 @@ export default function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-16 pt-12 border-t border-gray-200 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+          className="mt-16 pt-12 border-t border-gray-200 grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto"
         >
           <div>
-            <div className="text-3xl font-bold text-primary mb-1">500+</div>
-            <div className="text-sm text-gray-500">Vidéos produites</div>
+            <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">500+</div>
+            <div className="text-xs sm:text-sm text-gray-500">Vidéos produites</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-primary mb-1">100%</div>
-            <div className="text-sm text-gray-500">Mémorables</div>
+            <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">100%</div>
+            <div className="text-xs sm:text-sm text-gray-500">Mémorables</div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-primary mb-1">Instantané</div>
-            <div className="text-sm text-gray-500">Repartez avec vos vidéos</div>
+            <div className="text-xl sm:text-3xl font-bold text-primary mb-1">Instantané</div>
+            <div className="text-xs sm:text-sm text-gray-500">Repartez avec vos vidéos</div>
           </div>
         </motion.div>
       </div>

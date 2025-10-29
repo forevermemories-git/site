@@ -235,7 +235,7 @@ export default function GalasPage() {
                 {[
                   'Installation et démontage complets',
                   'Opérateur professionnel en tenue de soirée',
-                  'Vidéos slow-motion et accéléré Full HD',
+                  'Vidéos slow-motion et accélérées Full HD',
                   'Livraison instantanée pour chaque invité',
                   'Galerie en ligne privée premium',
                   'Personnalisation logo et couleurs',

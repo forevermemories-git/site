@@ -230,7 +230,7 @@ export default function AnniversairesPage() {
               {[
                 'Installation et démontage du matériel',
                 'Opérateur professionnel présent toute la soirée',
-                'Vidéos slow-motion et accéléré en Full HD',
+                'Vidéos slow-motion et accélérées en Full HD',
                 'Livraison instantanée pour chaque invité',
                 'Galerie en ligne privée sous 48h',
                 'Passages illimités pour vos invités',

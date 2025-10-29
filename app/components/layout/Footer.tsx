@@ -17,7 +17,7 @@ export default function Footer() {
               Forever Memories
             </h3>
             <p className="text-gray-400 mb-6">
-              Des vidéos slow-motion et accéléré cinématographiques pour immortaliser vos moments d'exception.
+              Des vidéos slow-motion et accélérées cinématographiques pour immortaliser vos moments d'exception.
             </p>
             <div className="flex space-x-4">
               <a

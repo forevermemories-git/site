@@ -19,7 +19,7 @@ export default function CGV() {
             <p className="text-gray-700">
               Les présentes CGV ont pour objet de définir les conditions dans lesquelles Forever Memories fournit ses
               services de location de robot vidéo Starcam (Glambot) pour événements, incluant la captation de vidéos
-              slow-motion et accéléré en haute définition.
+              slow-motion et accélérées en haute définition.
             </p>
           </section>
 
@@ -30,7 +30,7 @@ export default function CGV() {
             </p>
             <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
               <ul className="space-y-2 text-gray-700">
-                <li><strong>• Location de la Starcam :</strong> Robot vidéo professionnel pour captation slow-motion et accéléré</li>
+                <li><strong>• Location de la Starcam :</strong> Robot vidéo professionnel pour captation slow-motion et accélérée</li>
                 <li><strong>• Installation et configuration :</strong> Mise en place du matériel sur le lieu de l'événement</li>
                 <li><strong>• Accompagnement technique :</strong> Présence d'un opérateur pendant la durée de la prestation</li>
                 <li><strong>• Livraison instantanée :</strong> Les invités repartent immédiatement avec leurs vidéos</li>

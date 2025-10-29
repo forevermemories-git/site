@@ -2,18 +2,22 @@
 
 import { motion } from 'framer-motion'
 import { Video, Sparkles, Award, Zap } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
+import { useEffect, useState, useRef } from 'react'
 
 export default function AboutStarcamEnhanced() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const cardsRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLDivElement>(null)
+  const [currentReel, setCurrentReel] = useState(0)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const videoRefsMobile = useRef<(HTMLVideoElement | null)[]>([])
+  const isDragging = useRef(false)
+  const startX = useRef(0)
+  const scrollLeft = useRef(0)
+
+  const reels = [
+    '/videos/reels/al-wedding.webm',
+    '/videos/reels/chezrose.webm',
+    '/videos/reels/corcorans.webm',
+    '/videos/reels/ma-wedding.webm',
+  ]
 
   const features = [
     {
@@ -23,7 +27,7 @@ export default function AboutStarcamEnhanced() {
     },
     {
       icon: <Sparkles size={24} />,
-      title: 'Slow-motion et accéléré',
+      title: 'Slow-motion et accélérées',
       description: 'Capture parfaite de chaque mouvement en ralenti ou accéléré'
     },
     {
@@ -38,58 +42,119 @@ export default function AboutStarcamEnhanced() {
     }
   ]
 
+  // Détecter le scroll mobile pour mettre à jour l'indicateur
   useEffect(() => {
-    if (!sectionRef.current || !cardsRef.current || !videoRef.current) return
+    const container = scrollContainerRef.current
+    if (!container) return
 
-    const ctx = gsap.context(() => {
-      // Animation des cards avec stagger
-      gsap.from('.feature-card', {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      })
+    const handleScroll = () => {
+      const scrollLeftValue = container.scrollLeft
+      const cardWidth = 280 + 16 // largeur carte + gap
+      const newIndex = Math.round(scrollLeftValue / cardWidth)
+      setCurrentReel(Math.min(newIndex, reels.length - 1))
+    }
 
-      // Animation du bloc vidéo avec scale
-      gsap.from(videoRef.current, {
-        scale: 0.9,
-        opacity: 0,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: videoRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse'
-        }
-      })
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [reels.length])
 
-      // Parallax léger sur les icônes
-      gsap.to('.feature-icon', {
-        y: -20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: cardsRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1
-        }
-      })
-    }, sectionRef)
+  // Drag to scroll à la souris pour mobile carousel
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
 
-    return () => ctx.revert()
+    const handleMouseDown = (e: MouseEvent) => {
+      isDragging.current = true
+      startX.current = e.pageX - container.offsetLeft
+      scrollLeft.current = container.scrollLeft
+      container.style.cursor = 'grabbing'
+      container.style.userSelect = 'none'
+    }
+
+    const handleMouseLeave = () => {
+      isDragging.current = false
+      container.style.cursor = 'grab'
+    }
+
+    const handleMouseUp = () => {
+      isDragging.current = false
+      container.style.cursor = 'grab'
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return
+      e.preventDefault()
+      const x = e.pageX - container.offsetLeft
+      const walk = (x - startX.current) * 2 // Vitesse de scroll
+      container.scrollLeft = scrollLeft.current - walk
+    }
+
+    container.style.cursor = 'grab'
+    container.addEventListener('mousedown', handleMouseDown)
+    container.addEventListener('mouseleave', handleMouseLeave)
+    container.addEventListener('mouseup', handleMouseUp)
+    container.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      container.removeEventListener('mousedown', handleMouseDown)
+      container.removeEventListener('mouseleave', handleMouseLeave)
+      container.removeEventListener('mouseup', handleMouseUp)
+      container.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [])
 
+  // Observer pour jouer les vidéos mobile quand elles sont visibles
+  useEffect(() => {
+    const observers: IntersectionObserver[] = []
+
+    videoRefsMobile.current.forEach((video) => {
+      if (!video) return
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              video.currentTime = 0
+              video.play().catch(() => {})
+            } else {
+              video.pause()
+            }
+          })
+        },
+        { threshold: 0.5 }
+      )
+
+      observer.observe(video)
+      observers.push(observer)
+    })
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect())
+    }
+  }, [])
+
+  // Quand une vidéo mobile se termine, passer à la suivante
+  const handleVideoEnded = (index: number) => {
+    const nextIndex = (index + 1) % reels.length
+    scrollToReel(nextIndex)
+  }
+
+  const scrollToReel = (index: number) => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const cardWidth = 280 + 16 // largeur carte + gap
+    container.scrollTo({
+      left: cardWidth * index,
+      behavior: 'smooth'
+    })
+  }
+
   return (
-    <section ref={sectionRef} className="py-16 px-4 md:px-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-16 md:py-24 px-4 md:px-8 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
         {/* Titre section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 md:mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -106,48 +171,133 @@ export default function AboutStarcamEnhanced() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Un robot vidéo de précision qui capture des moments spectaculaires en slow-motion et accéléré,
+            Un robot vidéo de précision qui capture des moments spectaculaires en slow-motion et en accéléré,
             exactement comme lors des cérémonies des Oscars
           </motion.p>
         </div>
 
-        {/* Features grid avec GSAP animations */}
-        <div ref={cardsRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {/* Features grid */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-16 max-w-4xl md:max-w-full mx-auto">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
-              className="feature-card bg-white p-6 rounded-2xl hover:shadow-xl transition-all group"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-white p-4 md:p-6 rounded-2xl hover:shadow-xl transition-all group text-center"
             >
-              <div className="feature-icon w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-all group-hover:scale-110">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-3 md:mb-4 group-hover:bg-primary group-hover:text-white transition-all group-hover:scale-110 mx-auto">
                 {feature.icon}
               </div>
-              <h3 className="font-semibold text-lg mb-2 text-dark">{feature.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
-            </div>
+              <h3 className="font-semibold text-base md:text-lg mb-2 text-dark">{feature.title}</h3>
+              <p className="text-gray-600 text-xs md:text-sm leading-relaxed">{feature.description}</p>
+            </motion.div>
           ))}
         </div>
 
-        {/* Video placeholder avec animation */}
-        <div
-          ref={videoRef}
-          className="relative aspect-video bg-gray-200 rounded-2xl overflow-hidden group cursor-pointer shadow-xl hover:shadow-2xl transition-shadow"
-        >
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-primary">
-            <div className="text-center text-white">
+        {/* Desktop: Reels grid - 4 vidéos côte à côte EN LOOP */}
+        <div className="hidden md:block mb-16">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl md:text-3xl font-bold text-center mb-8 text-dark"
+          >
+            La Starcam en action
+          </motion.h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {reels.map((reel, index) => (
               <motion.div
-                className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center mb-4 mx-auto"
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative aspect-[9/16] rounded-2xl overflow-hidden group cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
               >
-                <Video size={32} />
-              </motion.div>
-              <p className="text-lg font-medium">Voir la Starcam en action</p>
-            </div>
-          </div>
+                {/* Vidéo EN BOUCLE pour desktop */}
+                <video
+                  src={reel}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
 
-          {/* Effet de glow animé */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+                {/* Gradient overlay au hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <p className="text-sm font-medium">Voir en action</p>
+                  </div>
+                </div>
+
+                {/* Badge numéro */}
+                <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary font-bold text-sm">
+                  {index + 1}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: Carousel scrollable avec cartes - Vidéo joue 1 fois puis passe à la suivante */}
+        <div className="md:hidden">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-2xl font-bold text-center mb-6 text-dark"
+          >
+            La Starcam en action
+          </motion.h3>
+
+          {/* Carousel scrollable horizontal */}
+          <div className="relative -mx-4 px-4">
+            <div
+              ref={scrollContainerRef}
+              className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {reels.map((reel, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-[280px] snap-center"
+                >
+                  <div className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-xl bg-gray-900">
+                    <video
+                      ref={(el) => { videoRefsMobile.current[index] = el }}
+                      src={reel}
+                      muted
+                      playsInline
+                      onEnded={() => handleVideoEnded(index)}
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Badge numéro */}
+                    <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary font-bold text-sm">
+                      {index + 1}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Indicateurs de pagination */}
+            <div className="flex justify-center gap-2 mt-4">
+              {reels.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => scrollToReel(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    currentReel === index
+                      ? 'w-8 bg-primary'
+                      : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Voir vidéo ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -83,6 +83,43 @@ Pourquoi choisir notre service
 
 ---
 
+## ✏️ Règles de Grammaire et d'Orthographe
+
+### Accord des Adjectifs
+**CRUCIAL** : Les adjectifs doivent s'accorder en genre et en nombre avec les noms qu'ils qualifient.
+
+#### Exemples Courants
+✅ **CORRECT** :
+- "Des vidéos slow-motion et accélérées" (féminin pluriel, accord avec "vidéos")
+- "La vidéo est slow-motion et accélérée" (féminin singulier, accord avec "vidéo")
+- "En slow-motion et en accéléré" (pas d'accord quand ce sont des modes séparés)
+
+❌ **INCORRECT** :
+- "Des vidéos slow-motion et accéléré" ❌
+- "Vidéos slow-motion et accéléré Full HD" ❌
+
+### Conjugaison des Verbes
+- Vérifier systématiquement l'accord sujet-verbe
+- Attention aux verbes pronominaux ("s'adapter", "se sentir")
+- Utiliser le bon temps (présent pour décrire, passé composé pour les réalisations)
+
+### Orthographe Spécifique à Notre Domaine
+✅ **Termes Corrects** :
+- "slow-motion" (avec trait d'union)
+- "Full HD" (majuscules)
+- "événement" (avec accent)
+- "Île-de-France" (avec majuscules et traits d'union)
+
+### Checklist Grammaire
+Avant publication, vérifier :
+- [ ] Accords adjectifs (genre et nombre)
+- [ ] Accords verbes (sujet-verbe)
+- [ ] Orthographe des noms propres
+- [ ] Pas de fautes de frappe courantes ("notre" vs "nôtre", "à" vs "a")
+- [ ] Homophones correctement utilisés ("ce" vs "se", "ces" vs "ses")
+
+---
+
 ## 🎯 Stratégie de Conversion dans les Articles
 
 ### Objectif Principal

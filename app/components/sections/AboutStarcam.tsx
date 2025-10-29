@@ -12,7 +12,7 @@ export default function AboutStarcam() {
     },
     {
       icon: <Sparkles size={24} />,
-      title: 'Slow-motion et accéléré',
+      title: 'Slow-motion et accélérées',
       description: 'Capture parfaite de chaque mouvement en ralenti ou accéléré'
     },
     {
@@ -78,6 +78,10 @@ export default function AboutStarcam() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          onClick={() => {
+            const gallery = document.getElementById('nos-realisations')
+            gallery?.scrollIntoView({ behavior: 'smooth' })
+          }}
           className="relative aspect-video bg-gray-200 rounded-2xl overflow-hidden group cursor-pointer"
         >
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-primary">

@@ -4,7 +4,7 @@ import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Pl
 
 export const metadata: Metadata = {
   title: 'La Starcam | Robot Photobooth Glambot - Vidéos Slow-Motion Professionnelles',
-  description: 'Découvrez la Starcam, le robot glambot utilisé lors des plus grands événements. Vidéos slow-motion et accéléré Full HD pour immortaliser vos moments d\'exception.',
+  description: 'Découvrez la Starcam, le robot glambot utilisé lors des plus grands événements. Vidéos slow-motion et accélérées Full HD pour immortaliser vos moments d\'exception.',
   keywords: ['starcam', 'glambot', 'robot photobooth', 'slow motion', 'vidéo slow-motion', 'photobooth professionnel', 'glambot france'],
 }
 
@@ -151,7 +151,7 @@ export default function LaStarcamPage() {
               <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">3</div>
               <h3 className="text-lg font-semibold mb-2 text-dark text-center">Traitement automatique</h3>
               <p className="text-gray-700 text-center text-sm">
-                La vidéo est automatiquement traitée en slow-motion et accéléré avec votre branding personnalisé
+                La vidéo est automatiquement traitée en slow-motion et accélérée avec votre branding personnalisé
               </p>
             </div>
 
