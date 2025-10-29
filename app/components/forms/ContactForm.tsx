@@ -18,15 +18,40 @@ export default function ContactForm() {
     const formData = new FormData(e.currentTarget)
 
     // Ajouter l'access key Web3Forms
-    formData.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || '')
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
+
+    // Vérifier que la clé existe
+    if (!accessKey) {
+      console.error('Web3Forms access key is not configured')
+      setSubmitStatus('error')
+      setErrorMessage('Configuration du formulaire incorrecte. Veuillez contacter l\'administrateur.')
+      setIsSubmitting(false)
+      return
+    }
+
+    formData.append('access_key', accessKey)
 
     try {
+      console.log('Sending form to Web3Forms...')
+      console.log('Access key présente:', !!accessKey)
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
       })
 
-      const data = await response.json()
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
+
+      const responseText = await response.text()
+      console.log('Response text:', responseText)
+
+      const data = JSON.parse(responseText)
+      console.log('Response data:', data)
 
       if (data.success) {
         setSubmitStatus('success')
@@ -40,6 +65,7 @@ export default function ContactForm() {
         setErrorMessage(data.message || 'Une erreur est survenue')
       }
     } catch (error) {
+      console.error('Form submission error:', error)
       setSubmitStatus('error')
       setErrorMessage('Erreur de connexion. Veuillez réessayer.')
     } finally {
