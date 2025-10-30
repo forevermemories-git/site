@@ -43,11 +43,12 @@ export default function StructuredData() {
     "description": "Location de robot Glambot Starcam pour créer des vidéos slow-motion spectaculaires lors de vos événements. Qualité Full HD professionnelle, livraison instantanée + accès en ligne sous 48h.",
     "offers": {
       "@type": "Offer",
+      "url": "https://forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
-      "priceSpecification": {
-        "@type": "PriceSpecification",
-        "priceCurrency": "EUR"
-      }
+      "price": "890",
+      "priceCurrency": "EUR",
+      "priceValidUntil": "2025-12-31",
+      "description": "À partir de 890€ pour 3h de location"
     }
   }
 
@@ -96,8 +97,12 @@ export default function StructuredData() {
     },
     "offers": {
       "@type": "Offer",
+      "url": "https://forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
-      "priceCurrency": "EUR"
+      "price": "890",
+      "priceCurrency": "EUR",
+      "priceValidUntil": "2025-12-31",
+      "description": "À partir de 890€ pour 3h de location"
     }
   }
 
