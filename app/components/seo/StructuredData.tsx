@@ -32,6 +32,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Service",
     "serviceType": "Location Robot Glambot Starcam",
+    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
     "provider": {
       "@type": "Organization",
       "name": "ForeverMemories"
@@ -85,6 +86,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Location Starcam - Robot Glambot Professionnel",
+    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
     "description": "Robot Glambot professionnel pour des vidéos slow-motion Full HD spectaculaires. Utilisé lors des plus grandes cérémonies mondiales.",
     "brand": {
       "@type": "Brand",
