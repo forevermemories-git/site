@@ -13,6 +13,18 @@ export interface BlogArticle {
 
 export const blogArticles: BlogArticle[] = [
   {
+    slug: 'top-10-poses-glambot-reussir-video-slow-motion',
+    title: 'Top 10 des poses Glambot pour réussir vos vidéos slow-motion',
+    excerpt: 'Maîtrisez l\'art des poses Glambot ! Découvrez les 10 techniques utilisées par les célébrités pour créer des vidéos slow-motion spectaculaires à votre événement.',
+    category: 'Guide Pratique',
+    date: '28 octobre 2025',
+    readTime: '8 min',
+    emoji: '💃',
+    badge: 'Nouveauté',
+    author: 'Forever Memories',
+    keywords: ['poses glambot', 'slow motion', 'vidéo', 'conseils', 'techniques', 'tapis rouge']
+  },
+  {
     slug: 'photobooth-360-vs-glambot-mariage-2025',
     title: 'Photobooth 360 ou Glambot robot : la nouvelle génération pour votre mariage 2025',
     excerpt: 'Photobooth 360 classique ou Glambot robot ? Découvrez la différence entre ces deux technologies et pourquoi le Glambot révolutionne les mariages en 2025.',

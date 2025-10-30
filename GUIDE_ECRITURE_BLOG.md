@@ -477,6 +477,67 @@ transforme votre réception en événement mémorable.
 
 ---
 
+## ⚠️ Risques SEO à Éviter lors de Publications Fréquentes
+
+### Risque 1 : Qualité Sacrifiée
+**Problème** : Publier trop vite peut mener à des articles bâclés, courts ou peu informatifs. Google détecte la qualité médiocre et pénalise.
+
+**Solutions** :
+- ✅ Respecter la longueur minimale (1000-2000 mots selon le type)
+- ✅ Suivre la structure complète (H1, H2, H3, FAQ)
+- ✅ Inclure tableaux et listes à puces
+- ✅ Relire et vérifier orthographe/grammaire
+- ✅ S'assurer que chaque article apporte de la VALEUR unique
+
+### Risque 2 : Duplicate Content (Contenu Dupliqué)
+**Problème** : Répéter les mêmes informations dans plusieurs articles. Google considère cela comme du spam.
+
+**Solutions** :
+- ✅ Varier les angles d'approche sur un même sujet
+- ✅ Créer une liste de sujets diversifiés avant de commencer
+- ✅ Éviter de copier-coller des paragraphes entre articles
+- ✅ Apporter des informations nouvelles à chaque publication
+- ✅ Utiliser des exemples et cas concrets différents
+
+**Exemple de variation d'angles** :
+- Article 1 : "Glambot vs Photobooth 360" (comparatif technique)
+- Article 2 : "Top 10 Poses Glambot" (guide pratique)
+- Article 3 : "Glambot Corporate : Branding" (cas d'usage)
+→ Même technologie, 3 angles totalement différents ✅
+
+### Risque 3 : Sur-Optimisation (Keyword Stuffing)
+**Problème** : Répéter artificiellement les mots-clés pour "forcer" le SEO. Google pénalise lourdement.
+
+**Solutions** :
+- ✅ Écrire d'abord naturellement, optimiser ensuite
+- ✅ Utiliser des synonymes et variations ("Glambot", "robot Starcam", "bras robotique")
+- ✅ Intégrer les mots-clés dans le contexte, pas en force
+- ✅ Viser 1-2% de densité de mots-clés maximum
+- ✅ Privilégier la lecture fluide à la répétition
+
+**Mauvais exemple (sur-optimisé)** :
+```
+Le glambot est excellent. Notre glambot Starcam est le meilleur glambot.
+Contactez-nous pour louer un glambot. Le glambot glambot glambot.
+```
+
+**Bon exemple (naturel)** :
+```
+Le Glambot révolutionne l'animation événementielle en 2025. Notre robot
+Starcam combine technologie de pointe et simplicité d'utilisation.
+Découvrez cette expérience cinématographique pour votre événement.
+```
+
+### Checklist Anti-Risques Avant Publication
+- [ ] Article fait minimum 1000 mots avec contenu substantiel
+- [ ] Structure complète respectée (intro, H2/H3, FAQ, conclusion)
+- [ ] Angle unique : pas de répétition d'un article précédent
+- [ ] Mots-clés intégrés naturellement (lecture fluide)
+- [ ] Valeur ajoutée claire pour le lecteur
+- [ ] Relecture complète effectuée
+
+---
+
 ## 📅 Fréquence de Publication Recommandée
 
 ### Objectif SEO
