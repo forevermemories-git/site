@@ -45,10 +45,10 @@ export default function StructuredData() {
       "@type": "Offer",
       "url": "https://forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
-      "price": "890",
+      "price": "600",
       "priceCurrency": "EUR",
       "priceValidUntil": "2025-12-31",
-      "description": "À partir de 890€ pour 3h de location"
+      "description": "À partir de 600€ pour la location"
     }
   }
 
@@ -99,10 +99,10 @@ export default function StructuredData() {
       "@type": "Offer",
       "url": "https://forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
-      "price": "890",
+      "price": "600",
       "priceCurrency": "EUR",
       "priceValidUntil": "2025-12-31",
-      "description": "À partir de 890€ pour 3h de location"
+      "description": "À partir de 600€ pour la location"
     }
   }
 
