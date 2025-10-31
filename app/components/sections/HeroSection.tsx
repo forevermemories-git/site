@@ -229,11 +229,6 @@ export default function HeroSection() {
               </div>
             </div>
           </div>
-
-          {/* Badge "Nos réalisations" */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-white border-2 border-primary/20 rounded-full shadow-lg">
-            <span className="text-sm font-semibold text-primary">✨ Nos réalisations</span>
-          </div>
         </motion.div>
 
         {/* CTAs - ÉPURÉS */}
