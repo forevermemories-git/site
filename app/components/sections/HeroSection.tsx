@@ -247,6 +247,7 @@ export default function HeroSection() {
               const gallery = document.getElementById('nos-realisations')
               gallery?.scrollIntoView({ behavior: 'smooth' })
             }}
+            aria-label="Voir nos réalisations vidéo"
             className="px-8 py-4 text-dark font-medium hover:text-primary transition-colors"
           >
             Voir nos réalisations

@@ -28,6 +28,7 @@ export default function CTASection() {
                 trackConversion.devisClick('cta_section_hero')
                 window.location.href = '/contact'
               }}
+              aria-label="Réserver maintenant votre Starcam"
               className="group px-8 py-4 bg-white text-primary rounded-full font-medium hover:bg-white/90 transition-all flex items-center justify-center gap-2 shadow-2xl"
             >
               <Calendar size={24} />

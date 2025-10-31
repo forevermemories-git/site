@@ -59,6 +59,7 @@ export default function VideoGallery() {
             <button
               key={category}
               onClick={() => setFilter(category)}
+              aria-label={`Filtrer par ${category}`}
               className={`px-6 py-2 rounded-full font-medium transition-all ${
                 filter === category
                   ? 'bg-primary text-white shadow-lg shadow-primary/30'
@@ -87,6 +88,7 @@ export default function VideoGallery() {
                 muted
                 loop
                 playsInline
+                preload="none"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 onMouseEnter={(e) => {
                   const video = e.currentTarget

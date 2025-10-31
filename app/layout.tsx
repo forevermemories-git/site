@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     default: 'Starcam by ForeverMemories | Vidéos Glamour Slow-Motion pour Vos Événements',
     template: '%s | ForeverMemories'
   },
-  description: 'Location de robot Glambot Starcam professionnel pour vos événements. Vidéos slow-motion cinématographiques Full HD pour mariages, événements corporate et soirées de prestige. Plus de 500 événements réussis en France.',
+  description: 'Location de robot Glambot Starcam pour vos événements. Vidéos slow-motion Full HD pour mariages, corporate et soirées. +500 événements réussis.',
   keywords: ['glambot', 'starcam', 'photobooth', 'vidéo slow-motion', 'événements', 'mariages', 'corporate', 'location glambot', 'robot vidéo', 'slow motion', 'photobooth luxe', 'vidéo Full HD événement'],
   authors: [{ name: 'ForeverMemories', url: 'https://forevermemories.fr' }],
   creator: 'ForeverMemories',
