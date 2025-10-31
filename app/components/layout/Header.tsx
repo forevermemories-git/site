@@ -62,7 +62,7 @@ export default function Header() {
           : 'bg-transparent'
       }`}
     >
-      <nav className="container-custom py-4">
+      <nav className={`container-custom transition-all duration-300 ${isScrolled ? 'py-2 md:py-4' : 'py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -71,7 +71,7 @@ export default function Header() {
               alt="ForeverMemories"
               width={375}
               height={112}
-              className="h-20 md:h-24 w-auto"
+              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-14 md:h-24' : 'h-20 md:h-24'}`}
               priority
             />
           </Link>

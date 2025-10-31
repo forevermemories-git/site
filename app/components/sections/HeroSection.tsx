@@ -168,7 +168,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-xl md:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto font-light leading-relaxed"
+          className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto font-light leading-relaxed"
         >
           Des vidéos slow-motion et accélérées cinématographiques qui immortalisent vos moments les plus précieux
         </motion.p>
@@ -178,7 +178,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-10 relative max-w-4xl mx-auto"
+          className="mb-12 relative max-w-4xl mx-auto"
         >
           {/* Container avec bordure gradient */}
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary p-[3px] shadow-2xl">
