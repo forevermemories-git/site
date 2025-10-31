@@ -1,0 +1,16 @@
+# Robots.txt pour Forever Memories
+# https://forevermemories.fr
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://forevermemories.fr/sitemap.xml
+
+# Désactiver l'indexation de certains dossiers
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Crawl-delay pour éviter la surcharge
+Crawl-delay: 1

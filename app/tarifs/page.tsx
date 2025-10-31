@@ -395,8 +395,7 @@ export default function TarifsPage() {
               <Phone size={20} />
               06 76 81 59 53
             </Link>
-            <Link href="mailto:hello@forevermemories.fr" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all flex items-center justify-center gap-2">
-              <Mail size={20} />
+            <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
               Demander un devis
             </Link>
           </div>

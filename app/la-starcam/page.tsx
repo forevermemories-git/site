@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Play } from 'lucide-react'
+import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Play, Phone } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'La Starcam | Robot Photobooth Glambot - Vidéos Slow-Motion Professionnelles',
@@ -51,8 +51,8 @@ export default function LaStarcamPage() {
                 La technologie des tapis rouges
               </h2>
               <p className="text-lg text-gray-700 mb-6">
-                La Starcam est un robot motorisé équipé d'une caméra haute définition qui se déplace sur un rail.
-                En quelques secondes, elle capture des vidéos époustouflantes en slow-motion et en accéléré.
+                La Starcam est un bras robotisé sur 5 axes équipé d'une caméra haute définition.
+                En quelques secondes, elle capture des vidéos époustouflantes en slow-motion et en accéléré avec des mouvements fluides et cinématographiques.
               </p>
               <p className="text-lg text-gray-700 mb-6">
                 Cette technologie, développée pour les plus grands événements mondiaux (Oscars, Met Gala, Cannes),
@@ -87,8 +87,8 @@ export default function LaStarcamPage() {
                 <div className="flex items-start gap-3">
                   <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
                   <div>
-                    <div className="font-semibold text-dark">Rail motorisé 3 mètres</div>
-                    <div className="text-gray-600 text-sm">Mouvement fluide et précis</div>
+                    <div className="font-semibold text-dark">Bras robotisé 5 axes</div>
+                    <div className="text-gray-600 text-sm">Mouvements complexes et cinématographiques</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -143,7 +143,7 @@ export default function LaStarcamPage() {
               <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">2</div>
               <h3 className="text-lg font-semibold mb-2 text-dark text-center">Action !</h3>
               <p className="text-gray-700 text-center text-sm">
-                Le robot démarre et se déplace sur le rail en capturant votre mouvement en vidéo haute définition
+                Le bras robotisé démarre et effectue un mouvement fluide en capturant votre mouvement en vidéo haute définition
               </p>
             </div>
 
@@ -234,7 +234,7 @@ export default function LaStarcamPage() {
               </div>
               <h3 className="text-xl font-semibold mb-3 text-dark">Personnalisation complète</h3>
               <p className="text-gray-700">
-                Logo, couleurs, musique, backdrop. Tout peut être personnalisé pour refléter l'identité de votre événement
+                Logo, couleurs, musique. Tout peut être personnalisé pour refléter l'identité de votre événement
               </p>
             </div>
 
@@ -332,9 +332,10 @@ export default function LaStarcamPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="tel:+33676815953" className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all flex items-center justify-center gap-2">
-              Appelez-nous : 06 76 81 59 53
+              <Phone size={20} />
+              06 76 81 59 53
             </Link>
-            <Link href="mailto:hello@forevermemories.fr" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
+            <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
               Demander un devis
             </Link>
           </div>

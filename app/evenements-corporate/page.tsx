@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Building2, Camera, Users, TrendingUp, Star, CheckCircle, Sparkles, Share2 } from 'lucide-react'
+import { ArrowRight, Building2, Camera, Users, TrendingUp, Star, CheckCircle, Sparkles, Share2, Phone } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Starcam Événements Corporate | Animation Photobooth pour Entreprises en Île-de-France',
@@ -31,7 +31,7 @@ export default function EvenementsCorporatePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="#contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
+            <Link href="/contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
               Demander un devis entreprise
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -359,9 +359,10 @@ export default function EvenementsCorporatePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="tel:+33676815953" className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all flex items-center justify-center gap-2">
-              Appelez-nous : 06 76 81 59 53
+              <Phone size={20} />
+              06 76 81 59 53
             </Link>
-            <Link href="mailto:hello@forevermemories.fr" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
+            <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
               Demander un devis
             </Link>
           </div>

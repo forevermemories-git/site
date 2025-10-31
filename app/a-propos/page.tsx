@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Heart, Users, Award, Target, Sparkles, CheckCircle, Star } from 'lucide-react'
+import { ArrowRight, Heart, Users, Award, Target, Sparkles, CheckCircle, Star, Phone } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'À Propos | Forever Memories - Location Starcam en Île-de-France',
@@ -253,10 +253,11 @@ export default function AProposPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="tel:+33676815953" className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all flex items-center justify-center gap-2">
-              Appelez-nous : 06 76 81 59 53
+              <Phone size={20} />
+              06 76 81 59 53
             </Link>
             <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
-              Page contact
+              Demander un devis
             </Link>
           </div>
         </div>

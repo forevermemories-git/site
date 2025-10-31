@@ -164,14 +164,6 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-              <h3 className="text-lg font-semibold mb-3 text-dark">Puis-je réserver une démo avant mon événement ?</h3>
-              <p className="text-gray-700">
-                Oui, nous pouvons organiser une démonstration dans nos locaux ou lors d'un rendez-vous.
-                Contactez-nous pour planifier une session découverte de la Starcam.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
               <h3 className="text-lg font-semibold mb-3 text-dark">Combien de temps à l'avance dois-je réserver ?</h3>
               <p className="text-gray-700">
                 Nous recommandons de réserver au moins 1 à 2 mois à l'avance, surtout pour les week-ends et la haute saison

@@ -20,6 +20,25 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Bloquer le scroll de la page quand le menu mobile est ouvert
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+  }, [isMobileMenuOpen])
+
   const navLinks = [
     { href: '/la-starcam', label: 'La Starcam' },
     { href: '/tarifs', label: 'Tarifs' },
@@ -37,7 +56,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
@@ -140,7 +159,7 @@ export default function Header() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[1001]"
               />
 
               {/* Menu latéral */}
@@ -149,7 +168,7 @@ export default function Header() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-50 overflow-y-auto"
+                className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-[1002] flex flex-col"
               >
                 {/* Header du menu avec X */}
                 <div className="flex items-center justify-end p-4 border-b border-gray-100">
@@ -162,54 +181,56 @@ export default function Header() {
                   </button>
                 </div>
 
-                {/* Navigation */}
-                <div className="flex flex-col pt-2 pb-8">
-                  {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 + 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="font-semibold text-lg text-dark hover:bg-primary/5 hover:text-primary transition-colors py-4 px-6 border-b border-gray-100 block"
+                {/* Navigation - zone scrollable */}
+                <div className="flex-1 overflow-y-auto pt-2">
+                  <div className="flex flex-col pb-4">
+                    {navLinks.map((link, index) => (
+                      <motion.div
+                        key={link.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 + 0.1 }}
                       >
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  ))}
+                        <Link
+                          href={link.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="font-semibold text-lg text-dark hover:bg-primary/5 hover:text-primary transition-colors py-4 px-6 border-b border-gray-100 block"
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ))}
 
-                  {/* Section Événements */}
-                  <div className="px-6 py-3 text-sm font-semibold text-gray-500 border-b border-gray-100">
-                    NOS ÉVÉNEMENTS
+                    {/* Section Événements */}
+                    <div className="px-6 py-3 text-sm font-semibold text-gray-500 border-b border-gray-100">
+                      NOS ÉVÉNEMENTS
+                    </div>
+
+                    {eventLinks.map((link, index) => (
+                      <motion.div
+                        key={link.href}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: (index + navLinks.length) * 0.05 + 0.1 }}
+                      >
+                        <Link
+                          href={link.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="font-medium text-dark hover:bg-primary/5 hover:text-primary transition-colors py-3 px-6 border-b border-gray-100 last:border-b-0 block"
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.div>
+                    ))}
                   </div>
-
-                  {eventLinks.map((link, index) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: (index + navLinks.length) * 0.05 + 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="font-medium text-dark hover:bg-primary/5 hover:text-primary transition-colors py-3 px-6 border-b border-gray-100 last:border-b-0 block"
-                      >
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  ))}
                 </div>
 
-                {/* CTA Section */}
+                {/* CTA Section - sticky en bas */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-gray-50 to-transparent"
+                  className="flex-shrink-0 p-6 bg-gradient-to-t from-gray-50 to-transparent border-t border-gray-100"
                 >
                   <a
                     href="tel:+33676815953"
