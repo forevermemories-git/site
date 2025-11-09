@@ -41,7 +41,7 @@ export default function Header() {
 
   const navLinks = [
     { href: '/la-starcam', label: 'La Starcam' },
-    { href: '/tarifs', label: 'Tarifs' },
+    { href: '/tarifs', label: 'Formules' },
     { href: '/a-propos', label: 'À propos' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
@@ -94,7 +94,7 @@ export default function Header() {
               onMouseEnter={() => setIsEventsDropdownOpen(true)}
               onMouseLeave={() => setIsEventsDropdownOpen(false)}
             >
-              <button className="font-medium transition-colors hover:text-primary text-dark flex items-center gap-1">
+              <button className="font-medium transition-colors hover:text-primary text-dark inline-flex items-center gap-1">
                 Événements
                 <ChevronDown size={16} className={`transition-transform ${isEventsDropdownOpen ? 'rotate-180' : ''}`} />
               </button>

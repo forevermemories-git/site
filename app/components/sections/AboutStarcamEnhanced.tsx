@@ -286,10 +286,10 @@ export default function AboutStarcamEnhanced() {
                 <button
                   key={index}
                   onClick={() => scrollToReel(index)}
-                  className={`h-2 rounded-full transition-all duration-300 ${
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
                     currentReel === index
                       ? 'w-8 bg-primary'
-                      : 'w-2 bg-gray-300 hover:bg-gray-400'
+                      : 'w-1.5 bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Voir vidéo ${index + 1}`}
                 />
