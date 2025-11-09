@@ -90,11 +90,11 @@ export default function Header() {
 
             {/* Menu déroulant Événements */}
             <div
-              className="relative"
+              className="relative flex items-center"
               onMouseEnter={() => setIsEventsDropdownOpen(true)}
               onMouseLeave={() => setIsEventsDropdownOpen(false)}
             >
-              <button className="font-medium transition-colors hover:text-primary text-dark inline-flex items-center gap-1">
+              <button className="font-medium transition-colors hover:text-primary text-dark flex items-center gap-1">
                 Événements
                 <ChevronDown size={16} className={`transition-transform ${isEventsDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
