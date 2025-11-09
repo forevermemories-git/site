@@ -44,6 +44,31 @@
   .text-gray-500 {
     color: #6B7280 !important; /* Contraste amélioré */
   }
+
+  /* text-gray-400 sur fond blanc = mauvais contraste (2.8:1) */
+  /* On le force à gray-600 pour fond blanc, sauf dans footer (fond noir) */
+  main .text-gray-400, [class*="bg-white"] .text-gray-400 {
+    color: #4B5563 !important; /* gray-600 = 4.5:1 contrast ratio */
+  }
+
+  /* Garder text-gray-400 original sur fond sombre */
+  [class*="bg-black"] .text-gray-400,
+  [class*="bg-secondary"] .text-gray-400,
+  footer .text-gray-400 {
+    color: #9CA3AF !important; /* Original gray-400 OK sur fond sombre */
+  }
+
+  /* Zones tactiles minimales (WCAG 2.5.5) */
+  button, a, [role="button"], input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Exception pour les indicateurs très petits avec padding suffisant */
+  button[role="tab"] {
+    min-height: 24px;
+    padding: 10px;
+  }
 }
 
 @layer utilities {

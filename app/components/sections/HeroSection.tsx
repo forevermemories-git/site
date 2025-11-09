@@ -194,12 +194,13 @@ export default function HeroSection() {
                     key={index}
                     className="flex-shrink-0 w-full snap-center"
                   >
-                    <div className="relative aspect-square md:aspect-video">
+                    <div className="relative aspect-square md:aspect-video bg-gray-900">
                       <video
                         ref={(el) => { videoRefs.current[index] = el }}
                         muted
                         playsInline
-                        preload="metadata"
+                        preload="none"
+                        poster={`/images/posters/video-${index + 1}-poster.jpg`}
                         onEnded={() => handleVideoEnded(index)}
                         width="1920"
                         height="1080"
@@ -213,7 +214,7 @@ export default function HeroSection() {
               </div>
 
               {/* Indicateurs de vidéo */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" role="tablist" aria-label="Sélecteur de vidéo">
                 {videos.map((_, index) => (
                   <button
                     key={index}
@@ -223,7 +224,9 @@ export default function HeroSection() {
                         ? 'w-8 bg-white'
                         : 'w-1.5 bg-white/50 hover:bg-white/75'
                     }`}
-                    aria-label={`Vidéo ${index + 1}`}
+                    role="tab"
+                    aria-label={`Aller à la vidéo ${index + 1} sur ${videos.length}`}
+                    aria-selected={currentVideo === index}
                   />
                 ))}
               </div>

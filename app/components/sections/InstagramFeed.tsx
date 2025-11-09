@@ -129,6 +129,7 @@ export default function InstagramFeed() {
                     muted
                     loop
                     playsInline
+                    preload="none"
                     onMouseEnter={(e) => e.currentTarget.play().catch(() => {})}
                     onMouseLeave={(e) => {
                       e.currentTarget.pause()
@@ -136,10 +137,13 @@ export default function InstagramFeed() {
                     }}
                   />
                 ) : (
-                  <img
+                  <Image
                     src={post.media_url}
                     alt={post.caption?.substring(0, 100) || 'Instagram post'}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    loading="lazy"
                   />
                 )}
               </div>
@@ -242,14 +246,20 @@ export default function InstagramFeed() {
                           controls
                           autoPlay
                           loop
+                          preload="auto"
                           className="max-w-full max-h-full object-contain"
                         />
                       ) : (
-                        <img
-                          src={selectedPost.media_url}
-                          alt={selectedPost.caption?.substring(0, 100) || 'Instagram post'}
-                          className="max-w-full max-h-full object-contain"
-                        />
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          <Image
+                            src={selectedPost.media_url}
+                            alt={selectedPost.caption?.substring(0, 100) || 'Instagram post'}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 768px) 100vw, 60vw"
+                            priority
+                          />
+                        </div>
                       )}
                     </div>
 

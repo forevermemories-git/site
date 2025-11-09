@@ -51,7 +51,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Navigation</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Navigation</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/la-starcam" className="text-gray-400 hover:text-primary-gold transition-colors">
@@ -78,7 +78,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Nos Services</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Nos Services</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/mariages" className="text-gray-400 hover:text-primary-gold transition-colors">
@@ -105,7 +105,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Contact</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Contact</h4>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <Phone size={20} className="text-primary-gold mt-1 flex-shrink-0" />
