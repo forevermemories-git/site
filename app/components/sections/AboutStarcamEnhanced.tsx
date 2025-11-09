@@ -49,6 +49,16 @@ export default function AboutStarcamEnhanced() {
 
     const handleScroll = () => {
       const scrollLeftValue = container.scrollLeft
+      const containerWidth = container.offsetWidth
+      const scrollWidth = container.scrollWidth
+
+      // Si on est à la fin du scroll, c'est la dernière vidéo
+      if (scrollLeftValue + containerWidth >= scrollWidth - 10) {
+        setCurrentReel(reels.length - 1)
+        return
+      }
+
+      // Sinon, calculer l'index basé sur la position
       const cardWidth = 280 + 16 // largeur carte + gap
       const newIndex = Math.round(scrollLeftValue / cardWidth)
       setCurrentReel(Math.min(newIndex, reels.length - 1))
@@ -226,13 +236,12 @@ export default function AboutStarcamEnhanced() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
-                {/* Gradient overlay au hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Gradient overlay au hover uniquement */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                 </div>
 
-                {/* Badge numéro */}
-                <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary font-bold text-sm">
-                  {index + 1}
+                {/* Effet de bordure au hover */}
+                <div className="absolute inset-0 border-2 border-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none">
                 </div>
               </motion.div>
             ))}
@@ -271,27 +280,33 @@ export default function AboutStarcamEnhanced() {
                       onEnded={() => handleVideoEnded(index)}
                       className="w-full h-full object-cover"
                     />
-                    {/* Badge numéro */}
-                    <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary font-bold text-sm">
-                      {index + 1}
-                    </div>
+
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Indicateurs de pagination */}
-            <div className="flex justify-center gap-2 mt-4">
+            {/* Indicateurs de pagination - Barres modernes */}
+            <div className="flex gap-2 justify-center mt-6" role="tablist" aria-label="Sélecteur de vidéo">
               {reels.map((_, index) => (
-                <button
+                <div
                   key={index}
                   onClick={() => scrollToReel(index)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                  className={`cursor-pointer rounded-full transition-all duration-500 ease-out ${
                     currentReel === index
-                      ? 'w-8 bg-primary'
-                      : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                      ? 'w-12 h-1.5 bg-primary'
+                      : 'w-8 h-1.5 bg-gray-400 opacity-30 hover:opacity-60'
                   }`}
-                  aria-label={`Voir vidéo ${index + 1}`}
+                  role="tab"
+                  aria-label={`Aller à la vidéo ${index + 1} sur ${reels.length}`}
+                  aria-selected={currentReel === index}
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      scrollToReel(index)
+                    }
+                  }}
                 />
               ))}
             </div>

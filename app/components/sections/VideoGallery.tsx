@@ -2,12 +2,14 @@
 
 import { motion } from 'framer-motion'
 import { Play } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import VideoModal from '../ui/VideoModal'
 
 export default function VideoGallery() {
   const [selectedVideo, setSelectedVideo] = useState<{ src: string; title: string; type: string } | null>(null)
   const [filter, setFilter] = useState<string>('Tous')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const videos = [
     { id: 1, title: 'AL Groupe', src: '/videos/video-al-groupe.mp4', type: 'Corporate' },
@@ -23,6 +25,33 @@ export default function VideoGallery() {
   const filteredVideos = filter === 'Tous'
     ? videos
     : videos.filter(v => v.type === filter)
+
+  // Détecter le scroll pour mettre à jour l'indicateur actif (mobile uniquement)
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const scrollLeftValue = container.scrollLeft
+      const cardWidth = container.offsetWidth
+      const newIndex = Math.round(scrollLeftValue / cardWidth)
+      setCurrentIndex(newIndex)
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToIndex = (index: number) => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const cardWidth = container.offsetWidth
+    container.scrollTo({
+      left: cardWidth * index,
+      behavior: 'smooth'
+    })
+  }
 
   return (
     <section id="nos-realisations" className="py-16 md:py-24 px-4 md:px-8 bg-white">
@@ -71,18 +100,23 @@ export default function VideoGallery() {
           ))}
         </motion.div>
 
-        {/* Grid simple avec vraies vidéos */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {filteredVideos.map((video, index) => (
-            <motion.div
-              key={video.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative aspect-[3/4] rounded-xl overflow-hidden bg-black cursor-pointer"
-              onClick={() => setSelectedVideo({ src: video.src, title: video.title, type: video.type })}
-            >
+        {/* Carrousel mobile / Grid desktop */}
+        <div
+          ref={scrollContainerRef}
+          className="overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none scrollbar-hide scroll-smooth -mx-4 md:mx-0 px-4 md:px-0"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-8">
+            {filteredVideos.map((video, index) => (
+              <motion.div
+                key={video.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative aspect-[3/4] rounded-xl overflow-hidden bg-black cursor-pointer flex-shrink-0 w-[85vw] md:w-auto snap-center"
+                onClick={() => setSelectedVideo({ src: video.src, title: video.title, type: video.type })}
+              >
               {/* Vidéo miniature */}
               <video
                 muted
@@ -121,8 +155,29 @@ export default function VideoGallery() {
                 <div className="text-sm font-medium">{video.title}</div>
               </div>
             </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
+
+        {/* Indicateurs de scroll - mobile uniquement */}
+        {filteredVideos.length > 1 && (
+          <div className="flex md:hidden gap-2 justify-center mt-8" role="tablist" aria-label="Sélecteur de vidéo">
+            {filteredVideos.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => scrollToIndex(index)}
+                className={`cursor-pointer rounded-full transition-all duration-500 ease-out ${
+                  currentIndex === index
+                    ? 'w-12 h-1.5 bg-primary'
+                    : 'w-8 h-1.5 bg-gray-400 opacity-30'
+                }`}
+                role="tab"
+                aria-label={`Aller à la vidéo ${index + 1} sur ${filteredVideos.length}`}
+                aria-selected={currentIndex === index}
+              />
+            ))}
+          </div>
+        )}
 
         {/* CTA simple */}
         <motion.div

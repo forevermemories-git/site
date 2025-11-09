@@ -212,25 +212,32 @@ export default function HeroSection() {
                   </div>
                 ))}
               </div>
-
-              {/* Indicateurs de vidéo */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10" role="tablist" aria-label="Sélecteur de vidéo">
-                {videos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => scrollToVideo(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      currentVideo === index
-                        ? 'w-8 bg-white'
-                        : 'w-1.5 bg-white/50 hover:bg-white/75'
-                    }`}
-                    role="tab"
-                    aria-label={`Aller à la vidéo ${index + 1} sur ${videos.length}`}
-                    aria-selected={currentVideo === index}
-                  />
-                ))}
-              </div>
             </div>
+          </div>
+
+          {/* Indicateurs de vidéo - Barres de progression modernes */}
+          <div className="flex gap-2 justify-center mt-8" role="tablist" aria-label="Sélecteur de vidéo">
+            {videos.map((_, index) => (
+              <div
+                key={index}
+                onClick={() => scrollToVideo(index)}
+                className={`cursor-pointer rounded-full transition-all duration-500 ease-out ${
+                  currentVideo === index
+                    ? 'w-12 h-1.5 bg-primary'
+                    : 'w-8 h-1.5 bg-gray-400 opacity-30 hover:opacity-60'
+                }`}
+                role="tab"
+                aria-label={`Aller à la vidéo ${index + 1} sur ${videos.length}`}
+                aria-selected={currentVideo === index}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    scrollToVideo(index)
+                  }
+                }}
+              />
+            ))}
           </div>
         </motion.div>
 

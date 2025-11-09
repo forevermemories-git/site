@@ -77,7 +77,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -90,14 +90,14 @@ export default function Header() {
 
             {/* Menu déroulant Événements */}
             <div
-              className="relative"
+              className="relative font-medium transition-colors hover:text-primary text-dark cursor-pointer min-h-[44px] flex items-baseline"
               onMouseEnter={() => setIsEventsDropdownOpen(true)}
               onMouseLeave={() => setIsEventsDropdownOpen(false)}
             >
-              <button className="font-medium transition-colors hover:text-primary text-dark inline-flex items-center gap-1">
+              <span className="inline-flex items-baseline gap-1">
                 Événements
                 <ChevronDown size={16} className={`transition-transform ${isEventsDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
+              </span>
 
               <AnimatePresence>
                 {isEventsDropdownOpen && (
@@ -124,7 +124,7 @@ export default function Header() {
           </div>
 
           {/* CTA Button */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <a href="tel:+33676815953" className="flex items-center space-x-2 transition-colors text-primary hover:text-primary-dark">
               <Phone size={20} />
               <span className="font-semibold">06 76 81 59 53</span>
@@ -137,7 +137,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden"
+            className="lg:hidden"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
@@ -159,7 +159,7 @@ export default function Header() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[1001]"
+                className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[1001]"
               />
 
               {/* Menu latéral */}
@@ -168,7 +168,7 @@ export default function Header() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="md:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-[1002] flex flex-col"
+                className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-[1002] flex flex-col"
               >
                 {/* Header du menu avec X */}
                 <div className="flex items-center justify-end p-4 border-b border-gray-100">
