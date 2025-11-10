@@ -217,7 +217,7 @@ export default function InstagramFeed() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setSelectedPost(null)}
-                className="fixed inset-0 bg-black/90 z-[150] cursor-pointer"
+                className="fixed inset-0 bg-black/90 z-[9999] cursor-pointer"
               />
 
               {/* Modal Content */}
@@ -225,7 +225,7 @@ export default function InstagramFeed() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="fixed inset-4 md:inset-10 lg:inset-20 z-[150] flex items-center justify-center pointer-events-none"
+                className="fixed inset-4 md:inset-10 lg:inset-20 z-[9999] flex items-center justify-center pointer-events-none"
               >
                 <div className="relative w-full h-full max-w-6xl mx-auto flex items-center justify-center pointer-events-auto">
                   {/* Close button */}
