@@ -6,7 +6,6 @@ import StructuredData from './components/seo/StructuredData'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import SkipToContent from './components/ui/SkipToContent'
-import CookieConsent from './components/ui/CookieConsent'
 import GoogleAnalytics from './components/analytics/GoogleAnalytics'
 
 const poppins = Poppins({
@@ -116,6 +115,13 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        <script
+          id="Cookiebot"
+          src="https://consent.cookiebot.com/uc.js"
+          data-cbid="25f0a5c1-c641-42bc-a914-e789904dbfe8"
+          data-blockingmode="auto"
+          type="text/javascript"
+        />
         <StructuredData />
       </head>
       <body className="antialiased">
@@ -128,7 +134,6 @@ export default function RootLayout({
           </main>
           <Footer />
         </SmoothScroll>
-        <CookieConsent />
       </body>
     </html>
   )
