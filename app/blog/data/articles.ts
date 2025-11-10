@@ -104,5 +104,51 @@ export const blogArticles: BlogArticle[] = [
     badge: 'Exclusif',
     author: 'Forever Memories',
     keywords: ['glambot france', 'rare', 'exclusif', 'ile de france', 'paris', 'disponibilité']
+  },
+  {
+    slug: 'videobooth-vs-glambot-difference-2025',
+    title: 'Videobooth vs Glambot : quelle différence en 2025 ?',
+    excerpt: 'Vous cherchez un videobooth pour votre événement ? Découvrez pourquoi le Glambot est la prochaine génération de vidéo interactive qui va bien au-delà du videobooth classique.',
+    category: 'Comparaison',
+    date: '11 novembre 2025',
+    readTime: '9 min',
+    emoji: '🎥',
+    badge: 'Nouveauté',
+    author: 'Forever Memories',
+    keywords: ['videobooth', 'glambot', 'différence', 'comparaison', 'vidéo événement', 'slow motion']
+  },
+  {
+    slug: 'choisir-animation-mariage-2025-guide-complet',
+    title: 'Comment choisir son animation mariage en 2025 : le guide complet',
+    excerpt: 'Photobooth, DJ, animation interactive... Comment choisir THE animation qui marquera votre mariage ? Guide pratique avec avantages, inconvénients et budget.',
+    category: 'Guide Pratique',
+    date: '11 novembre 2025',
+    readTime: '10 min',
+    emoji: '💒',
+    badge: 'Guide Complet',
+    author: 'Forever Memories',
+    keywords: ['animation mariage', 'choisir', 'guide', 'mariage 2025', 'budget', 'tendances']
+  },
+  {
+    slug: 'glambot-evenement-corporate-branding-engagement',
+    title: 'Glambot pour événement corporate : boostez votre branding et engagement en 2025',
+    excerpt: 'Le Glambot n\'est pas que pour les mariages. Découvrez comment cette technologie transforme vos événements corporate en expérience mémorable qui engage vos équipes et clients.',
+    category: 'Corporate',
+    date: '11 novembre 2025',
+    readTime: '8 min',
+    emoji: '🏢',
+    author: 'Forever Memories',
+    keywords: ['glambot corporate', 'événement entreprise', 'branding', 'engagement collaborateurs', 'team building']
+  },
+  {
+    slug: '5-erreurs-eviter-glambot-conseils-experts',
+    title: '5 erreurs à éviter avec un Glambot : conseils d\'experts',
+    excerpt: 'Vous louez un Glambot ? Évitez ces 5 erreurs courantes qui gâchent l\'expérience. Conseils pratiques basés sur 500+ événements pour maximiser votre investissement.',
+    category: 'Guide Pratique',
+    date: '11 novembre 2025',
+    readTime: '7 min',
+    emoji: '⚠️',
+    author: 'Forever Memories',
+    keywords: ['erreurs glambot', 'conseils', 'guide pratique', 'optimisation', 'réussir']
   }
 ]

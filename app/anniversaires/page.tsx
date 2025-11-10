@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, PartyPopper, Camera, Users, Gift, Star, CheckCircle, Cake, Phone } from 'lucide-react'
+import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Starcam Anniversaire | Photobooth Glambot pour vos Anniversaires en Île-de-France',
@@ -8,11 +10,38 @@ export const metadata: Metadata = {
   keywords: ['starcam anniversaire', 'photobooth anniversaire', 'animation anniversaire luxe', 'glambot anniversaire', 'vidéo slow motion anniversaire', 'anniversaire original paris'],
 }
 
+const anniversairesFAQs = [
+  {
+    question: 'Combien d\'invités minimum ou maximum ?',
+    answer: 'Il n\'y a pas de minimum ni de maximum ! Que vous soyez 20 ou 100 invités, la Starcam s\'adapte. Pour les petits groupes (moins de 30 personnes), nous proposons des formules ajustées.'
+  },
+  {
+    question: 'Peut-on l\'installer chez moi ou dans un jardin ?',
+    answer: 'Oui, absolument ! La Starcam s\'installe aussi bien en intérieur qu\'en extérieur (jardin, terrasse). Pour l\'extérieur, nous recommandons une installation sous chapiteau ou auvent en cas de pluie.'
+  },
+  {
+    question: 'Quelle est la durée de location idéale ?',
+    answer: 'Nos formules anniversaire sont généralement de 3 à 5 heures. Pour une soirée classique, 4 heures est la durée idéale permettant à tous vos invités de profiter de l\'expérience plusieurs fois.'
+  },
+  {
+    question: 'Peut-on personnaliser les vidéos avec le thème de la fête ?',
+    answer: 'Oui ! Nous pouvons personnaliser les vidéos avec les couleurs de votre fête, ajouter un message d\'anniversaire, ou même intégrer le prénom de la personne fêtée. Parlez-nous de votre thème !'
+  },
+  {
+    question: 'Jusqu\'où vous déplacez-vous en Île-de-France ?',
+    answer: 'Nous intervenons dans toute l\'Île-de-France : Paris, Seine-et-Marne (77), Yvelines (78), Essonne (91), Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94) et Val-d\'Oise (95).'
+  }
+]
+
 export default function AnniversairesPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+    <>
+      <FAQStructuredData faqs={anniversairesFAQs} />
+
+      <div className="min-h-screen bg-white">
+        <Breadcrumbs items={[{ name: 'Anniversaires', href: '/anniversaires' }]} />
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
             <Cake size={16} className="fill-primary" />
@@ -320,6 +349,7 @@ export default function AnniversairesPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

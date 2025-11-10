@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Heart, Camera, Users, Clock, Star, CheckCircle, Phone } from 'lucide-react'
+import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Starcam Mariage | Photobooth Glambot pour votre Mariage en Île-de-France',
@@ -8,11 +10,38 @@ export const metadata: Metadata = {
   keywords: ['starcam mariage', 'glambot mariage', 'photobooth mariage luxe', 'vidéo slow motion mariage', 'animation mariage originale', 'mariage seine-et-marne', 'photobooth paris mariage'],
 }
 
+const mariagesFAQs = [
+  {
+    question: 'Combien de temps dure la location ?',
+    answer: 'Nos formules mariage incluent la présence de la Starcam pendant toute votre réception (généralement 4-6h). Vos invités peuvent passer autant de fois qu\'ils le souhaitent, sans limitation.'
+  },
+  {
+    question: 'Quel espace faut-il prévoir ?',
+    answer: 'Un espace d\'environ 4m x 3m est idéal. Notre équipe s\'adapte à la configuration de votre salle pour trouver le meilleur emplacement, en intérieur ou extérieur (sous chapiteau).'
+  },
+  {
+    question: 'Les invités repartent-ils vraiment avec leurs vidéos ?',
+    answer: 'Oui ! Chaque participant reçoit sa vidéo immédiatement sur son téléphone. De plus, toutes les vidéos sont rassemblées dans une galerie en ligne privée accessible sous 48h.'
+  },
+  {
+    question: 'Combien d\'invités peuvent participer ?',
+    answer: 'Il n\'y a pas de limite ! Que vous ayez 50 ou 200 invités, chacun pourra profiter de l\'expérience. En moyenne, un passage dure 1-2 minutes, permettant à tout le monde de passer plusieurs fois dans la soirée.'
+  },
+  {
+    question: 'Intervenez-vous partout en Île-de-France ?',
+    answer: 'Oui, nous nous déplaçons dans toute l\'Île-de-France : Paris, Seine-et-Marne (77), Yvelines (78), Essonne (91), Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94) et Val-d\'Oise (95).'
+  }
+]
+
 export default function MariagesPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+    <>
+      <FAQStructuredData faqs={mariagesFAQs} />
+
+      <div className="min-h-screen bg-white">
+        <Breadcrumbs items={[{ name: 'Mariages', href: '/mariages' }]} />
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
             <Heart size={16} className="fill-primary" />
@@ -236,8 +265,8 @@ export default function MariagesPage() {
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-8 px-4 md:px-8 bg-gradient-primary">
+        {/* CTA Final */}
+        <section className="py-8 px-4 md:px-8 bg-gradient-primary">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
             Prêts à offrir un mariage inoubliable ?
@@ -256,6 +285,7 @@ export default function MariagesPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

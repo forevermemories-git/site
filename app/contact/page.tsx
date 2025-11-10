@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Instagram, Facebook, MessageCircle } from 'lucide-react'
 import ContactForm from '../components/forms/ContactForm'
+import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Contact | Forever Memories - Location Starcam en Île-de-France',
@@ -9,11 +11,30 @@ export const metadata: Metadata = {
   keywords: ['contact starcam', 'devis glambot', 'réserver starcam', 'contact photobooth paris', 'location starcam île-de-france'],
 }
 
+const contactFAQs = [
+  {
+    question: 'Sous quel délai puis-je obtenir un devis ?',
+    answer: 'Nous nous engageons à vous répondre sous 24h ouvrées avec une proposition personnalisée. Pour les demandes urgentes, n\'hésitez pas à nous appeler directement.'
+  },
+  {
+    question: 'Le devis est-il gratuit et sans engagement ?',
+    answer: 'Oui, absolument ! Tous nos devis sont gratuits et sans aucun engagement. Vous êtes libre de comparer et de choisir la prestation qui vous convient le mieux.'
+  },
+  {
+    question: 'Combien de temps à l\'avance dois-je réserver ?',
+    answer: 'Nous recommandons de réserver au moins 1 à 2 mois à l\'avance, surtout pour les week-ends et la haute saison (mai à septembre). Cependant, contactez-nous même pour une date proche, nous ferons notre maximum pour vous satisfaire.'
+  }
+]
+
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+    <>
+      <FAQStructuredData faqs={contactFAQs} />
+
+      <div className="min-h-screen bg-white">
+        <Breadcrumbs items={[{ name: 'Contact', href: '/contact' }]} />
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
             Contactez <span className="gradient-text">Forever Memories</span>
@@ -173,6 +194,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

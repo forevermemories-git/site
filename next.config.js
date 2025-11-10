@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
+  trailingSlash: false, // Force URLs sans trailing slash
+  skipTrailingSlashRedirect: false, // Rediriger si trailing slash présent
 
   images: {
     remotePatterns: [

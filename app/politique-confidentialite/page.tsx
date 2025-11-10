@@ -1,6 +1,17 @@
+import { Metadata } from 'next'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
+
+export const metadata: Metadata = {
+  title: 'Politique de Confidentialité | Forever Memories - Protection des Données',
+  description: 'Notre politique de confidentialité et protection des données personnelles. RGPD, cookies, et utilisation de vos informations par Forever Memories.',
+  keywords: ['politique confidentialité', 'rgpd starcam', 'protection données', 'vie privée'],
+}
+
 export default function PolitiqueConfidentialite() {
   return (
-    <div className="min-h-screen bg-white pt-32 pb-16 px-4 md:px-8">
+    <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'Politique de Confidentialité', href: '/politique-confidentialite' }]} />
+      <div className="pt-8 pb-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-dark">
           Politique de confidentialité
@@ -238,6 +249,7 @@ export default function PolitiqueConfidentialite() {
             Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
+      </div>
       </div>
     </div>
   )

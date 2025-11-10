@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Sparkles, Camera, Award, Star, CheckCircle, Crown, Phone } from 'lucide-react'
+import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Starcam Gala | Photobooth Glambot pour vos Soirées de Gala en Île-de-France',
@@ -8,11 +10,38 @@ export const metadata: Metadata = {
   keywords: ['starcam gala', 'photobooth gala', 'animation gala luxe', 'glambot soirée prestige', 'photobooth événement chic', 'animation gala paris'],
 }
 
+const galasFAQs = [
+  {
+    question: 'Comment s\'intègre la Starcam à l\'ambiance d\'un gala ?',
+    answer: 'La Starcam est conçue pour les événements haut de gamme. Son design élégant et sa présentation soignée s\'intègrent parfaitement à une soirée de gala. Notre équipe s\'adapte au dress code de votre événement.'
+  },
+  {
+    question: 'Peut-on personnaliser l\'expérience pour nos invités VIP ?',
+    answer: 'Oui, nous proposons des options VIP : installation de tapis rouge, backdrop premium personnalisé, service dédié pour vos invités d\'honneur. Contactez-nous pour une prestation sur-mesure.'
+  },
+  {
+    question: 'Combien de temps faut-il prévoir pour l\'installation ?',
+    answer: 'Pour un gala, nous arrivons généralement 2 heures avant le début de l\'événement. Cela nous permet d\'installer le matériel, le tapis rouge et tous les éléments personnalisés dans les meilleures conditions.'
+  },
+  {
+    question: 'Les vidéos peuvent-elles être utilisées pour la communication de l\'événement ?',
+    answer: 'Oui, vous recevez un accès complet à toutes les vidéos. Avec l\'accord des participants, vous pouvez utiliser ces contenus pour votre communication post-événement et vos réseaux sociaux.'
+  },
+  {
+    question: 'Proposez-vous d\'autres services pour compléter la prestation ?',
+    answer: 'Nous pouvons vous recommander des partenaires de confiance pour compléter votre événement : photographes professionnels, décorateurs, traiteurs haut de gamme. N\'hésitez pas à nous solliciter.'
+  }
+]
+
 export default function GalasPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+    <>
+      <FAQStructuredData faqs={galasFAQs} />
+
+      <div className="min-h-screen bg-white">
+        <Breadcrumbs items={[{ name: 'Galas', href: '/galas' }]} />
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
             <Crown size={16} className="fill-primary" />
@@ -362,6 +391,7 @@ export default function GalasPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

@@ -1,6 +1,17 @@
+import { Metadata } from 'next'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
+
+export const metadata: Metadata = {
+  title: 'Mentions Légales | Forever Memories - Location Starcam en Île-de-France',
+  description: 'Mentions légales de Forever Memories. Informations sur l\'éditeur, l\'hébergement et les conditions d\'utilisation du site forevermemories.fr.',
+  keywords: ['mentions légales', 'informations légales starcam', 'éditeur site'],
+}
+
 export default function MentionsLegales() {
   return (
-    <div className="min-h-screen bg-white pt-32 pb-16 px-4 md:px-8">
+    <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'Mentions Légales', href: '/mentions-legales' }]} />
+      <div className="pt-8 pb-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-dark">
           Mentions légales
@@ -120,6 +131,7 @@ export default function MentionsLegales() {
             Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
+      </div>
       </div>
     </div>
   )

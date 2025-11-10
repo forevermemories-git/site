@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Play, Phone } from 'lucide-react'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'La Starcam | Robot Photobooth Glambot - Vidéos Slow-Motion Professionnelles',
@@ -11,8 +12,9 @@ export const metadata: Metadata = {
 export default function LaStarcamPage() {
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'La Starcam', href: '/la-starcam' }]} />
       {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+      <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
             <Camera size={16} />

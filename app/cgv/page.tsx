@@ -1,6 +1,17 @@
+import { Metadata } from 'next'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
+
+export const metadata: Metadata = {
+  title: 'Conditions Générales de Vente | Forever Memories - Location Starcam',
+  description: 'Consultez nos conditions générales de vente pour la location de Starcam. Modalités de réservation, annulation, et conditions contractuelles.',
+  keywords: ['cgv starcam', 'conditions vente glambot', 'contrat location starcam'],
+}
+
 export default function CGV() {
   return (
-    <div className="min-h-screen bg-white pt-32 pb-16 px-4 md:px-8">
+    <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'CGV', href: '/cgv' }]} />
+      <div className="pt-8 pb-16 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 text-dark">
           Conditions générales de vente
@@ -264,6 +275,7 @@ export default function CGV() {
             Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
+      </div>
       </div>
     </div>
   )

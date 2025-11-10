@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Building2, Camera, Users, TrendingUp, Star, CheckCircle, Sparkles, Share2, Phone } from 'lucide-react'
+import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Starcam Événements Corporate | Animation Photobooth pour Entreprises en Île-de-France',
@@ -8,11 +10,42 @@ export const metadata: Metadata = {
   keywords: ['starcam corporate', 'photobooth entreprise', 'animation événement professionnel', 'glambot lancement produit', 'photobooth team building', 'animation soirée entreprise paris'],
 }
 
+const corporateFAQs = [
+  {
+    question: 'Quel est le délai pour personnaliser les vidéos avec notre logo ?',
+    answer: 'Nous recommandons de nous transmettre vos éléments graphiques (logo, charte couleurs) au moins 7 jours avant l\'événement. Cela nous permet de créer et valider avec vous le rendu des vidéos personnalisées.'
+  },
+  {
+    question: 'Combien de personnes peuvent utiliser la Starcam lors d\'un événement ?',
+    answer: 'Il n\'y a pas de limite ! Que vous ayez 50 ou 500 participants, chacun peut profiter de l\'expérience. En moyenne, nous réalisons 100 à 200 vidéos lors d\'un événement de 4 heures.'
+  },
+  {
+    question: 'Peut-on récupérer toutes les vidéos pour notre communication ?',
+    answer: 'Absolument ! Vous recevez un accès administrateur à la galerie en ligne vous permettant de télécharger toutes les vidéos. Vous pouvez ensuite les utiliser pour votre communication corporate (avec accord des participants).'
+  },
+  {
+    question: 'Quelles sont les contraintes techniques sur site ?',
+    answer: 'Nous avons besoin d\'un espace d\'environ 4m x 3m et d\'une prise électrique standard. Notre équipe s\'adapte à la configuration de votre lieu (intérieur, extérieur sous chapiteau, stand de salon, etc.).'
+  },
+  {
+    question: 'Proposez-vous des forfaits pour plusieurs événements ?',
+    answer: 'Oui ! Pour les entreprises organisant plusieurs événements dans l\'année, nous proposons des formules avantageuses. Contactez-nous pour un devis personnalisé adapté à vos besoins.'
+  },
+  {
+    question: 'Peut-on avoir une démo avant de réserver ?',
+    answer: 'Nous pouvons organiser une démo sur mesure dans vos locaux ou vous présenter des exemples concrets de nos réalisations corporate. N\'hésitez pas à nous contacter pour planifier une rencontre.'
+  }
+]
+
 export default function EvenementsCorporatePage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+    <>
+      <FAQStructuredData faqs={corporateFAQs} />
+
+      <div className="min-h-screen bg-white">
+        <Breadcrumbs items={[{ name: 'Événements Corporate', href: '/evenements-corporate' }]} />
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
             <Building2 size={16} />
@@ -348,8 +381,8 @@ export default function EvenementsCorporatePage() {
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-8 px-4 md:px-8 bg-gradient-primary">
+        {/* CTA Final */}
+        <section className="py-8 px-4 md:px-8 bg-gradient-primary">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
             Prêts à marquer votre prochain événement corporate ?
@@ -368,6 +401,7 @@ export default function EvenementsCorporatePage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

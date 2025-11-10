@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Check, Star, Heart, Building2, PartyPopper, Crown, Phone, Mail } from 'lucide-react'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'Tarifs Starcam | Prix Location Photobooth Glambot en Île-de-France',
@@ -11,8 +12,9 @@ export const metadata: Metadata = {
 export default function TarifsPage() {
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'Tarifs', href: '/tarifs' }]} />
       {/* Hero Section */}
-      <section className="relative pt-32 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+      <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
             Nos <span className="gradient-text">tarifs</span> et formules

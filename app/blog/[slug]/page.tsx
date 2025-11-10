@@ -6,6 +6,8 @@ import { blogArticles } from '../data/articles'
 import { getArticleContent } from '../data/content'
 import ReadingProgressBar from '@/app/components/blog/ReadingProgressBar'
 import ShareButtons from '@/app/components/blog/ShareButtons'
+import ArticleStructuredData from '@/app/components/seo/ArticleStructuredData'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export async function generateStaticParams() {
   return blogArticles.map((article) => ({
@@ -51,11 +53,28 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
   return (
     <>
+      <ArticleStructuredData
+        title={article.title}
+        description={article.excerpt}
+        author={article.author}
+        datePublished={article.date}
+        category={article.category}
+        keywords={article.keywords}
+        slug={slug}
+      />
       <ReadingProgressBar />
 
       <div className="min-h-screen bg-white">
+        {/* Breadcrumbs */}
+        <Breadcrumbs
+          items={[
+            { name: 'Blog', href: '/blog' },
+            { name: article.title, href: `/blog/${slug}` }
+          ]}
+        />
+
         {/* Hero Section - Moderne et Épuré */}
-        <section className="relative pt-32 pb-12 px-4 md:px-8 bg-gradient-to-b from-gray-50 to-white">
+        <section className="relative pt-8 pb-12 px-4 md:px-8 bg-gradient-to-b from-gray-50 to-white">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
             <Link

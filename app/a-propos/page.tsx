@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Heart, Users, Award, Target, Sparkles, CheckCircle, Star, Phone } from 'lucide-react'
+import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
 export const metadata: Metadata = {
   title: 'À Propos | Forever Memories - Location Starcam en Île-de-France',
@@ -11,8 +12,9 @@ export const metadata: Metadata = {
 export default function AProposPage() {
   return (
     <div className="min-h-screen bg-white">
+      <Breadcrumbs items={[{ name: 'À Propos', href: '/a-propos' }]} />
       {/* Hero Section */}
-      <section className="relative pt-32 pb-2 md:pb-4 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
+      <section className="relative pt-8 pb-2 md:pb-4 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
             <span className="gradient-text">Forever Memories</span>
