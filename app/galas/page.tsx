@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Starcam Gala | Photobooth Glambot pour vos Soirées de Gala en Île-de-France',
   description: 'Location de robot Starcam pour votre soirée de gala. Animation photobooth glambot premium avec vidéos slow-motion de prestige. Paris et Île-de-France.',
   keywords: ['starcam gala', 'photobooth gala', 'animation gala luxe', 'glambot soirée prestige', 'photobooth événement chic', 'animation gala paris'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/galas',
+  },
 }
 
 const galasFAQs = [

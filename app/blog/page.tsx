@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Blog Glambot & Starcam | Conseils, Tendances & Innovations - Forever Memories',
   description: 'Découvrez nos guides sur le Glambot, la différence avec les photobooths 360, et comment créer des vidéos slow-motion dignes d\'Hollywood pour vos événements.',
   keywords: ['blog glambot', 'photobooth 360', 'animation mariage', 'slow motion booth', 'videobooth', 'conseils événement'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/blog',
+  },
   openGraph: {
     title: 'Blog Glambot & Événements | Forever Memories',
     description: 'Guides, comparaisons et tendances sur les Glambots et photobooths nouvelle génération',

@@ -150,5 +150,64 @@ export const blogArticles: BlogArticle[] = [
     emoji: '⚠️',
     author: 'Forever Memories',
     keywords: ['erreurs glambot', 'conseils', 'guide pratique', 'optimisation', 'réussir']
+  },
+  {
+    slug: 'location-photobooth-entreprise-paris-evenement-corporate',
+    title: 'Location photobooth entreprise Paris : l\'animation qui transforme vos événements corporate',
+    excerpt: 'Séminaire, team building, soirée d\'entreprise... Découvrez pourquoi le photobooth robot Glambot est l\'animation corporate qui engage vraiment vos équipes en 2025.',
+    category: 'Corporate',
+    date: '1 décembre 2025',
+    readTime: '9 min',
+    emoji: '🏢',
+    badge: 'Nouveauté',
+    author: 'Forever Memories',
+    keywords: ['photobooth entreprise paris', 'location photobooth corporate', 'animation événement entreprise', 'team building paris', 'séminaire entreprise']
+  },
+  {
+    slug: 'animation-soiree-entreprise-2025-tendances',
+    title: 'Animation soirée entreprise 2025 : les 7 tendances qui marquent les esprits',
+    excerpt: 'Fini les animations corporate ennuyeuses ! Découvrez les 7 tendances 2025 qui transforment vos soirées d\'entreprise en moments mémorables pour vos équipes.',
+    category: 'Corporate',
+    date: '1 décembre 2025',
+    readTime: '10 min',
+    emoji: '🎉',
+    badge: 'Tendances 2025',
+    author: 'Forever Memories',
+    keywords: ['animation soirée entreprise', 'tendances corporate 2025', 'événement entreprise', 'soirée gala entreprise', 'animation team building']
+  },
+  {
+    slug: 'photobooth-mariage-prix-tarif-2025-guide',
+    title: 'Photobooth mariage : quel prix en 2025 ? Guide complet des tarifs',
+    excerpt: 'De 300€ à 2500€ : comment s\'y retrouver dans les tarifs photobooth mariage ? On décrypte les prix, ce qui est inclus, et comment choisir le meilleur rapport qualité-prix.',
+    category: 'Guide Pratique',
+    date: '1 décembre 2025',
+    readTime: '8 min',
+    emoji: '💰',
+    badge: 'Guide Prix',
+    author: 'Forever Memories',
+    keywords: ['photobooth mariage prix', 'tarif photobooth', 'location photobooth mariage', 'budget animation mariage', 'prix glambot']
+  },
+  {
+    slug: 'videobooth-mariage-pourquoi-choisir-video-photo',
+    title: 'Videobooth mariage : pourquoi la vidéo surpasse la photo en 2025',
+    excerpt: 'Photos figées ou vidéos dynamiques ? En 2025, le videobooth révolutionne les mariages. Découvrez pourquoi les couples préfèrent repartir avec des souvenirs en mouvement.',
+    category: 'Comparaison',
+    date: '1 décembre 2025',
+    readTime: '8 min',
+    emoji: '🎬',
+    author: 'Forever Memories',
+    keywords: ['videobooth mariage', 'photobooth video', 'animation video mariage', 'slow motion mariage', 'souvenirs mariage video']
+  },
+  {
+    slug: 'animation-anniversaire-adulte-originale-2025',
+    title: 'Animation anniversaire adulte : 10 idées originales pour une fête mémorable en 2025',
+    excerpt: '30 ans, 40 ans, 50 ans... Comment marquer le coup avec une animation qui sort de l\'ordinaire ? Découvrez les 10 animations tendance qui impressionnent vraiment vos invités.',
+    category: 'Guide Pratique',
+    date: '1 décembre 2025',
+    readTime: '9 min',
+    emoji: '🎂',
+    badge: 'Inspiration',
+    author: 'Forever Memories',
+    keywords: ['animation anniversaire adulte', 'idée anniversaire original', 'fête anniversaire 30 ans', 'animation soirée privée', 'photobooth anniversaire']
   }
 ]

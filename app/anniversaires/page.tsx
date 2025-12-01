@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Starcam Anniversaire | Photobooth Glambot pour vos Anniversaires en Île-de-France',
   description: 'Location de robot Starcam pour votre anniversaire. Animation glambot avec vidéos slow-motion pour un anniversaire inoubliable. Paris, Seine-et-Marne et toute l\'Île-de-France.',
   keywords: ['starcam anniversaire', 'photobooth anniversaire', 'animation anniversaire luxe', 'glambot anniversaire', 'vidéo slow motion anniversaire', 'anniversaire original paris'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/anniversaires',
+  },
 }
 
 const anniversairesFAQs = [

@@ -220,6 +220,22 @@ Réponse concise
 - **Guides pratiques** : 1000-1500 mots
 - **Articles tendances** : 800-1200 mots
 
+### Indexation Sitemap (OBLIGATOIRE)
+
+**IMPORTANT** : Tous les articles de blog DOIVENT être référencés dans le fichier `app/blog/data/articles.ts` pour être automatiquement inclus dans le sitemap.xml.
+
+**Pourquoi c'est critique** :
+- Google utilise le sitemap.xml pour découvrir et indexer les pages
+- Un article non référencé = article potentiellement non indexé par Google
+- Impact direct sur le référencement et le trafic organique
+
+**Comment ça fonctionne** :
+1. Ajouter l'article dans `articles.ts` (métadonnées)
+2. Ajouter le contenu dans `content.ts` (HTML)
+3. Le sitemap.xml génère automatiquement l'URL `/blog/[slug]`
+
+**Vérification** : Après publication, vérifier que l'article apparaît dans `https://forevermemories.fr/sitemap.xml`
+
 ### Paragraphes
 - **Maximum 5 lignes** par paragraphe
 - **1-2 phrases** par ligne idéalement
@@ -351,6 +367,7 @@ Les gens cherchent "photobooth" et "videobooth" - on doit les intercepter et les
 - [ ] Mots-clés naturellement intégrés
 - [ ] Meta description captivante (excerpt)
 - [ ] Liens internes vers nos pages
+- [ ] **Article ajouté dans `articles.ts`** (automatiquement inclus dans le sitemap.xml)
 
 ### Marque & Conversion
 - [ ] "Starcam" mentionné (pas juste "glambot")
@@ -1088,6 +1105,7 @@ Google favorise le **contenu frais et mis à jour**.
 - [ ] 3-5 liens internes vers autres articles
 - [ ] 2-3 liens internes vers pages conversion (/contact, /tarifs)
 - [ ] Images avec alt text descriptifs
+- [ ] **Article ajouté dans `articles.ts`** (automatiquement inclus dans sitemap.xml)
 
 ### Marque & Conversion
 - [ ] "Starcam" mentionné (pas juste "glambot")

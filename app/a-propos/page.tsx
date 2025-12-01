@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'À Propos | Forever Memories - Location Starcam en Île-de-France',
   description: 'Découvrez Forever Memories, votre spécialiste de la location de Starcam en Île-de-France. Une équipe passionnée au service de vos événements d\'exception.',
   keywords: ['forever memories', 'à propos starcam', 'agence umain', 'photobooth île-de-france', 'glambot paris', 'équipe starcam'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/a-propos',
+  },
 }
 
 export default function AProposPage() {

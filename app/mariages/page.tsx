@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Starcam Mariage | Photobooth Glambot pour votre Mariage en Île-de-France',
   description: 'Location de robot Starcam pour votre mariage. Vidéos slow-motion glamour type Hollywood pour vos invités. Livraison instantanée + accès en ligne. Disponible Paris, Seine-et-Marne et toute l\'Île-de-France.',
   keywords: ['starcam mariage', 'glambot mariage', 'photobooth mariage luxe', 'vidéo slow motion mariage', 'animation mariage originale', 'mariage seine-et-marne', 'photobooth paris mariage'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/mariages',
+  },
 }
 
 const mariagesFAQs = [

@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Contact | Forever Memories - Location Starcam en Île-de-France',
   description: 'Contactez Forever Memories pour louer la Starcam pour votre événement. Devis gratuit sous 24h. Téléphone, email, formulaire de contact. Paris et Île-de-France.',
   keywords: ['contact starcam', 'devis glambot', 'réserver starcam', 'contact photobooth paris', 'location starcam île-de-france'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/contact',
+  },
 }
 
 const contactFAQs = [

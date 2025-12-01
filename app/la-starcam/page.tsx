@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'La Starcam | Robot Photobooth Glambot - Vidéos Slow-Motion Professionnelles',
   description: 'Découvrez la Starcam, le robot glambot utilisé lors des plus grands événements. Vidéos slow-motion et accélérées Full HD pour immortaliser vos moments d\'exception.',
   keywords: ['starcam', 'glambot', 'robot photobooth', 'slow motion', 'vidéo slow-motion', 'photobooth professionnel', 'glambot france'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/la-starcam',
+  },
 }
 
 export default function LaStarcamPage() {

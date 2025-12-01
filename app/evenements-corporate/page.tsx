@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: 'Starcam Événements Corporate | Animation Photobooth pour Entreprises en Île-de-France',
   description: 'Location de robot Starcam pour vos événements professionnels. Animation glambot pour lancements de produits, soirées d\'entreprise, team building. Paris et Île-de-France.',
   keywords: ['starcam corporate', 'photobooth entreprise', 'animation événement professionnel', 'glambot lancement produit', 'photobooth team building', 'animation soirée entreprise paris'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/evenements-corporate',
+  },
 }
 
 const corporateFAQs = [

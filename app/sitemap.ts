@@ -1,9 +1,11 @@
 import { MetadataRoute } from 'next'
+import { blogArticles } from './blog/data/articles'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://forevermemories.fr'
 
-  return [
+  // Pages principales du site
+  const mainPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -82,5 +84,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.3,
     },
+    // Pages locales SEO
+    {
+      url: `${baseUrl}/glambot-paris`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/glambot-seine-et-marne`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/glambot-yvelines`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/glambot-val-de-marne`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
   ]
+
+  // Génération dynamique des URLs pour tous les articles de blog
+  const blogPages: MetadataRoute.Sitemap = blogArticles.map((article) => ({
+    url: `${baseUrl}/blog/${article.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
+  return [...mainPages, ...blogPages]
 }

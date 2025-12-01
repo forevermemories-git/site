@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${article.title} | Blog Forever Memories`,
     description: article.excerpt,
     keywords: article.keywords,
+    alternates: {
+      canonical: `https://forevermemories.fr/blog/${slug}`,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,

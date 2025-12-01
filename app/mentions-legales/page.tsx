@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Mentions Légales | Forever Memories - Location Starcam en Île-de-France',
   description: 'Mentions légales de Forever Memories. Informations sur l\'éditeur, l\'hébergement et les conditions d\'utilisation du site forevermemories.fr.',
   keywords: ['mentions légales', 'informations légales starcam', 'éditeur site'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/mentions-legales',
+  },
 }
 
 export default function MentionsLegales() {

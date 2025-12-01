@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'Tarifs Starcam | Prix Location Photobooth Glambot en Île-de-France',
   description: 'Découvrez nos tarifs de location Starcam pour mariages, événements corporate, anniversaires et galas. Devis gratuit et personnalisé. Paris et Île-de-France.',
   keywords: ['tarif starcam', 'prix photobooth glambot', 'location starcam', 'prix glambot mariage', 'tarif photobooth événement', 'devis starcam'],
+  alternates: {
+    canonical: 'https://forevermemories.fr/tarifs',
+  },
 }
 
 export default function TarifsPage() {
