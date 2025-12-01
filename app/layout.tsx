@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Poppins, Outfit } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import SmoothScroll from './components/ui/SmoothScroll'
 import StructuredData from './components/seo/StructuredData'
@@ -115,12 +116,31 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
-        <script
-          id="Cookiebot"
-          src="https://consent.cookiebot.com/uc.js"
-          data-cbid="25f0a5c1-c641-42bc-a914-e789904dbfe8"
-          data-blockingmode="auto"
-          type="text/javascript"
+        <Script
+          id="axeptio-settings"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.axeptioSettings = {
+                clientId: "692d6035f7258ca22ab19698",
+                cookiesVersion: "dc3001c0-7caa-4083-86f4-eee0bdc8ec69",
+                googleConsentMode: {
+                  default: {
+                    analytics_storage: "denied",
+                    ad_storage: "denied",
+                    ad_user_data: "denied",
+                    ad_personalization: "denied",
+                    wait_for_update: 500
+                  }
+                }
+              };
+            `
+          }}
+        />
+        <Script
+          id="axeptio-sdk"
+          src="https://static.axept.io/sdk.js"
+          strategy="beforeInteractive"
         />
         <StructuredData />
       </head>

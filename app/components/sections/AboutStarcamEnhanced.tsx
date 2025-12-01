@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Video, Sparkles, Award, Zap } from 'lucide-react'
+import { Video, Sparkles, Award, Zap, Instagram } from 'lucide-react'
 import { useEffect, useState, useRef } from 'react'
 
 export default function AboutStarcamEnhanced() {
@@ -312,6 +312,24 @@ export default function AboutStarcamEnhanced() {
             </div>
           </div>
         </div>
+
+        {/* CTA Instagram */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <a
+            href="https://www.instagram.com/forevermemories.off/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-medium hover:shadow-xl hover:scale-105 transition-all"
+          >
+            <Instagram size={20} />
+            Voir plus sur Instagram
+          </a>
+        </motion.div>
       </div>
     </section>
   )

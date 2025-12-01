@@ -23,7 +23,7 @@
   }
 
   /* Accessibilité: Links distinguishables */
-  main a:not([class*="btn"]):not([class*="button"]) {
+  main a:not([class*="btn"]):not([class*="button"]):not([class*="no-underline"]):not([class*="rounded-full"]) {
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;

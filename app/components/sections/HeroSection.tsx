@@ -241,27 +241,17 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* CTAs - ÉPURÉS */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex justify-center"
         >
-          <Link href="/contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
+          <Link href="/contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 no-underline">
             Réserver mon événement
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-          <button
-            onClick={() => {
-              const gallery = document.getElementById('nos-realisations')
-              gallery?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            aria-label="Voir nos réalisations vidéo"
-            className="px-8 py-4 text-dark font-medium hover:text-primary transition-colors"
-          >
-            Voir nos réalisations
-          </button>
         </motion.div>
 
         {/* Stats simples */}
