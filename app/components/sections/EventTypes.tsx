@@ -119,16 +119,22 @@ export default function EventTypes() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-gray-600 mb-4">
-            Vous ne trouvez pas le type d'événement que vous cherchez ?
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary/10 text-primary rounded-full font-medium hover:bg-primary hover:text-white transition-all"
-          >
-            Contactez-nous pour un projet sur-mesure
-            <ArrowRight size={18} />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/tarifs"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+            >
+              Voir nos formules et tarifs
+              <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 text-primary font-medium hover:text-primary-dark transition-all"
+            >
+              Demander un devis personnalisé
+              <ArrowRight size={18} />
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

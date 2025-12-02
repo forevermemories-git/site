@@ -361,6 +361,36 @@ export default function TarifsPage() {
         </div>
       </section>
 
+      {/* Liens vers pages événements */}
+      <section className="py-12 px-4 md:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-dark">
+              Découvrez nos prestations par type d'événement
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link href="/mariages" className="group p-4 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border-2 border-transparent transition-all text-center">
+              <div className="text-3xl mb-2">💒</div>
+              <div className="font-semibold text-dark group-hover:text-primary">Mariages</div>
+            </Link>
+            <Link href="/evenements-corporate" className="group p-4 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border-2 border-transparent transition-all text-center">
+              <div className="text-3xl mb-2">🏢</div>
+              <div className="font-semibold text-dark group-hover:text-primary">Corporate</div>
+            </Link>
+            <Link href="/anniversaires" className="group p-4 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border-2 border-transparent transition-all text-center">
+              <div className="text-3xl mb-2">🎂</div>
+              <div className="font-semibold text-dark group-hover:text-primary">Anniversaires</div>
+            </Link>
+            <Link href="/galas" className="group p-4 bg-gray-50 rounded-xl hover:bg-primary/5 hover:border-primary border-2 border-transparent transition-all text-center">
+              <div className="text-3xl mb-2">👑</div>
+              <div className="font-semibold text-dark group-hover:text-primary">Galas</div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Zone d'intervention */}
       <section className="py-8 px-4 md:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">

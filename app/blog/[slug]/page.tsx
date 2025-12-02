@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Calendar, Clock, ArrowLeft, ArrowRight, Share2, Facebook, Twitter, Linkedin } from 'lucide-react'
+import { Clock, ArrowLeft, ArrowRight } from 'lucide-react'
 import { blogArticles } from '../data/articles'
 import { getArticleContent } from '../data/content'
 import ReadingProgressBar from '@/app/components/blog/ReadingProgressBar'
@@ -36,7 +36,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: article.title,
       description: article.excerpt,
       type: 'article',
-      publishedTime: article.date,
     },
   }
 }
@@ -122,10 +121,6 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 </div>
               </div>
               <div className="h-8 w-px bg-gray-200 hidden md:block" />
-              <div className="flex items-center gap-2 text-gray-600">
-                <Calendar size={18} />
-                <span className="text-sm font-medium">{article.date}</span>
-              </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Clock size={18} />
                 <span className="text-sm font-medium">{article.readTime} de lecture</span>

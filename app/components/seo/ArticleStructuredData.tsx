@@ -10,6 +10,20 @@ interface ArticleStructuredDataProps {
   slug: string
 }
 
+// Convertit une date française ("2 décembre 2025") en format ISO 8601 ("2025-12-02")
+function frenchDateToISO(dateStr: string): string {
+  const months: { [key: string]: string } = {
+    'janvier': '01', 'février': '02', 'mars': '03', 'avril': '04',
+    'mai': '05', 'juin': '06', 'juillet': '07', 'août': '08',
+    'septembre': '09', 'octobre': '10', 'novembre': '11', 'décembre': '12'
+  }
+  const parts = dateStr.split(' ')
+  const day = parts[0].padStart(2, '0')
+  const month = months[parts[1].toLowerCase()]
+  const year = parts[2]
+  return `${year}-${month}-${day}`
+}
+
 export default function ArticleStructuredData({
   title,
   description,
@@ -23,6 +37,8 @@ export default function ArticleStructuredData({
 }: ArticleStructuredDataProps) {
 
   const url = `https://forevermemories.fr/blog/${slug}`
+  const isoDatePublished = frenchDateToISO(datePublished)
+  const isoDateModified = dateModified ? frenchDateToISO(dateModified) : isoDatePublished
 
   // Article Schema
   const articleSchema = {
@@ -31,8 +47,8 @@ export default function ArticleStructuredData({
     "headline": title,
     "description": description,
     "image": image,
-    "datePublished": datePublished,
-    "dateModified": dateModified || datePublished,
+    "datePublished": isoDatePublished,
+    "dateModified": isoDateModified,
     "author": {
       "@type": "Organization",
       "name": author,

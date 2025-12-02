@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { Calendar, Clock, ArrowRight } from 'lucide-react'
+import { Clock, ArrowRight } from 'lucide-react'
 import { blogArticles } from './data/articles'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
 
@@ -17,6 +17,24 @@ export const metadata: Metadata = {
     type: 'website',
   }
 }
+
+// Fonction pour parser les dates françaises
+function parseDate(dateStr: string): Date {
+  const months: { [key: string]: number } = {
+    'janvier': 0, 'février': 1, 'mars': 2, 'avril': 3, 'mai': 4, 'juin': 5,
+    'juillet': 6, 'août': 7, 'septembre': 8, 'octobre': 9, 'novembre': 10, 'décembre': 11
+  }
+  const parts = dateStr.split(' ')
+  const day = parseInt(parts[0])
+  const month = months[parts[1].toLowerCase()]
+  const year = parseInt(parts[2])
+  return new Date(year, month, day)
+}
+
+// Trier les articles du plus récent au plus ancien
+const sortedArticles = [...blogArticles].sort((a, b) => {
+  return parseDate(b.date).getTime() - parseDate(a.date).getTime()
+})
 
 export default function BlogPage() {
   return (
@@ -38,7 +56,7 @@ export default function BlogPage() {
       <section className="py-16 md:py-20 px-4 md:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogArticles.map((article) => (
+            {sortedArticles.map((article) => (
               <Link
                 key={article.slug}
                 href={`/blog/${article.slug}`}
@@ -62,12 +80,8 @@ export default function BlogPage() {
                     {/* Meta */}
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
                       <div className="flex items-center gap-1">
-                        <Calendar size={16} />
-                        {article.date}
-                      </div>
-                      <div className="flex items-center gap-1">
                         <Clock size={16} />
-                        {article.readTime}
+                        {article.readTime} de lecture
                       </div>
                     </div>
 
