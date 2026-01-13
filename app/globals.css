@@ -156,65 +156,121 @@
 
   /* Texte gradient */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent;
+    background: linear-gradient(to right, #B85AA6, #9B3B8A);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   /* Boutons */
   .btn-primary {
-    @apply px-7 py-3.5 bg-primary text-white rounded-full font-medium
-           shadow-glow hover:bg-primary-dark hover:shadow-glow-lg
-           transition-all duration-200 ease-smooth
-           inline-flex items-center justify-center gap-2;
+    padding: 0.875rem 1.75rem;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 9999px;
+    font-weight: 500;
+    box-shadow: 0 0 40px rgba(155, 59, 138, 0.25);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background-color: #7A2E6D;
+    box-shadow: 0 0 60px rgba(155, 59, 138, 0.35);
   }
 
   .btn-secondary {
-    @apply px-7 py-3.5 bg-transparent text-cream rounded-full font-medium
-           border border-cream/20 hover:border-primary hover:text-primary
-           transition-all duration-200
-           inline-flex items-center justify-center gap-2;
+    padding: 0.875rem 1.75rem;
+    background-color: transparent;
+    color: var(--color-cream);
+    border-radius: 9999px;
+    font-weight: 500;
+    border: 1px solid rgba(245, 243, 240, 0.2);
+    transition: all 200ms;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   .btn-ghost {
-    @apply px-5 py-2.5 bg-transparent text-cream-muted rounded-full font-medium
-           hover:text-cream hover:bg-white/5
-           transition-all duration-200
-           inline-flex items-center justify-center gap-2;
+    padding: 0.625rem 1.25rem;
+    background-color: transparent;
+    color: var(--color-cream-muted);
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: all 200ms;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-ghost:hover {
+    color: var(--color-cream);
+    background-color: rgba(255, 255, 255, 0.05);
   }
 
   /* Cartes */
   .card {
-    @apply bg-dark-card border border-white/[0.06] rounded-2xl
-           transition-all duration-300 ease-smooth;
+    background-color: #18181D;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .card:hover {
-    @apply border-primary/20;
+    border-color: rgba(155, 59, 138, 0.2);
   }
 
   /* Badges */
   .badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full
-           bg-primary-muted text-primary-light border border-primary/20
-           text-sm font-medium;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    background-color: rgba(155, 59, 138, 0.12);
+    color: #B85AA6;
+    border: 1px solid rgba(155, 59, 138, 0.2);
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
   /* Séparateurs */
   .separator {
-    @apply h-px bg-gradient-to-r from-transparent via-white/10 to-transparent;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
   }
 
   .separator-primary {
-    @apply h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(155, 59, 138, 0.2), transparent);
   }
 
   /* Navigation links - reset pour alignement parfait */
   .nav-link {
-    @apply text-cream/70 text-[15px] font-medium hover:text-cream transition-colors;
+    color: rgba(245, 243, 240, 0.7);
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 200ms;
     min-height: auto;
     min-width: auto;
     line-height: 1;
     padding: 0;
     margin: 0;
+  }
+
+  .nav-link:hover {
+    color: var(--color-cream);
   }
 }
 
@@ -238,7 +294,10 @@
   }
 
   .glass {
-    @apply bg-dark/80 backdrop-blur-strong border border-white/[0.06];
+    background-color: rgba(12, 12, 14, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
   }
 }
 
