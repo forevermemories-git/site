@@ -1,22 +1,11 @@
-import { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
-import { Clock, ArrowRight } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Clock, ArrowRight, BookOpen } from 'lucide-react'
 import { blogArticles } from './data/articles'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
-
-export const metadata: Metadata = {
-  title: 'Blog Glambot & Starcam | Conseils, Tendances & Innovations - Forever Memories',
-  description: 'Découvrez nos guides sur le Glambot, la différence avec les photobooths 360, et comment créer des vidéos slow-motion dignes d\'Hollywood pour vos événements.',
-  keywords: ['blog glambot', 'photobooth 360', 'animation mariage', 'slow motion booth', 'videobooth', 'conseils événement'],
-  alternates: {
-    canonical: 'https://forevermemories.fr/blog',
-  },
-  openGraph: {
-    title: 'Blog Glambot & Événements | Forever Memories',
-    description: 'Guides, comparaisons et tendances sur les Glambots et photobooths nouvelle génération',
-    type: 'website',
-  }
-}
+import { useRef } from 'react'
 
 // Fonction pour parser les dates françaises
 function parseDate(dateStr: string): Date {
@@ -36,108 +25,193 @@ const sortedArticles = [...blogArticles].sort((a, b) => {
   return parseDate(b.date).getTime() - parseDate(a.date).getTime()
 })
 
-export default function BlogPage() {
+// Article Card Component
+function ArticleCard({ article, index }: { article: typeof blogArticles[0]; index: number }) {
   return (
-    <div className="min-h-screen bg-white">
+    <motion.article
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -8 }}
+      className="group relative h-full"
+    >
+      <Link href={`/blog/${article.slug}`} className="block h-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+
+        <div className="relative h-full bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-3xl overflow-hidden group-hover:border-primary/20 transition-all duration-300 flex flex-col">
+          {/* Image / Emoji area */}
+          <div className="relative h-48 bg-gradient-to-br from-primary/10 to-rose/5 overflow-hidden flex items-center justify-center">
+            <span className="text-7xl group-hover:scale-110 transition-transform duration-500">
+              {article.emoji}
+            </span>
+
+            {article.badge && (
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-primary to-rose text-white text-xs font-semibold rounded-full"
+              >
+                {article.badge}
+              </motion.div>
+            )}
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
+          </div>
+
+          {/* Content */}
+          <div className="p-6 flex-1 flex flex-col">
+            {/* Meta */}
+            <div className="flex items-center gap-4 text-sm text-cream/40 mb-3">
+              <div className="flex items-center gap-1.5">
+                <Clock size={14} />
+                {article.readTime}
+              </div>
+              <span className="w-1 h-1 rounded-full bg-cream/20" />
+              <span className="text-primary text-xs font-semibold uppercase tracking-wider">
+                {article.category}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-xl font-bold mb-3 text-cream group-hover:text-primary transition-colors line-clamp-2">
+              {article.title}
+            </h2>
+
+            {/* Excerpt */}
+            <p className="text-cream/50 text-sm mb-4 line-clamp-3 flex-1">
+              {article.excerpt}
+            </p>
+
+            {/* CTA */}
+            <div className="flex items-center gap-2 text-primary font-medium text-sm mt-auto pt-4 border-t border-white/5 group-hover:gap-3 transition-all">
+              Lire l'article
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.article>
+  )
+}
+
+export default function BlogPage() {
+  const sectionRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  })
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+
+  return (
+    <div ref={sectionRef} className="min-h-screen bg-dark">
       <Breadcrumbs items={[{ name: 'Blog', href: '/blog' }]} />
+
       {/* Hero Section */}
-      <section className="relative pt-8 pb-16 md:pb-20 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
-            Blog <span className="gradient-text">Forever Memories</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto font-light">
-            Conseils, comparaisons et tendances sur les Glambots, photobooths 360 et animations événementielles
-          </p>
+      <section className="relative pt-28 md:pt-32 pb-16 md:pb-24 overflow-hidden">
+        {/* Background elements */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ y: backgroundY }}
+        >
+          <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px]" />
+          <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px]" />
+        </motion.div>
+
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }} />
+
+        <div className="container-wide relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center justify-center gap-3 mb-6"
+            >
+              <BookOpen size={20} className="text-primary" />
+              <span className="text-primary text-sm font-medium uppercase tracking-wider">Articles & Conseils</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
+            >
+              <span className="text-cream">Blog </span>
+              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">Forever Memories</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl md:text-2xl text-cream/50 max-w-3xl mx-auto leading-relaxed"
+            >
+              Conseils, comparaisons et tendances sur les Glambots, photobooths 360 et animations événementielles
+            </motion.p>
+          </div>
         </div>
       </section>
 
       {/* Articles Grid */}
-      <section className="py-16 md:py-20 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedArticles.map((article) => (
-              <Link
-                key={article.slug}
-                href={`/blog/${article.slug}`}
-                className="group"
-              >
-                <article className="h-full bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-primary hover:shadow-xl transition-all duration-300">
-                  {/* Image */}
-                  <div className="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-300">
-                      {article.emoji}
-                    </div>
-                    {article.badge && (
-                      <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
-                        {article.badge}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    {/* Meta */}
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                      <div className="flex items-center gap-1">
-                        <Clock size={16} />
-                        {article.readTime} de lecture
-                      </div>
-                    </div>
-
-                    {/* Category */}
-                    <div className="mb-3">
-                      <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-                        {article.category}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h2 className="text-xl font-bold mb-3 text-dark group-hover:text-primary transition-colors line-clamp-2">
-                      {article.title}
-                    </h2>
-
-                    {/* Excerpt */}
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {article.excerpt}
-                    </p>
-
-                    {/* CTA */}
-                    <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
-                      Lire l'article
-                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </article>
-              </Link>
+      <section className="py-16 md:py-24">
+        <div className="container-wide">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {sortedArticles.map((article, index) => (
+              <ArticleCard key={article.slug} article={article} index={index} />
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Prêt à vivre l'expérience Glambot ?
-          </h2>
-          <p className="text-lg text-white/90 mb-8">
-            Découvrez notre technologie unique en Île-de-France
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all"
-            >
-              Demander un devis
-            </Link>
-            <Link
-              href="/la-starcam"
-              className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all"
-            >
-              Découvrir la technologie
-            </Link>
-          </div>
+      <section className="py-20 md:py-32 relative overflow-hidden">
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative overflow-hidden rounded-3xl"
+          >
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-rose" />
+            <div className="absolute inset-0 bg-dark/20" />
+
+            <div className="relative p-10 md:p-16 text-center">
+              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+                Prêt à vivre l'expérience Glambot ?
+              </h2>
+              <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+                Découvrez notre technologie unique en Île-de-France
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/contact"
+                  className="group px-8 py-4 bg-white text-dark rounded-full font-semibold hover:bg-cream transition-all flex items-center justify-center gap-2"
+                >
+                  Demander un devis
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  href="/la-starcam"
+                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white hover:text-dark transition-all"
+                >
+                  Découvrir la technologie
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

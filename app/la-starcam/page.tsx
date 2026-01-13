@@ -1,349 +1,533 @@
+'use client'
+
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Play, Phone } from 'lucide-react'
+import { motion, useInView, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, Camera, Zap, Video, Share2, Download, Star, CheckCircle, Play, Phone, Sparkles } from 'lucide-react'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
+import { useRef } from 'react'
+import { trackConversion } from '@/app/lib/gtag'
 
-export const metadata: Metadata = {
-  title: 'La Starcam | Robot Photobooth Glambot - Vidéos Slow-Motion Professionnelles',
-  description: 'Découvrez la Starcam, le robot glambot utilisé lors des plus grands événements. Vidéos slow-motion et accélérées Full HD pour immortaliser vos moments d\'exception.',
-  keywords: ['starcam', 'glambot', 'robot photobooth', 'slow motion', 'vidéo slow-motion', 'photobooth professionnel', 'glambot france'],
-  alternates: {
-    canonical: 'https://forevermemories.fr/la-starcam',
-  },
+// Composant pour les caractéristiques techniques avec animation
+function TechSpec({ icon, title, description, index }: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="flex items-start gap-4 group"
+    >
+      <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
+      <div>
+        <div className="font-semibold text-cream mb-1">{title}</div>
+        <div className="text-cream/50 text-sm">{description}</div>
+      </div>
+    </motion.div>
+  )
+}
+
+// Composant pour les étapes avec compteur animé
+function StepCard({ number, title, description, index }: {
+  number: number
+  title: string
+  description: string
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+      whileHover={{ y: -5 }}
+      className="relative group"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+
+      <div className="relative bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 group-hover:border-primary/20 transition-all h-full">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white flex items-center justify-center font-bold text-2xl mb-4 mx-auto group-hover:scale-110 transition-transform">
+          {number}
+        </div>
+        <h3 className="text-lg font-semibold mb-2 text-cream text-center">{title}</h3>
+        <p className="text-cream/50 text-center text-sm leading-relaxed">{description}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+// Composant pour les avantages
+function AdvantageCard({ icon, title, description, index }: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -5 }}
+      className="text-center group"
+    >
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+      <h3 className="text-lg font-semibold mb-2 text-cream">{title}</h3>
+      <p className="text-cream/50 text-sm leading-relaxed">{description}</p>
+    </motion.div>
+  )
+}
+
+// Composant pour les événements
+function EventCard({ href, title, description, hasLink = true, index }: {
+  href?: string
+  title: string
+  description: string
+  hasLink?: boolean
+  index: number
+}) {
+  const content = (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -3 }}
+      className={`bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 h-full transition-all ${hasLink ? 'hover:border-primary/30 cursor-pointer group' : ''}`}
+    >
+      <h3 className={`text-lg font-semibold mb-2 text-cream ${hasLink ? 'group-hover:text-primary transition-colors' : ''}`}>
+        {title}
+      </h3>
+      <p className="text-cream/50 text-sm mb-3">{description}</p>
+      {hasLink && (
+        <div className="text-primary text-sm font-medium flex items-center gap-1">
+          En savoir plus
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </div>
+      )}
+    </motion.div>
+  )
+
+  if (hasLink && href) {
+    return <Link href={href}>{content}</Link>
+  }
+  return content
 }
 
 export default function LaStarcamPage() {
+  const heroRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  })
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+
+  const steps = [
+    {
+      number: 1,
+      title: 'Positionnement',
+      description: 'Vous vous placez devant la Starcam. Notre opérateur vous guide pour la meilleure position'
+    },
+    {
+      number: 2,
+      title: 'Action !',
+      description: 'Le bras robotisé démarre et effectue un mouvement fluide en capturant votre mouvement en vidéo haute définition'
+    },
+    {
+      number: 3,
+      title: 'Traitement automatique',
+      description: 'La vidéo est automatiquement traitée en slow-motion et accélérée avec votre branding personnalisé'
+    },
+    {
+      number: 4,
+      title: 'Réception immédiate',
+      description: 'Vous recevez votre vidéo instantanément sur votre téléphone, prête à être partagée'
+    }
+  ]
+
+  const advantages = [
+    { icon: <Video size={28} />, title: 'Qualité cinématographique', description: 'Des vidéos Full HD avec un rendu professionnel digne d\'Hollywood. Éclairage studio intégré pour un résultat parfait' },
+    { icon: <Zap size={28} />, title: 'Effet wow instantané', description: 'Vos invités sont immédiatement impressionnés par le résultat. Une animation qui crée de l\'émulation et des souvenirs mémorables' },
+    { icon: <Share2 size={28} />, title: 'Viralité garantie', description: 'Vos invités partagent leurs vidéos sur Instagram, TikTok, Facebook. Une visibilité organique pour votre événement' },
+    { icon: <Download size={28} />, title: 'Livraison immédiate', description: 'Plus besoin d\'attendre des semaines. Chaque participant repart avec sa vidéo immédiatement après son passage' },
+    { icon: <Star size={28} />, title: 'Personnalisation complète', description: 'Logo, couleurs, musique. Tout peut être personnalisé pour refléter l\'identité de votre événement' },
+    { icon: <CheckCircle size={28} />, title: 'Service clé en main', description: 'Installation, animation, démontage. Notre équipe professionnelle gère tout de A à Z pour que vous profitiez pleinement' }
+  ]
+
+  const events = [
+    { href: '/mariages', title: 'Mariages', description: 'Une animation glamour qui rendra votre mariage inoubliable', hasLink: true },
+    { href: '/evenements-corporate', title: 'Événements Corporate', description: 'Activez votre marque et engagez vos collaborateurs', hasLink: true },
+    { href: '/anniversaires', title: 'Anniversaires', description: 'Transformez votre fête en un événement digne d\'Hollywood', hasLink: true },
+    { href: '/galas', title: 'Soirées de Gala', description: 'Une expérience VIP digne des plus grands tapis rouges', hasLink: true },
+    { title: 'Lancements de produits', description: 'Créez le buzz autour de votre nouveau produit', hasLink: false },
+    { title: 'Et bien plus...', description: 'Festivals, salons, inaugurations, soirées privées', hasLink: false }
+  ]
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-dark">
       <Breadcrumbs items={[{ name: 'La Starcam', href: '/la-starcam' }]} />
+
       {/* Hero Section */}
-      <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
-            <Camera size={16} />
-            Technologie Starcam
-          </div>
+      <section ref={heroRef} className="relative pt-28 md:pt-32 pb-20 md:pb-32 overflow-hidden">
+        {/* Background elements */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{ y: backgroundY }}
+        >
+          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px]" />
+          <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px]" />
+        </motion.div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
-            Qu'est-ce que <span className="gradient-text">la Starcam</span> ?
-            <br className="hidden md:block" />
-            <span className="md:hidden"> </span>
-            Le glambot des plus grands événements
-          </h1>
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }} />
 
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto font-light">
-            Un robot motorisé qui capture des vidéos slow-motion cinématographiques, utilisé lors des Oscars, du Met Gala et des défilés de mode
-          </p>
+        <div className="container-wide relative z-10">
+          <motion.div
+            className="text-center max-w-4xl mx-auto"
+            style={{ opacity }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-cream/80 text-sm font-medium mb-8"
+            >
+              <Camera size={16} className="text-primary" />
+              Technologie Starcam
+            </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="#fonctionnement" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30">
-              Découvrir le fonctionnement
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link href="#evenements" className="px-8 py-4 text-dark font-medium hover:text-primary transition-colors">
-              Voir les événements
-            </Link>
-          </div>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1]"
+            >
+              <span className="text-cream">Qu'est-ce que </span>
+              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">la Starcam</span>
+              <span className="text-cream"> ?</span>
+              <br />
+              <span className="text-cream/80 text-3xl md:text-4xl lg:text-5xl">Le robot vidéo qui sublime vos événements</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-lg md:text-xl text-cream/50 mb-10 max-w-3xl mx-auto leading-relaxed"
+            >
+              Un robot motorisé qui capture des vidéos slow-motion cinématographiques
+              pour offrir à vos invités une expérience unique et mémorable
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Link
+                href="#fonctionnement"
+                className="btn-primary group"
+              >
+                Découvrir le fonctionnement
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="#evenements"
+                className="btn-secondary"
+              >
+                Voir les événements
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Qu'est-ce que la Starcam */}
-      <section className="py-8 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-dark">
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="container-wide relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-px bg-gradient-to-r from-primary to-transparent" />
+                <span className="text-primary text-sm font-medium uppercase tracking-wider">Technologie</span>
+              </div>
+
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-cream leading-tight">
                 La technologie des tapis rouges
               </h2>
-              <p className="text-lg text-gray-700 mb-6">
+
+              <p className="text-lg text-cream/60 mb-6 leading-relaxed">
                 La Starcam est un bras robotisé sur 5 axes équipé d'une caméra haute définition.
                 En quelques secondes, elle capture des vidéos époustouflantes en slow-motion et en accéléré avec des mouvements fluides et cinématographiques.
               </p>
-              <p className="text-lg text-gray-700 mb-6">
-                Cette technologie, développée pour les plus grands événements mondiaux (Oscars, Met Gala, Cannes),
+
+              <p className="text-lg text-cream/60 mb-8 leading-relaxed">
+                Cette technologie robotique de pointe
                 est désormais accessible pour vos événements privés et professionnels.
               </p>
-              <div className="flex flex-wrap gap-3">
-                <div className="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">
-                  <Star size={16} className="inline mr-2" />
-                  Utilisée aux Oscars
-                </div>
-                <div className="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">
-                  <Camera size={16} className="inline mr-2" />
-                  Qualité Full HD
-                </div>
-                <div className="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">
-                  <Zap size={16} className="inline mr-2" />
-                  Effet wow garanti
-                </div>
-              </div>
-            </div>
 
-            <div className="bg-gray-50 p-8 rounded-3xl border border-gray-200">
-              <h3 className="text-2xl font-bold mb-6 text-dark">Caractéristiques techniques</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-dark">Caméra professionnelle</div>
-                    <div className="text-gray-600 text-sm">Full HD 1080p, 120 fps</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-dark">Bras robotisé 5 axes</div>
-                    <div className="text-gray-600 text-sm">Mouvements complexes et cinématographiques</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-dark">Double effet</div>
-                    <div className="text-gray-600 text-sm">Slow-motion et accéléré</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-dark">Éclairage professionnel</div>
-                    <div className="text-gray-600 text-sm">Studio mobile intégré</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-dark">Livraison instantanée</div>
-                    <div className="text-gray-600 text-sm">Vidéo envoyée immédiatement</div>
-                  </div>
+              <div className="flex flex-wrap gap-3">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className="badge"
+                >
+                  <Star size={14} />
+                  Qualité professionnelle
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="badge"
+                >
+                  <Camera size={14} />
+                  Qualité Full HD
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.3 }}
+                  className="badge"
+                >
+                  <Zap size={14} />
+                  Effet wow garanti
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 to-rose/10 rounded-3xl blur-2xl opacity-50" />
+
+              <div className="relative bg-dark-card/80 backdrop-blur-sm border border-white/10 rounded-3xl p-8">
+                <h3 className="text-2xl font-bold mb-8 text-cream">Caractéristiques techniques</h3>
+
+                <div className="space-y-6">
+                  <TechSpec
+                    icon={<CheckCircle size={18} />}
+                    title="Caméra professionnelle"
+                    description="Full HD 1080p, 120 fps"
+                    index={0}
+                  />
+                  <TechSpec
+                    icon={<CheckCircle size={18} />}
+                    title="Bras robotisé 5 axes"
+                    description="Mouvements complexes et cinématographiques"
+                    index={1}
+                  />
+                  <TechSpec
+                    icon={<CheckCircle size={18} />}
+                    title="Double effet"
+                    description="Slow-motion et accéléré"
+                    index={2}
+                  />
+                  <TechSpec
+                    icon={<CheckCircle size={18} />}
+                    title="Éclairage professionnel"
+                    description="Studio mobile intégré"
+                    index={3}
+                  />
+                  <TechSpec
+                    icon={<CheckCircle size={18} />}
+                    title="Livraison instantanée"
+                    description="Vidéo envoyée immédiatement"
+                    index={4}
+                  />
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Comment ça fonctionne */}
-      <section id="fonctionnement" className="py-16 px-4 md:px-8 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-dark">
-              Comment fonctionne la Starcam ?
+      <section id="fonctionnement" className="py-20 md:py-28 bg-dark-lighter relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[200px] pointer-events-none" />
+
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
+              Comment fonctionne <span className="gradient-text">la Starcam</span> ?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-cream/50 max-w-2xl mx-auto">
               Une expérience simple et rapide pour un résultat spectaculaire
             </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {steps.map((step, index) => (
+              <StepCard key={index} {...step} index={index} />
+            ))}
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">1</div>
-              <h3 className="text-lg font-semibold mb-2 text-dark text-center">Positionnement</h3>
-              <p className="text-gray-700 text-center text-sm">
-                Vous vous placez devant la Starcam. Notre opérateur vous guide pour la meilleure position
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-dark-card to-rose/10 rounded-3xl" />
+            <div className="absolute inset-0 backdrop-blur-xl rounded-3xl" />
+
+            <div className="relative p-8 md:p-12 text-center">
+              <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary mx-auto mb-6">
+                <Play size={32} />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4 text-cream">Durée totale : 1 à 2 minutes</h3>
+              <p className="text-cream/60 max-w-2xl mx-auto leading-relaxed">
+                De votre passage devant la caméra à la réception de votre vidéo, tout le processus ne prend que quelques instants.
+                Vous pouvez passer plusieurs fois pour réaliser différentes poses !
               </p>
             </div>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">2</div>
-              <h3 className="text-lg font-semibold mb-2 text-dark text-center">Action !</h3>
-              <p className="text-gray-700 text-center text-sm">
-                Le bras robotisé démarre et effectue un mouvement fluide en capturant votre mouvement en vidéo haute définition
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">3</div>
-              <h3 className="text-lg font-semibold mb-2 text-dark text-center">Traitement automatique</h3>
-              <p className="text-gray-700 text-center text-sm">
-                La vidéo est automatiquement traitée en slow-motion et accélérée avec votre branding personnalisé
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto">4</div>
-              <h3 className="text-lg font-semibold mb-2 text-dark text-center">Réception immédiate</h3>
-              <p className="text-gray-700 text-center text-sm">
-                Vous recevez votre vidéo instantanément sur votre téléphone, prête à être partagée
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-12 bg-white p-8 rounded-3xl border-2 border-primary/20 text-center">
-            <Play size={48} className="text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-3 text-dark">Durée totale : 1 à 2 minutes</h3>
-            <p className="text-gray-700 max-w-2xl mx-auto">
-              De votre passage devant la caméra à la réception de votre vidéo, tout le processus ne prend que quelques instants.
-              Vous pouvez passer plusieurs fois pour réaliser différentes poses !
-            </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Avantages */}
-      <section className="py-8 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-dark">
-              Pourquoi choisir la Starcam ?
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose/10 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
+              Pourquoi choisir <span className="gradient-text">la Starcam</span> ?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-cream/50">
               Les avantages d'une animation premium
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <Video size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Qualité cinématographique</h3>
-              <p className="text-gray-700">
-                Des vidéos Full HD avec un rendu professionnel digne d'Hollywood. Éclairage studio intégré pour un résultat parfait
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <Zap size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Effet wow instantané</h3>
-              <p className="text-gray-700">
-                Vos invités sont immédiatement impressionnés par le résultat. Une animation qui crée de l'émulation et des souvenirs mémorables
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <Share2 size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Viralité garantie</h3>
-              <p className="text-gray-700">
-                Vos invités partagent leurs vidéos sur Instagram, TikTok, Facebook. Une visibilité organique pour votre événement
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <Download size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Livraison immédiate</h3>
-              <p className="text-gray-700">
-                Plus besoin d'attendre des semaines. Chaque participant repart avec sa vidéo immédiatement après son passage
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <Star size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Personnalisation complète</h3>
-              <p className="text-gray-700">
-                Logo, couleurs, musique. Tout peut être personnalisé pour refléter l'identité de votre événement
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 mx-auto">
-                <CheckCircle size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-dark">Service clé en main</h3>
-              <p className="text-gray-700">
-                Installation, animation, démontage. Notre équipe professionnelle gère tout de A à Z pour que vous profitiez pleinement
-              </p>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {advantages.map((advantage, index) => (
+              <AdvantageCard key={index} {...advantage} index={index} />
+            ))}
           </div>
         </div>
       </section>
 
       {/* Pour quels événements */}
-      <section id="evenements" className="py-16 px-4 md:px-8 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-dark">
-              Pour quels événements ?
+      <section id="evenements" className="py-20 md:py-28 bg-dark-lighter relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-80 h-80 bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
+              Pour quels <span className="gradient-text">événements</span> ?
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-cream/50">
               La Starcam s'adapte à tous vos moments d'exception
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link href="/mariages" className="bg-white p-6 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group">
-              <h3 className="text-xl font-semibold mb-2 text-dark group-hover:text-primary transition-colors">Mariages</h3>
-              <p className="text-gray-700 text-sm mb-3">
-                Une animation glamour qui rendra votre mariage inoubliable
-              </p>
-              <div className="text-primary text-sm font-medium flex items-center gap-1">
-                En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-
-            <Link href="/evenements-corporate" className="bg-white p-6 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group">
-              <h3 className="text-xl font-semibold mb-2 text-dark group-hover:text-primary transition-colors">Événements Corporate</h3>
-              <p className="text-gray-700 text-sm mb-3">
-                Activez votre marque et engagez vos collaborateurs
-              </p>
-              <div className="text-primary text-sm font-medium flex items-center gap-1">
-                En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-
-            <Link href="/anniversaires" className="bg-white p-6 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group">
-              <h3 className="text-xl font-semibold mb-2 text-dark group-hover:text-primary transition-colors">Anniversaires</h3>
-              <p className="text-gray-700 text-sm mb-3">
-                Transformez votre fête en un événement digne d'Hollywood
-              </p>
-              <div className="text-primary text-sm font-medium flex items-center gap-1">
-                En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-
-            <Link href="/galas" className="bg-white p-6 rounded-xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group">
-              <h3 className="text-xl font-semibold mb-2 text-dark group-hover:text-primary transition-colors">Soirées de Gala</h3>
-              <p className="text-gray-700 text-sm mb-3">
-                Une expérience VIP digne des plus grands tapis rouges
-              </p>
-              <div className="text-primary text-sm font-medium flex items-center gap-1">
-                En savoir plus <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-dark">Lancements de produits</h3>
-              <p className="text-gray-700 text-sm">
-                Créez le buzz autour de votre nouveau produit
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200">
-              <h3 className="text-xl font-semibold mb-2 text-dark">Et bien plus...</h3>
-              <p className="text-gray-700 text-sm">
-                Festivals, salons, inaugurations, soirées privées
-              </p>
-            </div>
+            {events.map((event, index) => (
+              <EventCard key={index} {...event} index={index} />
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Final */}
-      <section className="py-8 px-4 md:px-8 bg-gradient-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-            Prêt à essayer la Starcam ?
-          </h2>
-          <p className="text-xl text-white/90 mb-10">
-            Demandez votre devis gratuit et découvrez comment la Starcam peut transformer votre événement
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="tel:+33676815953" className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all flex items-center justify-center gap-2">
-              <Phone size={20} />
-              06 76 81 59 53
-            </Link>
-            <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all">
-              Demander un devis
-            </Link>
-          </div>
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-dark to-rose/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[200px] pointer-events-none" />
+
+        <div className="container-wide relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="badge mb-8 mx-auto"
+            >
+              <Sparkles size={14} />
+              Réservation rapide
+            </motion.div>
+
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-cream">
+              Prêt à essayer <span className="gradient-text">la Starcam</span> ?
+            </h2>
+
+            <p className="text-lg md:text-xl text-cream/60 mb-10 leading-relaxed">
+              Demandez votre devis gratuit et découvrez comment la Starcam peut transformer votre événement
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="tel:+33676815953"
+                onClick={() => trackConversion.phoneClick()}
+                className="group px-8 py-4 bg-white text-dark rounded-full font-semibold hover:bg-cream transition-all flex items-center justify-center gap-3"
+              >
+                <Phone size={20} />
+                06 76 81 59 53
+              </a>
+              <Link
+                href="/contact"
+                onClick={() => trackConversion.devisClick('starcam_page_cta')}
+                className="btn-primary"
+              >
+                Demander un devis
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>

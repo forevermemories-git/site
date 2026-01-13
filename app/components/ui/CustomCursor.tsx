@@ -68,7 +68,7 @@ export default function CustomCursor() {
         }}
       >
         <motion.div
-          className="w-full h-full rounded-full bg-primary-gold"
+          className="w-full h-full rounded-full bg-primary"
           animate={{
             scale: isHovering ? 1.5 : 1,
             opacity: isHovering ? 0.8 : 1,
@@ -89,7 +89,7 @@ export default function CustomCursor() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
         >
-          <div className="bg-primary-gold text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transform translate-y-12">
+          <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transform translate-y-12">
             {cursorText}
           </div>
         </motion.div>
@@ -104,7 +104,7 @@ export default function CustomCursor() {
         }}
       >
         <motion.div
-          className="w-full h-full rounded-full bg-gradient-to-r from-primary-gold to-primary-rose-gold opacity-20 blur-xl"
+          className="w-full h-full rounded-full bg-gradient-to-r from-primary to-rose opacity-20 blur-xl"
           animate={{
             scale: isHovering ? 2 : 1,
           }}

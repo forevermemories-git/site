@@ -39,7 +39,7 @@ export const blogArticles: BlogArticle[] = [
   {
     slug: 'animation-mariage-slow-motion-booth-glambot-france',
     title: 'Animation mariage 2025 : le slow motion booth Glambot arrive en France',
-    excerpt: 'L\'animation qu\'on voit aux Oscars débarque enfin en Île-de-France ! Découvrez le slow motion booth nouvelle génération qui révolutionne les mariages.',
+    excerpt: 'Le slow motion booth nouvelle génération débarque enfin en Île-de-France ! Découvrez cette technologie premium qui révolutionne les mariages.',
     category: 'Tendances',
     date: '25 octobre 2025',
     readTime: '7 min',
@@ -71,16 +71,16 @@ export const blogArticles: BlogArticle[] = [
     keywords: ['360 photo booth', 'glambot', 'différence', 'comparaison', 'technologie', 'bras robotique']
   },
   {
-    slug: 'qu-est-ce-qu-un-glambot-photobooth-oscars',
-    title: 'Qu\'est-ce qu\'un Glambot ? Le Photobooth des Oscars Expliqué',
-    excerpt: 'Si vous avez vu les Oscars 2025, vous avez vu un Glambot. Découvrez cette technologie de bras robotique qui crée des vidéos slow-motion cinématographiques.',
+    slug: 'qu-est-ce-qu-un-glambot-robot-photobooth',
+    title: 'Qu\'est-ce qu\'un Glambot ? Le Robot Photobooth Expliqué',
+    excerpt: 'Découvrez le Glambot, cette technologie de bras robotique qui crée des vidéos slow-motion cinématographiques pour vos événements.',
     category: 'Technologie',
     date: '15 octobre 2025',
     readTime: '10 min',
     emoji: '🏆',
     badge: 'Guide Complet',
     author: 'Forever Memories',
-    keywords: ['glambot', 'c\'est quoi', 'oscars', 'explication', 'technologie', 'slow motion']
+    keywords: ['glambot', 'c\'est quoi', 'robot', 'explication', 'technologie', 'slow motion']
   },
   {
     slug: 'experience-tapis-rouge-glambot-celebrites',

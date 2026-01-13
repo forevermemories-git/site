@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Poppins, Outfit } from 'next/font/google'
+import { DM_Sans } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import SmoothScroll from './components/ui/SmoothScroll'
@@ -9,24 +9,18 @@ import Footer from './components/layout/Footer'
 import SkipToContent from './components/ui/SkipToContent'
 import GoogleAnalytics from './components/analytics/GoogleAnalytics'
 
-const poppins = Poppins({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-poppins',
-})
-
-const outfit = Outfit({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  display: 'swap',
-  variable: '--font-outfit',
+  variable: '--font-dm-sans',
 })
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  themeColor: '#0C0C0E',
 }
 
 export const metadata: Metadata = {
@@ -105,17 +99,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className={`${poppins.variable} ${outfit.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={dmSans.variable} suppressHydrationWarning>
       <head>
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <Script
           id="axeptio-settings"
           strategy="beforeInteractive"

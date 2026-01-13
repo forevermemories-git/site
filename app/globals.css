@@ -4,70 +4,169 @@
 
 @layer base {
   :root {
-    --font-poppins: 'Poppins', system-ui, sans-serif;
-    --font-outfit: 'Outfit', system-ui, sans-serif;
-  }
-
-  body {
-    @apply bg-white text-dark;
-    font-family: var(--font-outfit);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins);
-    font-weight: 700;
+    --font-dm-sans: 'DM Sans', system-ui, sans-serif;
   }
 
   html {
-    scroll-behavior: auto; /* Lenis handles smooth scroll */
+    scroll-behavior: auto;
   }
 
-  /* Accessibilité: Links distinguishables */
-  main a:not([class*="btn"]):not([class*="button"]):not([class*="no-underline"]):not([class*="rounded-full"]) {
+  body {
+    @apply bg-dark text-cream;
+    font-family: var(--font-dm-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typographie unifiée */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-dm-sans);
+    @apply text-cream;
+  }
+
+  h1 {
+    @apply text-4xl md:text-display-lg font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-display-md font-semibold tracking-tight;
+  }
+
+  h3 {
+    @apply text-xl md:text-display-sm font-semibold;
+  }
+
+  p {
+    @apply text-cream-muted leading-relaxed;
+  }
+
+  /* Liens */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  main a:not([class*="btn"]):not([class*="button"]):not([class*="no-underline"]):not([class*="rounded"]):not([class*="flex"]):not([class*="block"]) {
+    @apply text-primary-light hover:text-primary;
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
   }
 
-  /* Focus visible pour accessibilité clavier */
+  /* Accessibilité */
   *:focus-visible {
-    outline: 2px solid #A42396;
-    outline-offset: 2px;
-    border-radius: 2px;
+    @apply outline-2 outline-primary outline-offset-2 rounded;
   }
 
-  /* Amélioration contraste pour les textes gris */
-  .text-gray-600 {
-    color: #4B5563 !important; /* Contraste amélioré */
-  }
-
-  .text-gray-500 {
-    color: #6B7280 !important; /* Contraste amélioré */
-  }
-
-  /* text-gray-400 sur fond blanc = mauvais contraste (2.8:1) */
-  /* On le force à gray-600 pour fond blanc, sauf dans footer (fond noir) */
-  main .text-gray-400, [class*="bg-white"] .text-gray-400 {
-    color: #4B5563 !important; /* gray-600 = 4.5:1 contrast ratio */
-  }
-
-  /* Garder text-gray-400 original sur fond sombre */
-  [class*="bg-black"] .text-gray-400,
-  [class*="bg-secondary"] .text-gray-400,
-  footer .text-gray-400 {
-    color: #9CA3AF !important; /* Original gray-400 OK sur fond sombre */
-  }
-
-  /* Zones tactiles minimales (WCAG 2.5.5) */
   button, a, [role="button"], input[type="submit"], input[type="button"] {
     min-height: 44px;
     min-width: 44px;
   }
 
-  /* Exception pour les indicateurs très petits avec padding suffisant */
   button[role="tab"] {
     min-height: 24px;
     padding: 10px;
+  }
+
+  /* Sélection */
+  ::selection {
+    @apply bg-primary/30 text-cream;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-lighter;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+@layer components {
+  /* Conteneurs */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 md:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-[1400px] mx-auto px-4 md:px-8;
+  }
+
+  /* Sections */
+  .section-padding {
+    @apply py-20 px-4 md:py-28 md:px-8;
+  }
+
+  /* Texte gradient */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-light to-primary bg-clip-text text-transparent;
+  }
+
+  /* Boutons */
+  .btn-primary {
+    @apply px-7 py-3.5 bg-primary text-white rounded-full font-medium
+           shadow-glow hover:bg-primary-dark hover:shadow-glow-lg
+           transition-all duration-200 ease-smooth
+           inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply px-7 py-3.5 bg-transparent text-cream rounded-full font-medium
+           border border-cream/20 hover:border-primary hover:text-primary
+           transition-all duration-200
+           inline-flex items-center justify-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply px-5 py-2.5 bg-transparent text-cream-muted rounded-full font-medium
+           hover:text-cream hover:bg-white/5
+           transition-all duration-200
+           inline-flex items-center justify-center gap-2;
+  }
+
+  /* Cartes */
+  .card {
+    @apply bg-dark-card border border-white/[0.06] rounded-2xl
+           transition-all duration-300 ease-smooth;
+  }
+
+  .card:hover {
+    @apply border-primary/20;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full
+           bg-primary-muted text-primary-light border border-primary/20
+           text-sm font-medium;
+  }
+
+  /* Séparateurs */
+  .separator {
+    @apply h-px bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
+
+  .separator-primary {
+    @apply h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent;
+  }
+
+  /* Navigation links - reset pour alignement parfait */
+  .nav-link {
+    @apply text-cream/70 text-[15px] font-medium hover:text-cream transition-colors;
+    min-height: auto;
+    min-width: auto;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
   }
 }
 
@@ -76,25 +175,32 @@
     text-wrap: balance;
   }
 
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent;
-  }
-
-  .section-padding {
-    @apply py-20 px-4 md:py-32 md:px-8;
-  }
-
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 md:px-8;
-  }
-
-  /* Hide scrollbar but keep functionality */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari and Opera */
+    display: none;
+  }
+
+  .backdrop-blur-strong {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .glass {
+    @apply bg-dark/80 backdrop-blur-strong border border-white/[0.06];
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

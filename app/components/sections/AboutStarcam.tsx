@@ -48,7 +48,7 @@ export default function AboutStarcam() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed"
           >
-            Un robot vidéo de précision qui capture des moments spectaculaires en slow-motion et accéléré, exactement comme lors des cérémonies des Oscars
+            Un robot vidéo de précision qui capture des moments spectaculaires en slow-motion et accéléré avec une qualité cinématographique
           </motion.p>
         </div>
 

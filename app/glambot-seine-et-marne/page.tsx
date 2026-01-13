@@ -1,17 +1,12 @@
-import { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
-import { ArrowRight, MapPin, Star, CheckCircle, Phone, Camera, Users, Clock, Home } from 'lucide-react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowRight, MapPin, CheckCircle, Phone, Home } from 'lucide-react'
 import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
-
-export const metadata: Metadata = {
-  title: 'Glambot Seine-et-Marne (77) | Location Photobooth Robot Slow-Motion',
-  description: 'Location de Glambot en Seine-et-Marne (77). Robot Starcam pour vidéos slow-motion. Mariages dans les châteaux, domaines et salles de réception du 77. Devis gratuit.',
-  keywords: ['glambot seine-et-marne', 'glambot 77', 'photobooth 77', 'location glambot meaux', 'photobooth fontainebleau', 'animation mariage 77', 'starcam seine-et-marne'],
-  alternates: {
-    canonical: 'https://forevermemories.fr/glambot-seine-et-marne',
-  },
-}
+import { useRef } from 'react'
+import { trackConversion } from '@/app/lib/gtag'
 
 const seineMarneFAQs = [
   {
@@ -36,212 +31,356 @@ const seineMarneFAQs = [
   }
 ]
 
+// Zone Card Component
+function ZoneCard({ title, cities, index }: {
+  title: string
+  cities: string[]
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="bg-dark-card/30 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-primary/20 transition-all"
+    >
+      <h3 className="text-xl font-bold mb-4 text-cream">{title}</h3>
+      <ul className="space-y-2">
+        {cities.map((city, i) => (
+          <li key={i} className="flex items-center gap-2 text-cream/60">
+            <MapPin size={16} className="text-primary flex-shrink-0" />
+            {city}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  )
+}
+
+// Venue Card Component
+function VenueCard({ title, description, features, index }: {
+  title: string
+  description: string
+  features: string[]
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-primary/20 transition-all"
+    >
+      <h3 className="text-xl font-bold mb-4 text-cream">{title}</h3>
+      <p className="text-cream/50 mb-4">{description}</p>
+      <ul className="space-y-2">
+        {features.map((feature, i) => (
+          <li key={i} className="flex items-center gap-2 text-cream/60">
+            <CheckCircle size={16} className="text-primary flex-shrink-0" />
+            {feature}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  )
+}
+
+// FAQ Item Component
+function FAQItem({ question, answer, index }: {
+  question: string
+  answer: string
+  index: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="bg-dark-card/30 backdrop-blur-sm border border-white/5 p-6 rounded-2xl hover:border-primary/20 transition-all"
+    >
+      <h3 className="text-lg font-semibold mb-3 text-cream">{question}</h3>
+      <p className="text-cream/50 leading-relaxed">{answer}</p>
+    </motion.div>
+  )
+}
+
 export default function GlambotSeineMarnePage() {
+  const sectionRef = useRef(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  })
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+
+  const zones = [
+    { title: 'Nord Seine-et-Marne', cities: ['Meaux', 'Chelles', 'Torcy / Marne-la-Vallée', 'Lagny-sur-Marne', 'Pontault-Combault'] },
+    { title: 'Centre Seine-et-Marne', cities: ['Melun', 'Fontainebleau', 'Nemours', 'Brie-Comte-Robert', 'Savigny-le-Temple'] },
+    { title: 'Est Seine-et-Marne', cities: ['Provins', 'Coulommiers', 'La Ferté-sous-Jouarre', 'Montereau', 'Nangis'] }
+  ]
+
+  const venues = [
+    {
+      title: 'Châteaux & Domaines',
+      description: 'Le 77 est réputé pour ses châteaux majestueux : Fontainebleau, Vaux-le-Vicomte, et de nombreux domaines privés. Notre Glambot apporte une touche Hollywood à ces lieux chargés d\'histoire.',
+      features: ['Adaptation aux contraintes patrimoniales', 'Installation discrète et respectueuse']
+    },
+    {
+      title: 'Granges & Corps de ferme',
+      description: 'Les granges rénovées et corps de ferme du 77 offrent un cadre champêtre et authentique. Notre Starcam s\'intègre parfaitement à ces ambiances rustiques chic.',
+      features: ['Installation intérieure ou extérieure', 'Éclairage adapté aux lieux atypiques']
+    }
+  ]
+
+  const advantages = [
+    { label: 'Aucun frais de déplacement' },
+    { label: 'Visite technique gratuite' },
+    { label: 'Connaissance des lieux' }
+  ]
+
   return (
     <>
       <FAQStructuredData faqs={seineMarneFAQs} />
 
-      <div className="min-h-screen bg-white">
+      <div ref={sectionRef} className="min-h-screen bg-dark">
         <Breadcrumbs items={[{ name: 'Glambot Seine-et-Marne', href: '/glambot-seine-et-marne' }]} />
 
         {/* Hero Section */}
-        <section className="relative pt-8 pb-8 px-4 md:px-8 bg-gradient-to-b from-primary/5 to-white">
-          <div className="max-w-6xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary mb-6">
-              <MapPin size={16} />
-              Seine-et-Marne (77)
-            </div>
+        <section className="relative pt-28 md:pt-32 pb-20 md:pb-32 overflow-hidden">
+          {/* Background elements */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{ y: backgroundY }}
+          >
+            <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px]" />
+            <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px]" />
+          </motion.div>
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-dark leading-tight">
-              Location <span className="gradient-text">Glambot</span> en Seine-et-Marne
-              <br className="hidden md:block" />
-              <span className="md:hidden"> </span>
-              Votre événement dans le 77
-            </h1>
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }} />
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto font-light">
-              Notre territoire d'implantation ! Profitez de notre expertise locale pour des vidéos slow-motion exceptionnelles dans les plus beaux lieux du 77
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 no-underline"
+          <div className="container-wide relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary mb-6"
               >
-                Demander un devis gratuit
-                <ArrowRight size={20} />
-              </Link>
-              <Link
-                href="/tarifs"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary/5 transition-all no-underline"
+                <MapPin size={16} />
+                Seine-et-Marne (77)
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
               >
-                Voir nos tarifs
-              </Link>
+                <span className="text-cream">Location </span>
+                <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">Glambot</span>
+                <span className="text-cream"> en Seine-et-Marne</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-xl md:text-2xl text-cream/50 mb-10 max-w-3xl mx-auto"
+              >
+                Notre territoire d'implantation ! Profitez de notre expertise locale pour des vidéos slow-motion exceptionnelles dans les plus beaux lieux du 77
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full font-medium hover:shadow-lg hover:shadow-primary/20 transition-all"
+                >
+                  Demander un devis gratuit
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  href="/tarifs"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-cream rounded-full font-medium hover:bg-white/10 transition-all"
+                >
+                  Voir nos tarifs
+                </Link>
+              </motion.div>
             </div>
           </div>
         </section>
 
         {/* Notre avantage local */}
-        <section className="py-16 px-4 md:px-8 bg-primary/5">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  <Home size={32} />
+        <section className="py-20 md:py-32 bg-dark-lighter relative overflow-hidden">
+          <div className="container-wide relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-rose/5 rounded-3xl blur-xl" />
+
+              <div className="relative bg-dark-card/80 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-12">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/30 to-rose/20 flex items-center justify-center flex-shrink-0">
+                    <Home size={32} className="text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl md:text-3xl font-bold text-cream">Notre territoire, notre expertise</h2>
+                    <p className="text-primary font-medium">Basés en Seine-et-Marne depuis nos débuts</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-dark">Notre territoire, notre expertise</h2>
-                  <p className="text-primary font-medium">Basés en Seine-et-Marne depuis nos débuts</p>
+
+                <p className="text-lg text-cream/60 mb-8 leading-relaxed">
+                  Forever Memories est implanté en Seine-et-Marne. Nous connaissons parfaitement les lieux de réception du département : châteaux, domaines, salles des fêtes, hôtels. Cette connaissance locale nous permet de vous conseiller et de nous adapter aux spécificités de chaque lieu.
+                </p>
+
+                <div className="flex flex-wrap gap-3">
+                  {advantages.map((adv, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary font-medium text-sm"
+                    >
+                      <CheckCircle size={16} />
+                      {adv.label}
+                    </motion.span>
+                  ))}
                 </div>
               </div>
-              <p className="text-lg text-gray-600 mb-6">
-                Forever Memories est implanté en Seine-et-Marne. Nous connaissons parfaitement les lieux de réception du département : châteaux, domaines, salles des fêtes, hôtels. Cette connaissance locale nous permet de vous conseiller et de nous adapter aux spécificités de chaque lieu.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-medium">
-                  <CheckCircle size={16} /> Aucun frais de déplacement
-                </span>
-                <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-medium">
-                  <CheckCircle size={16} /> Visite technique gratuite
-                </span>
-                <span className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary font-medium">
-                  <CheckCircle size={16} /> Connaissance des lieux
-                </span>
-              </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* Villes principales */}
-        <section className="py-16 px-4 md:px-8">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-dark">
-              Nous intervenons dans tout le 77
-            </h2>
+        <section className="py-20 md:py-32 relative overflow-hidden">
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose/10 rounded-full blur-[150px]" />
+
+          <div className="container-wide relative z-10">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-cream"
+            >
+              Nous intervenons dans <span className="gradient-text">tout le 77</span>
+            </motion.h2>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gray-50 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-dark">Nord Seine-et-Marne</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Meaux</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Chelles</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Torcy / Marne-la-Vallée</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Lagny-sur-Marne</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Pontault-Combault</li>
-                </ul>
-              </div>
-
-              <div className="bg-gray-50 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-dark">Centre Seine-et-Marne</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Melun</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Fontainebleau</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Nemours</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Brie-Comte-Robert</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Savigny-le-Temple</li>
-                </ul>
-              </div>
-
-              <div className="bg-gray-50 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-dark">Est Seine-et-Marne</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Provins</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Coulommiers</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> La Ferté-sous-Jouarre</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Montereau</li>
-                  <li className="flex items-center gap-2"><MapPin size={16} className="text-primary" /> Nangis</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Lieux emblématiques */}
-        <section className="py-16 px-4 md:px-8 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-dark">
-              Les plus beaux lieux du 77
-            </h2>
-            <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              La Seine-et-Marne regorge de lieux d'exception pour vos événements. Notre Starcam sublime chacun d'entre eux.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xl font-bold mb-4 text-dark">Châteaux &amp; Domaines</h3>
-                <p className="text-gray-600 mb-4">
-                  Le 77 est réputé pour ses châteaux majestueux : Fontainebleau, Vaux-le-Vicomte, et de nombreux domaines privés. Notre Glambot apporte une touche Hollywood à ces lieux chargés d'histoire.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-gray-600">
-                    <CheckCircle size={16} className="text-primary" /> Adaptation aux contraintes patrimoniales
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-600">
-                    <CheckCircle size={16} className="text-primary" /> Installation discrète et respectueuse
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm">
-                <h3 className="text-xl font-bold mb-4 text-dark">Granges &amp; Corps de ferme</h3>
-                <p className="text-gray-600 mb-4">
-                  Les granges rénovées et corps de ferme du 77 offrent un cadre champêtre et authentique. Notre Starcam s'intègre parfaitement à ces ambiances rustiques chic.
-                </p>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2 text-gray-600">
-                    <CheckCircle size={16} className="text-primary" /> Installation intérieure ou extérieure
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-600">
-                    <CheckCircle size={16} className="text-primary" /> Éclairage adapté aux lieux atypiques
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-16 px-4 md:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-dark">
-              Questions fréquentes - Seine-et-Marne
-            </h2>
-
-            <div className="space-y-6">
-              {seineMarneFAQs.map((faq, index) => (
-                <div key={index} className="bg-gray-50 rounded-2xl p-6">
-                  <h3 className="text-lg font-bold mb-2 text-dark">{faq.question}</h3>
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
+              {zones.map((zone, index) => (
+                <ZoneCard key={index} {...zone} index={index} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Final */}
-        <section className="py-16 px-4 md:px-8 bg-primary">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-              Votre événement en Seine-et-Marne mérite le meilleur
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Profitez de notre expertise locale. Devis gratuit et personnalisé sous 24h.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary rounded-full font-medium hover:bg-gray-100 transition-all no-underline"
-              >
-                <Phone size={20} />
-                Demander un devis
-              </Link>
-              <a
-                href="tel:+33612345678"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white rounded-full font-medium hover:bg-white/10 transition-all no-underline"
-              >
-                Appeler maintenant
-              </a>
+        {/* Lieux emblématiques */}
+        <section className="py-20 md:py-32 bg-dark-lighter relative overflow-hidden">
+          <div className="container-wide relative z-10">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center mb-4 text-cream"
+            >
+              Les plus beaux lieux du <span className="gradient-text">77</span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-center text-cream/50 mb-12 max-w-2xl mx-auto"
+            >
+              La Seine-et-Marne regorge de lieux d'exception pour vos événements. Notre Starcam sublime chacun d'entre eux.
+            </motion.p>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {venues.map((venue, index) => (
+                <VenueCard key={index} {...venue} index={index} />
+              ))}
             </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 md:py-32 relative overflow-hidden">
+          <div className="container-wide relative z-10">
+            <div className="max-w-4xl mx-auto">
+              <motion.h2
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-4xl font-bold text-center mb-12 text-cream"
+              >
+                Questions <span className="gradient-text">fréquentes</span>
+              </motion.h2>
+
+              <div className="space-y-4">
+                {seineMarneFAQs.map((faq, index) => (
+                  <FAQItem key={index} question={faq.question} answer={faq.answer} index={index} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Final */}
+        <section className="py-20 md:py-32 relative overflow-hidden">
+          <div className="container-wide relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden rounded-3xl"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-rose" />
+              <div className="absolute inset-0 bg-dark/20" />
+
+              <div className="relative p-10 md:p-16 text-center">
+                <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
+                  Votre événement en Seine-et-Marne mérite le meilleur
+                </h2>
+                <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+                  Profitez de notre expertise locale. Devis gratuit et personnalisé sous 24h.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link
+                    href="/contact"
+                    className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-dark rounded-full font-semibold hover:bg-cream transition-all"
+                  >
+                    <Phone size={20} />
+                    Demander un devis
+                  </Link>
+                  <a
+                    href="tel:+33676815953"
+                    onClick={() => trackConversion('phone_click', 'glambot-77')}
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white hover:text-dark transition-all"
+                  >
+                    06 76 81 59 53
+                  </a>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
       </div>

@@ -66,7 +66,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
       />
       <ReadingProgressBar />
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-dark">
         {/* Breadcrumbs */}
         <Breadcrumbs
           items={[
@@ -75,13 +75,17 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           ]}
         />
 
-        {/* Hero Section - Moderne et Épuré */}
-        <section className="relative pt-8 pb-12 px-4 md:px-8 bg-gradient-to-b from-gray-50 to-white">
-          <div className="max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <section className="relative pt-28 md:pt-32 pb-12 px-4 md:px-8">
+          {/* Background glow */}
+          <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="max-w-4xl mx-auto relative z-10">
             {/* Back Button */}
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors mb-8 group"
+              className="inline-flex items-center gap-2 text-cream/60 hover:text-primary transition-colors mb-8 group"
             >
               <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
               <span className="font-medium">Retour au blog</span>
@@ -89,39 +93,39 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
             {/* Category Badge */}
             <div className="mb-6">
-              <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full uppercase tracking-wider">
+              <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light text-sm font-semibold rounded-full uppercase tracking-wider">
                 {article.emoji} {article.category}
               </span>
               {article.badge && (
-                <span className="ml-3 inline-block px-4 py-1.5 bg-gradient-primary text-white text-sm font-semibold rounded-full">
+                <span className="ml-3 inline-block px-4 py-1.5 bg-primary text-white text-sm font-semibold rounded-full">
                   {article.badge}
                 </span>
               )}
             </div>
 
-            {/* Title - Grand et Impactant */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-dark leading-tight">
+            {/* Title */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-cream leading-tight">
               {article.title}
             </h1>
 
             {/* Excerpt */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed font-light">
+            <p className="text-xl md:text-2xl text-cream/60 mb-8 leading-relaxed font-light">
               {article.excerpt}
             </p>
 
-            {/* Meta Info - Moderne */}
-            <div className="flex flex-wrap items-center gap-6 py-6 border-y border-gray-200">
+            {/* Meta Info */}
+            <div className="flex flex-wrap items-center gap-6 py-6 border-y border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
                   FM
                 </div>
                 <div>
-                  <div className="font-semibold text-dark">{article.author}</div>
-                  <div className="text-sm text-gray-500">Content Specialist</div>
+                  <div className="font-semibold text-cream">{article.author}</div>
+                  <div className="text-sm text-cream/50">Content Specialist</div>
                 </div>
               </div>
-              <div className="h-8 w-px bg-gray-200 hidden md:block" />
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="h-8 w-px bg-white/10 hidden md:block" />
+              <div className="flex items-center gap-2 text-cream/60">
                 <Clock size={18} />
                 <span className="text-sm font-medium">{article.readTime} de lecture</span>
               </div>
@@ -135,37 +139,37 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
             <div className="flex flex-col lg:flex-row gap-12">
               {/* Main Article */}
               <div className="flex-1 max-w-3xl mx-auto lg:mx-0">
-                {/* Article Content - Prose Amélioré */}
+                {/* Article Content - Dark Theme Prose */}
                 <div
-                  className="prose prose-lg prose-gray max-w-none
-                    prose-headings:font-bold prose-headings:tracking-tight
-                    prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:text-dark prose-h2:scroll-mt-24
-                    prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:text-dark prose-h3:scroll-mt-24
-                    prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg
-                    prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
-                    prose-strong:text-dark prose-strong:font-semibold
-                    prose-ul:my-8 prose-ul:space-y-2 prose-li:text-gray-700 prose-li:text-lg prose-li:marker:text-primary
+                  className="prose prose-lg prose-invert max-w-none
+                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-cream
+                    prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:scroll-mt-24
+                    prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:scroll-mt-24
+                    prose-p:text-cream/70 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg
+                    prose-a:text-primary-light prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
+                    prose-strong:text-cream prose-strong:font-semibold
+                    prose-ul:my-8 prose-ul:space-y-2 prose-li:text-cream/70 prose-li:text-lg prose-li:marker:text-primary
                     prose-ol:my-8 prose-ol:space-y-2
-                    prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-700 prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:my-8
-                    prose-code:text-primary prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
-                    prose-pre:bg-gray-900 prose-pre:text-gray-100
-                    prose-table:border-collapse prose-table:w-full prose-table:my-8 prose-table:shadow-md prose-table:rounded-lg prose-table:overflow-hidden
-                    prose-th:bg-gradient-primary prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-semibold prose-th:text-base
-                    prose-td:border prose-td:border-gray-200 prose-td:p-4 prose-td:bg-white
-                    prose-tr:even:bg-gray-50
+                    prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-cream/70 prose-blockquote:bg-dark-card/50 prose-blockquote:py-4 prose-blockquote:my-8
+                    prose-code:text-primary-light prose-code:bg-dark-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                    prose-pre:bg-dark-elevated prose-pre:text-cream/80
+                    prose-table:border-collapse prose-table:w-full prose-table:my-8 prose-table:rounded-lg prose-table:overflow-hidden
+                    prose-th:bg-primary prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-semibold prose-th:text-base
+                    prose-td:border prose-td:border-white/10 prose-td:p-4 prose-td:bg-dark-card/50
+                    prose-tr:even:bg-dark-lighter
                     prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8"
                   dangerouslySetInnerHTML={{ __html: articleContent }}
                 />
 
                 {/* Tags */}
                 {article.keywords && article.keywords.length > 0 && (
-                  <div className="mt-12 pt-8 border-t border-gray-200">
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Mots-clés</h3>
+                  <div className="mt-12 pt-8 border-t border-white/10">
+                    <h3 className="text-sm font-semibold text-cream/50 uppercase tracking-wider mb-4">Mots-clés</h3>
                     <div className="flex flex-wrap gap-2">
                       {article.keywords.map((keyword) => (
                         <span
                           key={keyword}
-                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer"
+                          className="px-4 py-2 bg-dark-card/50 text-cream/70 rounded-full text-sm font-medium hover:bg-primary/20 hover:text-primary-light transition-colors cursor-pointer border border-white/5"
                         >
                           {keyword}
                         </span>
@@ -182,12 +186,12 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                   <ShareButtons title={article.title} slug={slug} />
 
                   {/* Author Card */}
-                  <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 border-2 border-primary/20">
-                    <div className="w-16 h-16 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold text-2xl mb-4 mx-auto">
+                  <div className="bg-dark-card/50 backdrop-blur-sm rounded-2xl p-6 border border-primary/20">
+                    <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-bold text-2xl mb-4 mx-auto">
                       FM
                     </div>
-                    <h3 className="font-bold text-center mb-2 text-dark">Forever Memories</h3>
-                    <p className="text-sm text-gray-600 text-center mb-4">
+                    <h3 className="font-bold text-center mb-2 text-cream">Forever Memories</h3>
+                    <p className="text-sm text-cream/60 text-center mb-4">
                       Experts en animation événementielle avec notre Glambot exclusif
                     </p>
                     <Link
@@ -199,8 +203,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                   </div>
 
                   {/* Popular Articles */}
-                  <div className="bg-white rounded-2xl p-6 border-2 border-gray-100">
-                    <h3 className="font-bold text-lg mb-4 text-dark">Articles populaires</h3>
+                  <div className="bg-dark-card/50 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
+                    <h3 className="font-bold text-lg mb-4 text-cream">Articles populaires</h3>
                     <div className="space-y-4">
                       {blogArticles.filter(a => a.badge).slice(0, 3).map((popularArticle) => (
                         <Link
@@ -211,10 +215,10 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                           <div className="flex items-start gap-3">
                             <span className="text-2xl">{popularArticle.emoji}</span>
                             <div>
-                              <h4 className="font-semibold text-sm text-dark group-hover:text-primary transition-colors line-clamp-2">
+                              <h4 className="font-semibold text-sm text-cream group-hover:text-primary-light transition-colors line-clamp-2">
                                 {popularArticle.title}
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">{popularArticle.readTime}</p>
+                              <p className="text-xs text-cream/50 mt-1">{popularArticle.readTime}</p>
                             </div>
                           </div>
                         </Link>
@@ -235,25 +239,25 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
         </div>
 
         {/* CTA Section */}
-        <section className="py-16 px-4 md:px-8 bg-gradient-primary">
+        <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-primary/20 via-dark-lighter to-rose/10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="text-6xl mb-6">✨</div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-cream">
               Prêt à créer des souvenirs inoubliables ?
             </h2>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-cream/60 mb-8 max-w-2xl mx-auto">
               Découvrez notre Glambot et offrez à vos invités une expérience digne d'Hollywood
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:bg-gray-100 transition-all shadow-lg"
+                className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all"
               >
                 Demander un devis gratuit
               </Link>
               <Link
                 href="/la-starcam"
-                className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-primary transition-all"
+                className="px-8 py-4 border border-white/20 text-cream rounded-full font-semibold hover:bg-white/5 transition-all"
               >
                 Découvrir la technologie
               </Link>
@@ -262,25 +266,25 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
         </section>
 
         {/* Navigation Articles */}
-        <section className="py-16 px-4 md:px-8 bg-gray-50">
+        <section className="py-16 px-4 md:px-8 bg-dark-lighter">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-dark text-center">Continuer la lecture</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-cream text-center">Continuer la lecture</h2>
             <div className="grid md:grid-cols-2 gap-8">
               {/* Previous Article */}
               {prevArticle && (
                 <Link
                   href={`/blog/${prevArticle.slug}`}
-                  className="group relative overflow-hidden bg-white rounded-2xl border-2 border-gray-100 hover:border-primary transition-all shadow-sm hover:shadow-xl p-8"
+                  className="group relative overflow-hidden bg-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-primary/30 transition-all p-8"
                 >
-                  <div className="text-sm text-gray-500 mb-2 flex items-center gap-2">
+                  <div className="text-sm text-cream/50 mb-2 flex items-center gap-2">
                     <ArrowLeft size={14} />
                     Article précédent
                   </div>
                   <div className="text-3xl mb-3">{prevArticle.emoji}</div>
-                  <h3 className="font-bold text-xl text-dark group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                  <h3 className="font-bold text-xl text-cream group-hover:text-primary-light transition-colors line-clamp-2 mb-2">
                     {prevArticle.title}
                   </h3>
-                  <p className="text-gray-600 text-sm line-clamp-2">{prevArticle.excerpt}</p>
+                  <p className="text-cream/60 text-sm line-clamp-2">{prevArticle.excerpt}</p>
                 </Link>
               )}
 
@@ -288,17 +292,17 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
               {nextArticle && (
                 <Link
                   href={`/blog/${nextArticle.slug}`}
-                  className="group relative overflow-hidden bg-white rounded-2xl border-2 border-gray-100 hover:border-primary transition-all shadow-sm hover:shadow-xl p-8"
+                  className="group relative overflow-hidden bg-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-primary/30 transition-all p-8"
                 >
-                  <div className="text-sm text-gray-500 mb-2 flex items-center justify-end gap-2">
+                  <div className="text-sm text-cream/50 mb-2 flex items-center justify-end gap-2">
                     Article suivant
                     <ArrowRight size={14} />
                   </div>
                   <div className="text-3xl mb-3 text-right">{nextArticle.emoji}</div>
-                  <h3 className="font-bold text-xl text-dark group-hover:text-primary transition-colors line-clamp-2 mb-2 text-right">
+                  <h3 className="font-bold text-xl text-cream group-hover:text-primary-light transition-colors line-clamp-2 mb-2 text-right">
                     {nextArticle.title}
                   </h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 text-right">{nextArticle.excerpt}</p>
+                  <p className="text-cream/60 text-sm line-clamp-2 text-right">{nextArticle.excerpt}</p>
                 </Link>
               )}
             </div>

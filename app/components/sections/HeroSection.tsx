@@ -1,17 +1,106 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion'
+import { ArrowRight, Play } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 
+// Composant pour l'animation des mots
+function AnimatedWord({ children, delay = 0 }: { children: string; delay?: number }) {
+  return (
+    <motion.span
+      initial={{ opacity: 0, y: 40, rotateX: -90 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0 }}
+      transition={{
+        duration: 0.8,
+        delay,
+        ease: [0.25, 0.4, 0.25, 1],
+      }}
+      className="inline-block"
+    >
+      {children}
+    </motion.span>
+  )
+}
+
+// Composant pour le compteur animé
+function AnimatedCounter({ value, suffix = '', duration = 2 }: { value: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (!isInView) return
+
+    let startTime: number
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const progress = Math.min((timestamp - startTime) / (duration * 1000), 1)
+
+      // Easing function for smooth deceleration
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+      setCount(Math.floor(easeOut * value))
+
+      if (progress < 1) {
+        requestAnimationFrame(animate)
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [isInView, value, duration])
+
+  return <span ref={ref}>{count}{suffix}</span>
+}
+
+// Bouton magnétique
+function MagneticButton({ children, href, variant = 'primary' }: { children: React.ReactNode; href: string; variant?: 'primary' | 'secondary' }) {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+
+  const handleMouse = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e
+    const { left, top, width, height } = ref.current!.getBoundingClientRect()
+    const x = (clientX - (left + width / 2)) * 0.15
+    const y = (clientY - (top + height / 2)) * 0.15
+    setPosition({ x, y })
+  }
+
+  const reset = () => setPosition({ x: 0, y: 0 })
+
+  const springConfig = { stiffness: 150, damping: 15, mass: 0.1 }
+  const x = useSpring(position.x, springConfig)
+  const y = useSpring(position.y, springConfig)
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      style={{ x, y }}
+      className={variant === 'primary' ? 'btn-primary group' : 'btn-secondary group'}
+    >
+      {children}
+    </motion.a>
+  )
+}
+
 export default function HeroSection() {
   const [currentVideo, setCurrentVideo] = useState(0)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
-  const isDragging = useRef(false)
-  const startX = useRef(0)
-  const scrollLeft = useRef(0)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const sectionRef = useRef(null)
+
+  // Parallax effect
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  })
+
+  const videoY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   const videos = [
     '/videos/video-al-groupe.webm',
@@ -22,259 +111,181 @@ export default function HeroSection() {
     '/videos/video-sambavam-groupe.webm',
   ]
 
-  // Détecter le scroll pour mettre à jour l'indicateur actif
+  // Rotation des vidéos
   useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
+    const video = videoRef.current
+    if (!video) return
 
-    const handleScroll = () => {
-      const scrollLeftValue = container.scrollLeft
-      const cardWidth = container.offsetWidth
-      const newIndex = Math.round(scrollLeftValue / cardWidth)
-      setCurrentVideo(newIndex)
+    const handleEnded = () => {
+      setCurrentVideo((prev) => (prev + 1) % videos.length)
     }
 
-    container.addEventListener('scroll', handleScroll)
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [])
+    video.addEventListener('ended', handleEnded)
+    return () => video.removeEventListener('ended', handleEnded)
+  }, [videos.length])
 
-  // Drag to scroll à la souris
+  // Chargement de la nouvelle vidéo
   useEffect(() => {
-    const container = scrollContainerRef.current
-    if (!container) return
+    const video = videoRef.current
+    if (!video) return
 
-    const handleMouseDown = (e: MouseEvent) => {
-      isDragging.current = true
-      startX.current = e.pageX - container.offsetLeft
-      scrollLeft.current = container.scrollLeft
-      container.style.cursor = 'grabbing'
-      container.style.userSelect = 'none'
-    }
+    video.load()
+    video.play().catch(() => {})
+  }, [currentVideo])
 
-    const handleMouseLeave = () => {
-      isDragging.current = false
-      container.style.cursor = 'grab'
-    }
-
-    const handleMouseUp = () => {
-      isDragging.current = false
-      container.style.cursor = 'grab'
-    }
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging.current) return
-      e.preventDefault()
-      const x = e.pageX - container.offsetLeft
-      const walk = (x - startX.current) * 2 // Vitesse de scroll
-      container.scrollLeft = scrollLeft.current - walk
-    }
-
-    container.style.cursor = 'grab'
-    container.addEventListener('mousedown', handleMouseDown)
-    container.addEventListener('mouseleave', handleMouseLeave)
-    container.addEventListener('mouseup', handleMouseUp)
-    container.addEventListener('mousemove', handleMouseMove)
-
-    return () => {
-      container.removeEventListener('mousedown', handleMouseDown)
-      container.removeEventListener('mouseleave', handleMouseLeave)
-      container.removeEventListener('mouseup', handleMouseUp)
-      container.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
-
-  // Jouer la vidéo visible et passer à la suivante quand elle se termine
-  useEffect(() => {
-    const observers: IntersectionObserver[] = []
-
-    videoRefs.current.forEach((video, index) => {
-      if (!video) return
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Vidéo visible, la jouer depuis le début
-              video.currentTime = 0
-              video.play().catch(() => {})
-            } else {
-              // Vidéo non visible, l'arrêter
-              video.pause()
-            }
-          })
-        },
-        { threshold: 0.5 }
-      )
-
-      observer.observe(video)
-      observers.push(observer)
-    })
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect())
-    }
-  }, [])
-
-  // Quand une vidéo se termine, passer à la suivante automatiquement
-  const handleVideoEnded = (index: number) => {
-    const nextIndex = (index + 1) % videos.length
-    scrollToVideo(nextIndex)
-  }
-
-  const scrollToVideo = (index: number) => {
-    const container = scrollContainerRef.current
-    if (!container) return
-
-    const cardWidth = container.offsetWidth
-    container.scrollTo({
-      left: cardWidth * index,
-      behavior: 'smooth'
-    })
-  }
+  const stats = [
+    { value: 1000, suffix: '+', label: 'Vidéos produites' },
+    { value: 100, suffix: '%', label: 'Mémorables' },
+    { value: 48, suffix: 'h', label: 'Galerie en ligne' },
+  ]
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center px-4 md:px-8 bg-white pt-24 md:pt-28">
-      <div className="max-w-6xl mx-auto text-center pb-16 md:pb-24 w-full">
-        {/* Badge subtle */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-light text-sm font-medium text-secondary mb-8"
+    <section ref={sectionRef} className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      {/* Video Background avec parallax */}
+      <motion.div
+        className="absolute inset-0 z-0"
+        style={{ y: videoY, scale: videoScale }}
+      >
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          autoPlay
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
         >
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          Vidéos slow-motion et accélérées
+          <source src={videos[currentVideo]} type="video/webm" />
+        </video>
+      </motion.div>
+
+      {/* Overlays cinématiques */}
+      <div className="absolute inset-0 z-[1]">
+        {/* Gradient principal */}
+        <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark/70 to-dark" />
+
+        {/* Vignette effect */}
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse at center, transparent 0%, rgba(12,12,14,0.4) 50%, rgba(12,12,14,0.8) 100%)'
+        }} />
+
+        {/* Grain texture */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+        }} />
+      </div>
+
+      {/* Glow effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/15 rounded-full blur-[200px] pointer-events-none z-[2]" />
+
+      {/* Contenu principal avec parallax */}
+      <motion.div
+        className="relative z-10 container-wide text-center"
+        style={{ y: contentY, opacity }}
+      >
+        {/* Badge animé */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 text-cream/80 text-sm font-medium mb-10"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          L'animation star de vos événements
         </motion.div>
 
-        {/* Titre principal - ÉPURÉ */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight text-dark"
-        >
-          L'expérience{' '}
-          <span className="relative inline-block">
-            <span className="relative z-10 gradient-text">Glambot</span>
-            <span className="absolute bottom-2 left-0 right-0 h-3 bg-primary/20 -z-0" />
-          </span>
-          <br className="hidden sm:block" />
-          <span className="sm:hidden"> </span>
-          pour vos événements
-        </motion.h1>
+        {/* Titre avec animation mot par mot */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7rem] font-bold mb-8 leading-[0.95] tracking-[-0.03em]">
+          <div className="overflow-hidden">
+            <AnimatedWord delay={0.3}>L'expérience</AnimatedWord>
+          </div>
+          <div className="overflow-hidden my-2">
+            <motion.span
+              initial={{ opacity: 0, y: 60, rotateX: -90 }}
+              animate={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+              className="inline-block bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent"
+            >
+              Glambot
+            </motion.span>
+          </div>
+          <div className="overflow-hidden">
+            <AnimatedWord delay={0.7}>ultime</AnimatedWord>
+          </div>
+        </h1>
 
-        {/* Description - SIMPLE */}
+        {/* Sous-titre */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-xl md:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto font-light leading-relaxed"
+          transition={{ duration: 0.8, delay: 1 }}
+          className="text-lg md:text-xl lg:text-2xl text-cream/60 mb-12 max-w-2xl mx-auto font-light leading-relaxed"
         >
-          Des vidéos slow-motion et accélérées cinématographiques qui immortalisent vos moments les plus précieux
+          Des vidéos slow-motion cinématographiques qui
+          <br className="hidden md:block" />
+          immortalisent vos moments les plus précieux
         </motion.p>
 
-        {/* Carousel vidéo scrollable */}
+        {/* CTAs avec effet magnétique */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-12 relative max-w-4xl mx-auto"
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
         >
-          {/* Container avec bordure gradient */}
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary via-primary-dark to-primary p-[3px] shadow-2xl">
-            <div className="relative rounded-3xl overflow-hidden bg-black">
-              {/* Carousel scrollable */}
-              <div
-                ref={scrollContainerRef}
-                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {videos.map((video, index) => (
-                  <div
-                    key={index}
-                    className="flex-shrink-0 w-full snap-center"
-                  >
-                    <div className="relative aspect-square md:aspect-video bg-gray-900">
-                      <video
-                        ref={(el) => { videoRefs.current[index] = el }}
-                        muted
-                        playsInline
-                        preload="none"
-                        poster={`/images/posters/video-${index + 1}-poster.jpg`}
-                        onEnded={() => handleVideoEnded(index)}
-                        width="1920"
-                        height="1080"
-                        className="w-full h-full object-cover"
-                      >
-                        <source src={video} type="video/webm" />
-                      </video>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <MagneticButton href="/contact" variant="primary">
+            Réserver mon événement
+            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          </MagneticButton>
 
-          {/* Indicateurs de vidéo - Barres de progression modernes */}
-          <div className="flex gap-2 justify-center mt-8" role="tablist" aria-label="Sélecteur de vidéo">
-            {videos.map((_, index) => (
-              <div
-                key={index}
-                onClick={() => scrollToVideo(index)}
-                className={`cursor-pointer rounded-full transition-all duration-500 ease-out ${
-                  currentVideo === index
-                    ? 'w-12 h-1.5 bg-primary'
-                    : 'w-8 h-1.5 bg-gray-400 opacity-30 hover:opacity-60'
-                }`}
-                role="tab"
-                aria-label={`Aller à la vidéo ${index + 1} sur ${videos.length}`}
-                aria-selected={currentVideo === index}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    scrollToVideo(index)
-                  }
-                }}
-              />
+          <MagneticButton href="/la-starcam" variant="secondary">
+            <Play size={18} />
+            Découvrir la Starcam
+          </MagneticButton>
+        </motion.div>
+
+        {/* Stats avec compteurs animés */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
+          className="flex justify-center"
+        >
+          <div className="inline-flex items-center gap-10 md:gap-16">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-cream mb-1 tabular-nums">
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={2 + index * 0.3} />
+                </div>
+                <div className="text-xs md:text-sm text-cream/40 uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </div>
             ))}
           </div>
         </motion.div>
+      </motion.div>
 
-        {/* CTA */}
+      {/* Scroll indicator élégant */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 2 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+      >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex justify-center"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-2"
         >
-          <Link href="/contact" className="group px-8 py-4 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 no-underline">
-            Réserver mon événement
-            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-cream/30">Scroll</span>
+          <div className="w-px h-12 bg-gradient-to-b from-cream/30 to-transparent" />
         </motion.div>
-
-        {/* Stats simples */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-16 pt-12 border-t border-gray-200 grid grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto"
-        >
-          <div>
-            <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">500+</div>
-            <div className="text-xs sm:text-sm text-gray-500">Vidéos produites</div>
-          </div>
-          <div>
-            <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">100%</div>
-            <div className="text-xs sm:text-sm text-gray-500">Mémorables</div>
-          </div>
-          <div>
-            <div className="text-xl sm:text-3xl font-bold text-primary mb-1">Instantané</div>
-            <div className="text-xs sm:text-sm text-gray-500">Repartez avec vos vidéos</div>
-          </div>
-        </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }

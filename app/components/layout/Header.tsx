@@ -15,12 +15,10 @@ export default function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
-
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Bloquer le scroll de la page quand le menu mobile est ouvert
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -31,7 +29,6 @@ export default function Header() {
       document.body.style.position = ''
       document.body.style.width = ''
     }
-
     return () => {
       document.body.style.overflow = ''
       document.body.style.position = ''
@@ -58,61 +55,62 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
+          ? 'bg-dark/95 backdrop-blur-strong'
           : 'bg-transparent'
       }`}
     >
-      <nav className={`container-custom transition-all duration-300 ${isScrolled ? 'py-2 md:py-4' : 'py-4'}`}>
+      <nav className={`container-wide transition-all duration-300 ${isScrolled ? 'py-3' : 'py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex-shrink-0">
             <Image
-              src="/Black.png"
+              src="/White.png"
               alt="ForeverMemories"
-              width={375}
-              height={112}
-              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-14 md:h-24' : 'h-20 md:h-24'}`}
+              width={200}
+              height={60}
+              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-14 md:h-16' : 'h-16 md:h-20'}`}
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          <ul className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-medium transition-colors hover:text-primary text-dark"
-              >
-                {link.label}
-              </Link>
+              <li key={link.href}>
+                <Link href={link.href} className="nav-link">
+                  {link.label}
+                </Link>
+              </li>
             ))}
 
-            {/* Menu déroulant Événements */}
-            <div
-              className="relative font-medium transition-colors hover:text-primary text-dark cursor-pointer min-h-[44px] flex items-baseline"
+            {/* Dropdown Événements */}
+            <li
+              className="relative"
               onMouseEnter={() => setIsEventsDropdownOpen(true)}
               onMouseLeave={() => setIsEventsDropdownOpen(false)}
             >
-              <span className="inline-flex items-baseline gap-1">
-                Événements
-                <ChevronDown size={16} className={`transition-transform ${isEventsDropdownOpen ? 'rotate-180' : ''}`} />
-              </span>
+              <button type="button" className="nav-link inline-flex items-center gap-1">
+                <span>Événements</span>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${isEventsDropdownOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
 
               <AnimatePresence>
                 {isEventsDropdownOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-0 mt-2 w-48 py-2 bg-dark-card border border-white/[0.08] rounded-xl shadow-card"
                   >
                     {eventLinks.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className="block px-4 py-3 text-dark hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-b-0"
+                        className="block px-4 py-2.5 text-[14px] text-cream/70 hover:text-cream hover:bg-white/[0.04] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -120,16 +118,22 @@ export default function Header() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
-          </div>
+            </li>
+          </ul>
 
-          {/* CTA Button */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <a href="tel:+33676815953" className="flex items-center space-x-2 transition-colors text-primary hover:text-primary-dark">
-              <Phone size={20} />
-              <span className="font-semibold">06 76 81 59 53</span>
+          {/* CTA Desktop */}
+          <div className="hidden lg:flex items-center gap-5">
+            <a
+              href="tel:+33676815953"
+              className="flex items-center gap-2 text-cream/70 hover:text-cream transition-colors text-[15px]"
+            >
+              <Phone size={16} />
+              <span>06 76 81 59 53</span>
             </a>
-            <Link href="/contact" className="px-6 py-2.5 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-all">
+            <Link
+              href="/contact"
+              className="px-5 py-2.5 bg-primary text-white text-[15px] rounded-full font-medium hover:bg-primary-dark transition-colors"
+            >
               Réserver
             </Link>
           </div>
@@ -137,116 +141,87 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden"
-            aria-label="Toggle menu"
+            className="lg:hidden p-2 text-cream"
+            aria-label="Menu"
           >
-            {isMobileMenuOpen ? (
-              <X size={28} className="text-dark" />
-            ) : (
-              <Menu size={28} className="text-dark" />
-            )}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Menu - Sidebar avec overlay */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <>
-              {/* Overlay sombre */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[1001]"
+                className="lg:hidden fixed inset-0 bg-dark/90 backdrop-blur-sm z-[1001]"
               />
 
-              {/* Menu latéral */}
               <motion.div
                 initial={{ x: '100%' }}
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="lg:hidden fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl z-[1002] flex flex-col"
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="lg:hidden fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-dark-lighter border-l border-white/[0.06] z-[1002] flex flex-col"
               >
-                {/* Header du menu avec X */}
-                <div className="flex items-center justify-end p-4 border-b border-gray-100">
+                <div className="flex items-center justify-end p-4 border-b border-white/[0.06]">
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                    aria-label="Fermer le menu"
+                    className="p-2 text-cream hover:bg-white/5 rounded-lg transition-colors"
                   >
-                    <X size={28} className="text-dark" />
+                    <X size={24} />
                   </button>
                 </div>
 
-                {/* Navigation - zone scrollable */}
-                <div className="flex-1 overflow-y-auto pt-2">
-                  <div className="flex flex-col pb-4">
-                    {navLinks.map((link, index) => (
-                      <motion.div
-                        key={link.href}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 + 0.1 }}
-                      >
-                        <Link
-                          href={link.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="font-semibold text-lg text-dark hover:bg-primary/5 hover:text-primary transition-colors py-4 px-6 border-b border-gray-100 block"
-                        >
-                          {link.label}
-                        </Link>
-                      </motion.div>
-                    ))}
+                <div className="flex-1 overflow-y-auto py-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-6 py-3.5 text-cream text-[16px] font-medium hover:bg-white/[0.04] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
 
-                    {/* Section Événements */}
-                    <div className="px-6 py-3 text-sm font-semibold text-gray-500 border-b border-gray-100">
-                      NOS ÉVÉNEMENTS
-                    </div>
-
-                    {eventLinks.map((link, index) => (
-                      <motion.div
-                        key={link.href}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: (index + navLinks.length) * 0.05 + 0.1 }}
-                      >
-                        <Link
-                          href={link.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="font-medium text-dark hover:bg-primary/5 hover:text-primary transition-colors py-3 px-6 border-b border-gray-100 last:border-b-0 block"
-                        >
-                          {link.label}
-                        </Link>
-                      </motion.div>
-                    ))}
+                  <div className="px-6 py-3 mt-2">
+                    <span className="text-xs font-medium text-cream/40 uppercase tracking-wider">
+                      Événements
+                    </span>
                   </div>
+
+                  {eventLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-6 py-3 text-cream/70 text-[15px] hover:text-cream hover:bg-white/[0.04] transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </div>
 
-                {/* CTA Section - sticky en bas */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="flex-shrink-0 p-6 bg-gradient-to-t from-gray-50 to-transparent border-t border-gray-100"
-                >
+                <div className="p-6 border-t border-white/[0.06]">
                   <a
                     href="tel:+33676815953"
-                    className="flex items-center justify-center space-x-2 text-primary hover:text-primary-dark transition-colors mb-4 py-3 bg-white rounded-xl border-2 border-primary/20"
+                    className="flex items-center justify-center gap-2 w-full py-3 mb-3 text-cream border border-white/10 rounded-xl hover:bg-white/[0.04] transition-colors"
                   >
-                    <Phone size={20} />
-                    <span className="font-semibold">06 76 81 59 53</span>
+                    <Phone size={18} />
+                    <span>06 76 81 59 53</span>
                   </a>
                   <Link
                     href="/contact"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full px-6 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all shadow-lg hover:shadow-xl text-center block"
+                    className="block w-full py-3.5 bg-primary text-white text-center rounded-full font-medium hover:bg-primary-dark transition-colors"
                   >
                     Réserver mon événement
                   </Link>
-                </motion.div>
+                </div>
               </motion.div>
             </>
           )}

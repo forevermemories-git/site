@@ -37,7 +37,7 @@ export default function MagneticButton({ children, className, onClick }: Magneti
       className={cn('relative overflow-hidden group', className)}
     >
       {/* Glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-gold to-primary-rose-gold opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary to-rose opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl" />
 
       {children}
     </motion.button>
