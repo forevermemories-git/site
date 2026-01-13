@@ -493,7 +493,7 @@ export default function AProposPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="tel:+33676815953"
-                  onClick={() => trackConversion('phone_click', 'a-propos')}
+                  onClick={() => trackConversion.phoneClick()}
                   className="group px-8 py-4 bg-white text-dark rounded-full font-semibold hover:bg-cream transition-all flex items-center justify-center gap-2"
                 >
                   <Phone size={20} />
