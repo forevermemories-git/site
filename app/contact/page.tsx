@@ -204,7 +204,7 @@ export default function ContactPage() {
                 title="Téléphone"
                 value="06 76 81 59 53"
                 index={0}
-                onClick={() => trackConversion('phone_click', 'contact')}
+                onClick={() => trackConversion.phoneClick()}
               />
               <ContactCard
                 href="mailto:hello@forevermemories.fr"
@@ -284,7 +284,7 @@ export default function ContactPage() {
                     </p>
                     <a
                       href="tel:+33676815953"
-                      onClick={() => trackConversion('phone_click', 'contact-sidebar')}
+                      onClick={() => trackConversion.phoneClick()}
                       className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full font-semibold hover:shadow-lg hover:shadow-primary/20 transition-all"
                     >
                       <Phone size={20} />

@@ -373,7 +373,7 @@ export default function GlambotSeineMarnePage() {
                   </Link>
                   <a
                     href="tel:+33676815953"
-                    onClick={() => trackConversion('phone_click', 'glambot-77')}
+                    onClick={() => trackConversion.phoneClick()}
                     className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white hover:text-dark transition-all"
                   >
                     06 76 81 59 53
