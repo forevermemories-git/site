@@ -177,7 +177,7 @@ export default function AnniversairesPage() {
               >
                 <span className="text-cream">Un anniversaire dont on parlera</span>
                 <br />
-                <span className="bg-gradient-to-r from-rose via-primary to-primary-light bg-clip-text text-transparent">encore dans 10 ans</span>
+                <span className="gradient-text-full">encore dans 10 ans</span>
               </motion.h1>
 
               <motion.p

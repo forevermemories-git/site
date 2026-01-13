@@ -219,7 +219,7 @@ export default function LaStarcamPage() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1]"
             >
               <span className="text-cream">Qu'est-ce que </span>
-              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">la Starcam</span>
+              <span className="gradient-text-full">la Starcam</span>
               <span className="text-cream"> ?</span>
               <br />
               <span className="text-cream/80 text-3xl md:text-4xl lg:text-5xl">Le robot vidéo qui sublime vos événements</span>

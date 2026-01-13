@@ -162,6 +162,14 @@
     color: transparent;
   }
 
+  /* Texte gradient complet (3 couleurs) */
+  .gradient-text-full {
+    background: linear-gradient(to right, #B85AA6, #9B3B8A, #C17BA8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   /* Boutons */
   .btn-primary {
     padding: 0.875rem 1.75rem;

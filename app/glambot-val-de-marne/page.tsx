@@ -243,7 +243,7 @@ export default function GlambotValDeMarnePage() {
                 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
               >
                 <span className="text-cream">Location </span>
-                <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">Glambot</span>
+                <span className="gradient-text-full">Glambot</span>
                 <span className="text-cream"> dans le Val-de-Marne</span>
               </motion.h1>
 

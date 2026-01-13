@@ -256,7 +256,7 @@ export default function TarifsPage() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1]"
             >
               <span className="text-cream">Nos </span>
-              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">tarifs</span>
+              <span className="gradient-text-full">tarifs</span>
               <span className="text-cream"> et formules</span>
               <br />
               <span className="text-cream/80 text-3xl md:text-4xl">Une offre adaptée à chaque événement</span>

@@ -1,6 +1,13 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+
+  // Fix workspace root detection warning
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   compress: true,
   poweredByHeader: false,
   trailingSlash: false, // Force URLs sans trailing slash

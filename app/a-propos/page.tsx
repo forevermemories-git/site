@@ -82,7 +82,7 @@ function AnimatedStat({ value, suffix, label, index }: {
       className="text-center"
     >
       <div className="text-4xl md:text-5xl font-bold mb-2">
-        <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">
+        <span className="gradient-text-full">
           {value}
         </span>
         {suffix && <span className="text-primary">{suffix}</span>}
@@ -225,7 +225,7 @@ export default function AProposPage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
             >
-              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">Forever Memories</span>
+              <span className="gradient-text-full">Forever Memories</span>
               <br />
               <span className="text-cream">Des souvenirs qui durent</span>
             </motion.h1>

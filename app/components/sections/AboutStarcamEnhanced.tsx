@@ -214,7 +214,7 @@ export default function AboutStarcamEnhanced() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1]"
             >
               <span className="text-cream">La </span>
-              <span className="bg-gradient-to-r from-primary-light via-primary to-rose bg-clip-text text-transparent">Starcam</span>
+              <span className="gradient-text-full">Starcam</span>
             </motion.h2>
 
             <motion.p
