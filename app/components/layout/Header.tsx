@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Menu, X, Phone, ChevronDown } from 'lucide-react'
 
 export default function Header() {
@@ -11,13 +11,12 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isEventsDropdownOpen, setIsEventsDropdownOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  // Scroll suivi via framer-motion (pas de window.addEventListener)
+  const { scrollY } = useScroll()
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const next = latest > 40
+    setIsScrolled((prev) => (prev === next ? prev : next))
+  })
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -53,13 +52,13 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-colors duration-300 ${
         isScrolled
-          ? 'bg-dark/95 backdrop-blur-strong'
-          : 'bg-transparent'
+          ? 'bg-dark/80 backdrop-blur-strong border-b border-white/[0.06]'
+          : 'bg-transparent border-b border-transparent'
       }`}
     >
-      <nav className={`container-wide transition-all duration-300 ${isScrolled ? 'py-3' : 'py-4'}`}>
+      <nav className={`container-wide transition-all duration-300 ${isScrolled ? 'py-2.5' : 'py-4'}`}>
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
@@ -68,13 +67,13 @@ export default function Header() {
               alt="ForeverMemories"
               width={200}
               height={60}
-              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-14 md:h-16' : 'h-16 md:h-20'}`}
+              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-10 md:h-11' : 'h-12 md:h-14'}`}
               priority
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-8">
+          <ul className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className="nav-link">
@@ -132,7 +131,7 @@ export default function Header() {
             </a>
             <Link
               href="/contact"
-              className="px-5 py-2.5 bg-primary text-white text-[15px] rounded-full font-medium hover:bg-primary-dark transition-colors"
+              className="px-5 py-2.5 bg-cream text-dark text-[14px] rounded-full font-semibold hover:bg-white transition-colors active:scale-[0.98]"
             >
               Réserver
             </Link>

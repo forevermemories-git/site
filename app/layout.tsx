@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { DM_Sans } from 'next/font/google'
+import { Bricolage_Grotesque, Geist } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import SmoothScroll from './components/ui/SmoothScroll'
@@ -9,11 +9,20 @@ import Footer from './components/layout/Footer'
 import SkipToContent from './components/ui/SkipToContent'
 import GoogleAnalytics from './components/analytics/GoogleAnalytics'
 
-const dmSans = DM_Sans({
+// Display: grotesque éditorial marqué pour les titres
+const display = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['500', '600', '700', '800'],
   display: 'swap',
-  variable: '--font-dm-sans',
+  variable: '--font-display',
+})
+
+// Texte / UI: grotesque neutre et net
+const sans = Geist({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+  variable: '--font-sans',
 })
 
 export const viewport = {
@@ -99,7 +108,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className={dmSans.variable} suppressHydrationWarning>
+    <html lang="fr" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

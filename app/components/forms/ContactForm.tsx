@@ -1,301 +1,197 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
-import Link from 'next/link'
+import { trackConversion } from '@/app/lib/gtag'
+
+type FieldType = 'text' | 'email' | 'tel' | 'date' | 'select' | 'textarea'
+
+interface FieldConfig {
+  name: string
+  label: string
+  type: FieldType
+  placeholder?: string
+  required?: boolean
+  half?: boolean
+  options?: { value: string; label: string }[]
+}
+
+// Champs définis en data — rendus dynamiquement (pas de markup de formulaire figé)
+const FIELDS: FieldConfig[] = [
+  { name: 'prenom', label: 'Prénom', type: 'text', placeholder: 'Votre prénom', required: true, half: true },
+  { name: 'nom', label: 'Nom', type: 'text', placeholder: 'Votre nom', required: true, half: true },
+  { name: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com', required: true },
+  { name: 'telephone', label: 'Téléphone', type: 'tel', placeholder: '06 00 00 00 00', half: true },
+  { name: 'date', label: 'Date de l’événement', type: 'date', half: true },
+  {
+    name: 'type-evenement',
+    label: 'Type d’événement',
+    type: 'select',
+    required: true,
+    options: [
+      { value: '', label: 'Sélectionnez un type' },
+      { value: 'mariage', label: 'Mariage' },
+      { value: 'corporate', label: 'Événement Corporate' },
+      { value: 'anniversaire', label: 'Anniversaire' },
+      { value: 'gala', label: 'Soirée de Gala' },
+      { value: 'autre', label: 'Autre' },
+    ],
+  },
+  {
+    name: 'message',
+    label: 'Votre message',
+    type: 'textarea',
+    placeholder: 'Parlez-nous de votre événement...',
+    required: true,
+  },
+]
+
+const fieldClasses =
+  'w-full px-4 py-3 bg-dark-card/50 border border-white/10 rounded-xl text-cream placeholder:text-cream/30 focus:ring-2 focus:ring-primary/40 focus:border-primary/40 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+
+type Status = 'idle' | 'loading' | 'success' | 'error'
 
 export default function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const reduce = useReducedMotion()
+  const [status, setStatus] = useState<Status>('idle')
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus('idle')
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const form = event.currentTarget
+    setStatus('loading')
     setErrorMessage('')
 
-    // Stocker la référence au formulaire avant les opérations async
-    const form = e.currentTarget
-    const formData = new FormData(form)
-
-    // Ajouter l'access key Web3Forms
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
-
-    // Vérifier que la clé existe
-    if (!accessKey) {
-      console.error('Web3Forms access key is not configured')
-      setSubmitStatus('error')
-      setErrorMessage('Configuration du formulaire incorrecte. Veuillez contacter l\'administrateur.')
-      setIsSubmitting(false)
-      return
-    }
-
-    formData.append('access_key', accessKey)
+    const payload = new FormData(form)
+    payload.append('access_key', process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? '')
+    payload.append('subject', 'Nouvelle demande - Forever Memories')
+    payload.append('from_name', 'Site Forever Memories')
 
     try {
-      console.log('Sending form to Web3Forms...')
-      console.log('Access key présente:', !!accessKey)
-
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
+        body: payload,
       })
+      const result = await response.json()
 
-      console.log('Response status:', response.status)
-      console.log('Response ok:', response.ok)
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()))
-
-      const responseText = await response.text()
-      console.log('Response text:', responseText)
-
-      const data = JSON.parse(responseText)
-      console.log('Response data:', data)
-
-      if (data.success) {
-        setSubmitStatus('success')
-        // Réinitialiser le formulaire
+      if (result.success) {
+        setStatus('success')
         form.reset()
-
-        // Scroll vers le haut pour voir le message
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        trackConversion.devisClick('contact_form')
       } else {
-        setSubmitStatus('error')
-        setErrorMessage(data.message || 'Une erreur est survenue')
+        setStatus('error')
+        setErrorMessage(result.message || 'Une erreur est survenue. Réessayez.')
       }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      setSubmitStatus('error')
-      setErrorMessage('Erreur de connexion. Veuillez réessayer.')
-    } finally {
-      setIsSubmitting(false)
+    } catch {
+      setStatus('error')
+      setErrorMessage('Impossible d’envoyer votre demande. Vérifiez votre connexion et réessayez.')
     }
   }
 
-  const inputClasses = "w-full px-4 py-3 bg-dark-card/50 border border-white/10 rounded-xl text-cream placeholder:text-cream/30 focus:ring-2 focus:ring-primary/50 focus:border-primary/50 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+  if (status === 'success') {
+    return (
+      <motion.div
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl border border-primary/20 bg-dark-card/50 p-10 text-center"
+      >
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary-light">
+          <CheckCircle size={28} />
+        </div>
+        <h3 className="text-2xl font-semibold text-cream">Demande envoyée</h3>
+        <p className="mx-auto mt-3 max-w-md text-cream/55">
+          Merci, nous revenons vers vous très vite pour parler de votre événement.
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus('idle')}
+          className="btn-secondary mt-8"
+        >
+          Envoyer une autre demande
+        </button>
+      </motion.div>
+    )
+  }
+
+  const isLoading = status === 'loading'
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="relative"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-rose/5 rounded-3xl blur-xl" />
+    <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {FIELDS.map((field) => {
+        const span = field.half ? 'sm:col-span-1' : 'sm:col-span-2'
+        return (
+          <div key={field.name} className={span}>
+            <label htmlFor={field.name} className="mb-2 block text-sm font-medium text-cream/70">
+              {field.label}
+              {field.required && <span className="text-primary-light"> *</span>}
+            </label>
 
-      <div className="relative bg-dark-card/80 backdrop-blur-sm p-8 md:p-10 rounded-3xl border border-white/10">
-        <h2 className="text-3xl font-bold mb-4 text-cream">Demande de devis</h2>
-        <p className="text-cream/50 mb-8">
-          Remplissez ce formulaire et nous vous recontactons sous 24h avec une proposition personnalisée.
-        </p>
-
-        {/* Message de succès */}
-        {submitStatus === 'success' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-start gap-3"
-          >
-            <CheckCircle size={24} className="text-green-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-green-400 mb-1">Message envoyé avec succès !</h3>
-              <p className="text-sm text-green-400/80">
-                Nous avons bien reçu votre demande et vous répondrons sous 24h. Merci pour votre confiance !
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Message d'erreur */}
-        {submitStatus === 'error' && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3"
-          >
-            <AlertCircle size={24} className="text-red-400 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-semibold text-red-400 mb-1">Erreur d'envoi</h3>
-              <p className="text-sm text-red-400/80">
-                {errorMessage || 'Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.'}
-              </p>
-            </div>
-          </motion.div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Champ honeypot anti-spam (caché) */}
-          <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="prenom" className="block text-sm font-medium text-cream/70 mb-2">
-                Prénom *
-              </label>
-              <input
-                type="text"
-                id="prenom"
-                name="prenom"
-                required
-                disabled={isSubmitting}
-                className={inputClasses}
-                placeholder="Votre prénom"
+            {field.type === 'textarea' ? (
+              <textarea
+                id={field.name}
+                name={field.name}
+                rows={5}
+                required={field.required}
+                disabled={isLoading}
+                placeholder={field.placeholder}
+                className={`${fieldClasses} resize-none`}
               />
-            </div>
-            <div>
-              <label htmlFor="nom" className="block text-sm font-medium text-cream/70 mb-2">
-                Nom *
-              </label>
-              <input
-                type="text"
-                id="nom"
-                name="nom"
-                required
-                disabled={isSubmitting}
-                className={inputClasses}
-                placeholder="Votre nom"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-cream/70 mb-2">
-              Email *
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              disabled={isSubmitting}
-              className={inputClasses}
-              placeholder="votre@email.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="telephone" className="block text-sm font-medium text-cream/70 mb-2">
-              Téléphone *
-            </label>
-            <input
-              type="tel"
-              id="telephone"
-              name="telephone"
-              required
-              disabled={isSubmitting}
-              className={inputClasses}
-              placeholder="06 00 00 00 00"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="type-evenement" className="block text-sm font-medium text-cream/70 mb-2">
-              Type d'événement *
-            </label>
-            <select
-              id="type-evenement"
-              name="type-evenement"
-              required
-              disabled={isSubmitting}
-              className={inputClasses}
-            >
-              <option value="">Sélectionnez un type</option>
-              <option value="mariage">Mariage</option>
-              <option value="corporate">Événement Corporate</option>
-              <option value="anniversaire">Anniversaire</option>
-              <option value="gala">Soirée de Gala</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="date" className="block text-sm font-medium text-cream/70 mb-2">
-                Date de l'événement
-              </label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                disabled={isSubmitting}
-                className={inputClasses}
-              />
-            </div>
-            <div>
-              <label htmlFor="lieu" className="block text-sm font-medium text-cream/70 mb-2">
-                Lieu (ville)
-              </label>
-              <input
-                type="text"
-                id="lieu"
-                name="lieu"
-                disabled={isSubmitting}
-                className={inputClasses}
-                placeholder="Paris, Meaux..."
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="invites" className="block text-sm font-medium text-cream/70 mb-2">
-              Nombre d'invités estimé
-            </label>
-            <input
-              type="number"
-              id="invites"
-              name="invites"
-              disabled={isSubmitting}
-              className={inputClasses}
-              placeholder="100"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium text-cream/70 mb-2">
-              Votre message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows={5}
-              disabled={isSubmitting}
-              className={`${inputClasses} resize-none`}
-              placeholder="Décrivez-nous votre projet, vos besoins spécifiques, vos questions..."
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full font-semibold hover:from-primary-dark hover:to-primary transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 size={20} className="animate-spin" />
-                Envoi en cours...
-              </>
+            ) : field.type === 'select' ? (
+              <select
+                id={field.name}
+                name={field.name}
+                required={field.required}
+                disabled={isLoading}
+                defaultValue=""
+                className={`${fieldClasses} [color-scheme:dark]`}
+              >
+                {field.options?.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             ) : (
-              <>
-                Envoyer ma demande
-                <Send size={20} />
-              </>
+              <input
+                id={field.name}
+                name={field.name}
+                type={field.type}
+                required={field.required}
+                disabled={isLoading}
+                placeholder={field.placeholder}
+                className={`${fieldClasses}${field.type === 'date' ? ' [color-scheme:dark]' : ''}`}
+              />
             )}
-          </button>
+          </div>
+        )
+      })}
 
-          <p className="text-sm text-cream/40 text-center">
-            * Champs obligatoires. Vos données sont traitées conformément à notre{' '}
-            <Link href="/politique-confidentialite" className="text-primary hover:underline">
-              politique de confidentialité
-            </Link>
-            .
-          </p>
-        </form>
+      {status === 'error' && (
+        <div
+          role="alert"
+          className="sm:col-span-2 flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-sm text-red-300"
+        >
+          <AlertCircle size={18} className="shrink-0" />
+          {errorMessage}
+        </div>
+      )}
+
+      <div className="sm:col-span-2">
+        <button type="submit" disabled={isLoading} className="btn-primary w-full sm:w-auto">
+          {isLoading ? (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              Envoi en cours
+            </>
+          ) : (
+            <>
+              <Send size={18} />
+              Envoyer ma demande
+            </>
+          )}
+        </button>
       </div>
-    </motion.div>
+    </form>
   )
 }
