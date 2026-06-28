@@ -36,8 +36,8 @@ const events = [
   {
     cls: 'ev-4',
     href: '/galas',
-    src: '/videos/video-corcorans-groupe.webm',
-    poster: '/images/posters/video-corcorans-groupe-poster.jpg',
+    src: '/videos/clips/clip-1.mp4',
+    poster: '/images/posters/clip-1-poster.jpg',
     tag: 'Prestige',
     title: 'Galas & Prestige',
     text: 'Une expérience digne des plus grands tapis rouges.',
