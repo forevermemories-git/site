@@ -18,6 +18,22 @@ export const metadata: Metadata = {
     siteName: 'ForeverMemories',
     locale: 'fr_FR',
     type: 'website',
+    images: [
+      {
+        url: '/og-memory-book.jpg',
+        width: 1200,
+        height: 630,
+        alt: "Memory Book ForeverMemories : livre d'or vidéo et album collaboratif",
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title:
+      "Memory Book : livre d'or vidéo et album collaboratif | ForeverMemories",
+    description:
+      "Un QR code, et vos invités déposent messages vidéo, photos et vidéos. Album collaboratif rangé par ordre chronologique.",
+    images: ['/og-memory-book.jpg'],
   },
 }
 
