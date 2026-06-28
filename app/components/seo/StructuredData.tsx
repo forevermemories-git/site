@@ -4,8 +4,8 @@ export default function StructuredData() {
     "@type": "Organization",
     "name": "ForeverMemories",
     "alternateName": "ForeverMemories Starcam",
-    "url": "https://forevermemories.fr",
-    "logo": "https://forevermemories.fr/images/ForeverMemories-logo.png",
+    "url": "https://www.forevermemories.fr",
+    "logo": "https://www.forevermemories.fr/images/ForeverMemories-logo.png",
     "description": "Location de robot Glambot Starcam professionnel pour événements, mariages et soirées corporate. Vidéos slow-motion Full HD de qualité cinématographique.",
     "address": {
       "@type": "PostalAddress",
@@ -32,7 +32,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Service",
     "serviceType": "Location Robot Glambot Starcam",
-    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
+    "image": "https://www.forevermemories.fr/images/ForeverMemories-logo.png",
     "provider": {
       "@type": "Organization",
       "name": "ForeverMemories"
@@ -44,7 +44,7 @@ export default function StructuredData() {
     "description": "Location de robot Glambot Starcam pour créer des vidéos slow-motion spectaculaires lors de vos événements. Qualité Full HD professionnelle, livraison instantanée + accès en ligne sous 48h.",
     "offers": {
       "@type": "Offer",
-      "url": "https://forevermemories.fr/tarifs",
+      "url": "https://www.forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
       "price": "600",
       "priceCurrency": "EUR",
@@ -57,9 +57,9 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "ForeverMemories",
-    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
-    "@id": "https://forevermemories.fr",
-    "url": "https://forevermemories.fr",
+    "image": "https://www.forevermemories.fr/images/ForeverMemories-logo.png",
+    "@id": "https://www.forevermemories.fr",
+    "url": "https://www.forevermemories.fr",
     "telephone": "+33676815953",
     "priceRange": "€€€",
     "address": {
@@ -86,7 +86,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Location Starcam - Robot Glambot Professionnel",
-    "image": "https://forevermemories.fr/images/ForeverMemories-logo.png",
+    "image": "https://www.forevermemories.fr/images/ForeverMemories-logo.png",
     "description": "Robot Glambot professionnel pour des vidéos slow-motion Full HD spectaculaires. Utilisé lors des plus grandes cérémonies mondiales.",
     "brand": {
       "@type": "Brand",
@@ -99,7 +99,7 @@ export default function StructuredData() {
     },
     "offers": {
       "@type": "Offer",
-      "url": "https://forevermemories.fr/tarifs",
+      "url": "https://www.forevermemories.fr/tarifs",
       "availability": "https://schema.org/InStock",
       "price": "600",
       "priceCurrency": "EUR",
@@ -116,7 +116,7 @@ export default function StructuredData() {
         "@type": "ListItem",
         "position": 1,
         "name": "Accueil",
-        "item": "https://forevermemories.fr"
+        "item": "https://www.forevermemories.fr"
       }
     ]
   }

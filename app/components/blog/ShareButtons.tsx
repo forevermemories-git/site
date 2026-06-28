@@ -10,7 +10,7 @@ interface ShareButtonsProps {
 
 export default function ShareButtons({ title, slug }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
-  const url = `https://forevermemories.fr/blog/${slug}`
+  const url = `https://www.forevermemories.fr/blog/${slug}`
   const encodedTitle = encodeURIComponent(title)
   const encodedUrl = encodeURIComponent(url)
 

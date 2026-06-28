@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Consultez nos conditions générales de vente pour la location de Starcam. Modalités de réservation, annulation, et conditions contractuelles.',
   keywords: ['cgv starcam', 'conditions vente glambot', 'contrat location starcam'],
   alternates: {
-    canonical: 'https://forevermemories.fr/cgv',
+    canonical: 'https://www.forevermemories.fr/cgv',
   },
 }
 

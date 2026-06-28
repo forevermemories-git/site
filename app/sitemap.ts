@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { blogArticles } from './blog/data/articles'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://forevermemories.fr'
+  const baseUrl = 'https://www.forevermemories.fr'
 
   // Pages principales du site
   const mainPages: MetadataRoute.Sitemap = [

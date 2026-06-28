@@ -19,7 +19,7 @@ export function generateSEO({
   type = 'website',
   noindex = false
 }: SEOProps): Metadata {
-  const siteUrl = 'https://forevermemories.fr'
+  const siteUrl = 'https://www.forevermemories.fr'
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl
   const fullImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`
 
@@ -66,7 +66,7 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `https://forevermemories.fr${item.url}`
+      item: `https://www.forevermemories.fr${item.url}`
     }))
   }
 }
@@ -113,7 +113,7 @@ export function generateEventSchema(event: {
         addressCountry: 'FR'
       }
     },
-    image: event.image ? `https://forevermemories.fr${event.image}` : undefined,
+    image: event.image ? `https://www.forevermemories.fr${event.image}` : undefined,
     offers: event.offers
       ? {
           '@type': 'Offer',

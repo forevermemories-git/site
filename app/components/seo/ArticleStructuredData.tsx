@@ -36,7 +36,7 @@ export default function ArticleStructuredData({
   slug
 }: ArticleStructuredDataProps) {
 
-  const url = `https://forevermemories.fr/blog/${slug}`
+  const url = `https://www.forevermemories.fr/blog/${slug}`
   const isoDatePublished = frenchDateToISO(datePublished)
   const isoDateModified = dateModified ? frenchDateToISO(dateModified) : isoDatePublished
 
@@ -52,14 +52,14 @@ export default function ArticleStructuredData({
     "author": {
       "@type": "Organization",
       "name": author,
-      "url": "https://forevermemories.fr"
+      "url": "https://www.forevermemories.fr"
     },
     "publisher": {
       "@type": "Organization",
       "name": "ForeverMemories",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://forevermemories.fr/images/ForeverMemories-logo.png"
+        "url": "https://www.forevermemories.fr/images/ForeverMemories-logo.png"
       }
     },
     "mainEntityOfPage": {
@@ -80,13 +80,13 @@ export default function ArticleStructuredData({
         "@type": "ListItem",
         "position": 1,
         "name": "Accueil",
-        "item": "https://forevermemories.fr"
+        "item": "https://www.forevermemories.fr"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "https://forevermemories.fr/blog"
+        "item": "https://www.forevermemories.fr/blog"
       },
       {
         "@type": "ListItem",

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "Memory Book : livre d'or vidéo et album photo collaboratif | ForeverMemories",
     description:
       "Un QR code événement, trois onglets : Infos, Livre d'or et Album. Vos invités laissent un message vidéo et déposent leurs photos dans un album collaboratif rangé par ordre chronologique.",
-    url: 'https://forevermemories.fr/memory-book',
+    url: 'https://www.forevermemories.fr/memory-book',
     siteName: 'ForeverMemories',
     locale: 'fr_FR',
     type: 'website',

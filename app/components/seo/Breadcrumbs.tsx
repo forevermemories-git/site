@@ -17,13 +17,13 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         "@type": "ListItem",
         "position": 1,
         "name": "Accueil",
-        "item": "https://forevermemories.fr"
+        "item": "https://www.forevermemories.fr"
       },
       ...items.map((item, index) => ({
         "@type": "ListItem",
         "position": index + 2,
         "name": item.name,
-        "item": `https://forevermemories.fr${item.href}`
+        "item": `https://www.forevermemories.fr${item.href}`
       }))
     ]
   }

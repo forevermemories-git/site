@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     'video slow motion evenement',
   ],
   alternates: {
-    canonical: 'https://forevermemories.fr/blog',
+    canonical: 'https://www.forevermemories.fr/blog',
   },
   openGraph: {
     title: 'Blog Forever Memories - Glambot & animation evenementielle',

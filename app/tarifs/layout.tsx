@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   title: 'Tarifs Glambot Starcam : location robot vidéo',
   description:
     "Nos formules Glambot Starcam pour mariages, corporate, anniversaires et galas. Devis personnalisé selon votre événement. Vidéo slow-motion Full HD, galerie en ligne sous 48h.",
-  alternates: { canonical: 'https://forevermemories.fr/tarifs' },
+  alternates: { canonical: 'https://www.forevermemories.fr/tarifs' },
   openGraph: {
     title: 'Tarifs Glambot Starcam : location robot vidéo | ForeverMemories',
     description:
       "Des formules adaptées à votre événement. Devis personnalisé, vidéo slow-motion et galerie 48h.",
-    url: 'https://forevermemories.fr/tarifs',
+    url: 'https://www.forevermemories.fr/tarifs',
     type: 'website',
   },
 }

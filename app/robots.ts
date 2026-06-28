@@ -19,6 +19,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/admin/'],
       },
     ],
-    sitemap: 'https://forevermemories.fr/sitemap.xml',
+    sitemap: 'https://www.forevermemories.fr/sitemap.xml',
   }
 }

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Mentions légales de Forever Memories. Informations sur l\'éditeur, l\'hébergement et les conditions d\'utilisation du site forevermemories.fr.',
   keywords: ['mentions légales', 'informations légales starcam', 'éditeur site'],
   alternates: {
-    canonical: 'https://forevermemories.fr/mentions-legales',
+    canonical: 'https://www.forevermemories.fr/mentions-legales',
   },
 }
 

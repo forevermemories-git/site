@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Notre politique de confidentialité et protection des données personnelles. RGPD, cookies, et utilisation de vos informations par Forever Memories.',
   keywords: ['politique confidentialité', 'rgpd starcam', 'protection données', 'vie privée'],
   alternates: {
-    canonical: 'https://forevermemories.fr/politique-confidentialite',
+    canonical: 'https://www.forevermemories.fr/politique-confidentialite',
   },
 }
 

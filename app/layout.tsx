@@ -66,14 +66,14 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://forevermemories.fr'),
+  metadataBase: new URL('https://www.forevermemories.fr'),
   title: {
     default: 'Starcam by ForeverMemories | Vidéos Glamour Slow-Motion pour Vos Événements',
     template: '%s | ForeverMemories'
   },
   description: 'Location de robot Glambot Starcam pour vos événements. Vidéos slow-motion Full HD pour mariages, corporate et soirées. +500 événements réussis.',
   keywords: ['glambot', 'starcam', 'photobooth', 'vidéo slow-motion', 'événements', 'mariages', 'corporate', 'location glambot', 'robot vidéo', 'slow motion', 'photobooth luxe', 'vidéo Full HD événement', 'memory book', "livre d'or vidéo", "livre d'or audio", 'album photo chronologique', 'album collaboratif événement', 'QR code événement', 'animation mariage Île-de-France'],
-  authors: [{ name: 'ForeverMemories', url: 'https://forevermemories.fr' }],
+  authors: [{ name: 'ForeverMemories', url: 'https://www.forevermemories.fr' }],
   creator: 'ForeverMemories',
   publisher: 'ForeverMemories',
   icons: {
@@ -101,15 +101,15 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://forevermemories.fr',
+    canonical: 'https://www.forevermemories.fr',
     languages: {
-      'fr-FR': 'https://forevermemories.fr',
+      'fr-FR': 'https://www.forevermemories.fr',
     },
   },
   openGraph: {
     title: 'Starcam by ForeverMemories | Robot Glambot Professionnel',
     description: 'Location de robot Glambot Starcam pour des vidéos slow-motion spectaculaires. Plus de 500 événements réussis. Qualité Full HD, livraison instantanée + accès en ligne 48h.',
-    url: 'https://forevermemories.fr',
+    url: 'https://www.forevermemories.fr',
     siteName: 'ForeverMemories',
     locale: 'fr_FR',
     type: 'website',
