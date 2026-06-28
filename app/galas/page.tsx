@@ -1,11 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Crown, Award, Sparkles, Star, CheckCircle, Phone, Shield, Users, Camera, Gem, Trophy } from 'lucide-react'
+import {
+  ArrowRight,
+  Crown,
+  Award,
+  Star,
+  CheckCircle,
+  Phone,
+  Shield,
+  Users,
+  Gem,
+  Trophy,
+  Sparkles,
+  Tv,
+  Clapperboard,
+  Link2,
+} from 'lucide-react'
 import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
-import { useRef } from 'react'
+import MediaController from '@/app/components/home/MediaController'
+import Reveal from '@/app/components/home/Reveal'
+import Showreel from '@/app/components/home/Showreel'
 import { trackConversion } from '@/app/lib/gtag'
 
 const galasFAQs = [
@@ -31,515 +47,437 @@ const galasFAQs = [
   }
 ]
 
-function FeatureCard({ icon, title, description, index }: {
-  icon: React.ReactNode
-  title: string
-  description: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="text-center p-8"
-    >
-      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mx-auto mb-6">
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold mb-3 text-cream">{title}</h3>
-      <p className="text-cream/50 leading-relaxed">{description}</p>
-    </motion.div>
-  )
-}
+const features = [
+  { cls: 'w1', Icon: Crown, title: 'Service White Glove', description: 'Chef de projet dédié, coordination avec vos équipes, répétition technique possible la veille. Rien n\'est laissé au hasard.' },
+  { cls: 'w5', Icon: Award, title: 'Branding sur-mesure', description: 'Vos couleurs, votre logo, votre univers graphique intégrés aux vidéos. Un prolongement parfait de votre identité visuelle.' },
+  { cls: 'w6', Icon: Shield, title: 'Discrétion absolue', description: 'Équipe formée aux codes des événements privés. Confidentialité garantie, matériel et véhicules neutres.' },
+]
 
-function GalaTypeCard({ icon, iconColor, bgColor, title, description, tags, index }: {
-  icon: React.ReactNode
-  iconColor: string
-  bgColor: string
-  title: string
-  description: string
-  tags: { label: string; color: string }[]
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:border-amber-500/30 transition-all"
-    >
-      <div className="flex items-start gap-4 mb-4">
-        <div className={`w-14 h-14 rounded-xl ${bgColor} flex items-center justify-center flex-shrink-0`}>
-          {icon}
-        </div>
-        <div>
-          <h3 className="text-xl font-bold mb-2 text-cream">{title}</h3>
-          <p className="text-cream/50">{description}</p>
-        </div>
-      </div>
-      <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/5">
-        {tags.map((tag, i) => (
-          <span key={i} className={`px-3 py-1 ${tag.color} text-xs rounded-full font-medium`}>
-            {tag.label}
-          </span>
-        ))}
-      </div>
-    </motion.div>
-  )
-}
+const galaTypes = [
+  {
+    cls: 'c1',
+    Icon: Trophy,
+    title: 'Cérémonies de remise de prix',
+    description: 'Trophées sportifs, prix professionnels, awards d\'entreprise... Les lauréats repartent avec une vidéo mémorable.',
+    tags: ['Trophées du Sport', 'Awards Corporate', 'Prix Associatifs'],
+  },
+  {
+    cls: 'c2',
+    Icon: Sparkles,
+    title: 'Galas de charité',
+    description: 'Une animation qui valorise vos donateurs et génère du contenu partageable pour amplifier votre cause.',
+    tags: ['Fondations', 'ONG', 'Associations'],
+  },
+  {
+    cls: 'c4',
+    Icon: Users,
+    title: 'Soirées annuelles & conventions',
+    description: 'Le point d\'orgue de votre année. Une animation premium qui récompense vos équipes.',
+    tags: ['Kick-off', 'Conventions', 'Anniversaires d\'entreprise'],
+  },
+  {
+    cls: 'c3',
+    Icon: Gem,
+    title: 'Événements privés haut de gamme',
+    description: 'Mariages de luxe, anniversaires prestigieux, fêtes privées... Pour ceux qui veulent le meilleur.',
+    tags: ['Mariages Prestige', 'Anniversaires VIP', 'Réceptions Privées'],
+  },
+]
 
-function FAQItem({ question, answer, index }: {
-  question: string
-  answer: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-amber-500/20 transition-all"
-    >
-      <h3 className="text-lg font-semibold mb-3 text-cream">{question}</h3>
-      <p className="text-cream/50 leading-relaxed">{answer}</p>
-    </motion.div>
-  )
-}
+const redCarpet = [
+  { title: 'Tapis rouge premium 6 mètres', desc: 'Avec barrières chromées et poteaux à cordes dorées.' },
+  { title: 'Backdrop personnalisé grand format', desc: 'Imprimé avec votre logo et identité visuelle.' },
+  { title: 'Équipe en tenue de soirée', desc: 'Smoking et robes de soirée pour s\'intégrer parfaitement.' },
+  { title: 'Éclairage professionnel', desc: 'Projecteurs cinéma pour un rendu optimal.' },
+]
+
+const prestigeInclusions = [
+  'Installation tapis rouge complète',
+  'Backdrop personnalisé',
+  '2 opérateurs en tenue de soirée',
+  'Branding vidéo complet',
+  'Galerie privée brandée',
+  'Montage récapitulatif offert',
+]
+
+const liveOptions = [
+  { Icon: Tv, title: 'Projection instantanée', description: 'Les vidéos s\'affichent en temps réel sur vos écrans. Créez un moment de partage collectif.' },
+  { Icon: Clapperboard, title: 'Mosaïque des meilleurs moments', description: 'En fin de soirée, compilation automatique des meilleures vidéos diffusée sur écran.' },
+  { Icon: Link2, title: 'Compatible tous systèmes', description: 'HDMI, réseau, streaming... On s\'adapte à votre infrastructure technique.' },
+]
 
 export default function GalasPage() {
-  const heroRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  })
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-
-  const features = [
-    { icon: <Crown size={36} className="text-amber-500" />, title: 'Service White Glove', description: 'Chef de projet dédié, coordination avec vos équipes, répétition technique possible la veille. Rien n\'est laissé au hasard.' },
-    { icon: <Award size={36} className="text-amber-500" />, title: 'Branding sur-mesure', description: 'Vos couleurs, votre logo, votre univers graphique intégrés aux vidéos. Un prolongement parfait de votre identité visuelle.' },
-    { icon: <Shield size={36} className="text-amber-500" />, title: 'Discrétion absolue', description: 'Équipe formée aux codes des événements privés. Confidentialité garantie, matériel et véhicules neutres.' }
-  ]
-
-  const galaTypes = [
-    {
-      icon: <Trophy size={28} className="text-purple-400" />,
-      iconColor: 'text-purple-400',
-      bgColor: 'bg-gradient-to-br from-purple-500/20 to-purple-600/10',
-      title: 'Cérémonies de remise de prix',
-      description: 'Trophées sportifs, prix professionnels, awards d\'entreprise... Les lauréats repartent avec une vidéo mémorable.',
-      tags: [
-        { label: 'Trophées du Sport', color: 'bg-purple-500/20 text-purple-300' },
-        { label: 'Awards Corporate', color: 'bg-purple-500/20 text-purple-300' },
-        { label: 'Prix Associatifs', color: 'bg-purple-500/20 text-purple-300' }
-      ]
-    },
-    {
-      icon: <Sparkles size={28} className="text-red-400" />,
-      iconColor: 'text-red-400',
-      bgColor: 'bg-gradient-to-br from-red-500/20 to-red-600/10',
-      title: 'Galas de charité',
-      description: 'Une animation qui valorise vos donateurs et génère du contenu partageable pour amplifier votre cause.',
-      tags: [
-        { label: 'Fondations', color: 'bg-red-500/20 text-red-300' },
-        { label: 'ONG', color: 'bg-red-500/20 text-red-300' },
-        { label: 'Associations', color: 'bg-red-500/20 text-red-300' }
-      ]
-    },
-    {
-      icon: <Users size={28} className="text-blue-400" />,
-      iconColor: 'text-blue-400',
-      bgColor: 'bg-gradient-to-br from-blue-500/20 to-blue-600/10',
-      title: 'Soirées annuelles & conventions',
-      description: 'Le point d\'orgue de votre année. Une animation premium qui récompense vos équipes.',
-      tags: [
-        { label: 'Kick-off', color: 'bg-blue-500/20 text-blue-300' },
-        { label: 'Conventions', color: 'bg-blue-500/20 text-blue-300' },
-        { label: 'Anniversaires d\'entreprise', color: 'bg-blue-500/20 text-blue-300' }
-      ]
-    },
-    {
-      icon: <Gem size={28} className="text-amber-400" />,
-      iconColor: 'text-amber-400',
-      bgColor: 'bg-gradient-to-br from-amber-500/20 to-amber-600/10',
-      title: 'Événements privés haut de gamme',
-      description: 'Mariages de luxe, anniversaires prestigieux, fêtes privées... Pour ceux qui veulent le meilleur.',
-      tags: [
-        { label: 'Mariages Prestige', color: 'bg-amber-500/20 text-amber-300' },
-        { label: 'Anniversaires VIP', color: 'bg-amber-500/20 text-amber-300' },
-        { label: 'Réceptions Privées', color: 'bg-amber-500/20 text-amber-300' }
-      ]
-    }
-  ]
-
-  const prestigeInclusions = [
-    'Installation tapis rouge complète',
-    'Backdrop personnalisé',
-    '2 opérateurs en tenue de soirée',
-    'Branding vidéo complet',
-    'Galerie privée brandée',
-    'Montage récapitulatif offert'
-  ]
-
   return (
     <>
       <FAQStructuredData faqs={galasFAQs} />
 
-      <div className="min-h-screen bg-dark">
+      <div className="fm-home overflow-hidden">
         <Breadcrumbs items={[{ name: 'Galas & Prestige', href: '/galas' }]} />
+        <MediaController />
 
-        {/* Hero Section - Luxe */}
-        <section ref={heroRef} className="relative pt-28 md:pt-32 pb-20 md:pb-28 overflow-hidden">
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{ y: backgroundY }}
-          >
-            <div className="absolute top-1/4 -left-32 w-96 h-96 bg-amber-500/10 rounded-full blur-[150px]" />
-            <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-amber-600/10 rounded-full blur-[120px]" />
-          </motion.div>
-
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px'
-          }} />
-
-          <div className="container-wide relative z-10">
-            <motion.div className="text-center max-w-4xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-500/10 backdrop-blur-sm border border-amber-500/20 text-amber-300 text-sm font-medium mb-8"
-              >
-                <Crown size={16} className="text-amber-400" />
-                Prestations de prestige
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-[1.1]"
-              >
-                <span className="text-cream">L'expérience</span>
-                <br />
-                <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-300 bg-clip-text text-transparent">tapis rouge</span>
-                <br />
-                <span className="text-cream">pour vos galas</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-lg md:text-xl text-cream/50 mb-8 max-w-3xl mx-auto leading-relaxed"
-              >
-                Une technologie robotique de pointe pour des vidéos slow-motion spectaculaires. Désormais disponible pour vos événements de prestige.
-              </motion.p>
-
-              {/* Références */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-wrap justify-center gap-6 mb-10 text-sm text-cream/40"
-              >
-                <span className="flex items-center gap-2">
-                  <Trophy size={16} className="text-amber-400" /> Technologie premium
+        {/* Hero */}
+        <section className="fm-hero" id="top">
+          <div className="hero-blob blob1" aria-hidden="true" />
+          <div className="hero-blob blob2" aria-hidden="true" />
+          <div className="wrap hero-grid">
+            <div className="hero-copy">
+              <Reveal>
+                <span className="kicker">
+                  <Crown size={16} fill="#FFC93C" stroke="#B65EAB" aria-hidden="true" />
+                  Prestations de prestige
                 </span>
-                <span className="flex items-center gap-2">
-                  <Star size={16} className="text-amber-400" /> Qualité cinématographique
-                </span>
-                <span className="flex items-center gap-2">
-                  <Gem size={16} className="text-amber-400" /> Galas Fortune 500
-                </span>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
-                <Link
-                  href="/contact"
-                  onClick={() => trackConversion.devisClick('galas_hero')}
-                  className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-dark rounded-full font-semibold hover:from-amber-400 hover:to-amber-500 transition-all flex items-center justify-center gap-2"
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h1>
+                  L&apos;expérience{' '}
+                  <span className="fm-grad-text">tapis rouge</span> pour vos galas
+                </h1>
+              </Reveal>
+              <Reveal delay={0.16}>
+                <p className="lead">
+                  Une technologie robotisée de pointe pour des vidéos slow-motion
+                  spectaculaires. Le glambot gala, pour vos événements de prestige.
+                </p>
+              </Reveal>
+              <Reveal delay={0.24}>
+                <div className="hero-cta">
+                  <Link
+                    href="/contact"
+                    onClick={() => trackConversion.devisClick('galas_hero')}
+                    className="btn btn-primary btn-lg"
+                  >
+                    Demander une proposition
+                    <ArrowRight size={18} aria-hidden="true" />
+                  </Link>
+                  <a
+                    href="tel:+33676815953"
+                    onClick={() => trackConversion.phoneClick()}
+                    className="btn btn-ghost btn-lg"
+                  >
+                    <Phone size={18} aria-hidden="true" />
+                    Appeler directement
+                  </a>
+                </div>
+              </Reveal>
+              <Reveal delay={0.32}>
+                <div
+                  className="text-[#6C6172]"
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '8px', fontSize: '14px' }}
                 >
-                  Demander une proposition
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <a
-                  href="tel:+33676815953"
-                  onClick={() => trackConversion.phoneClick()}
-                  className="px-8 py-4 border border-cream/20 text-cream font-medium hover:border-amber-500/50 hover:text-amber-300 rounded-full transition-all flex items-center justify-center gap-2"
-                >
-                  <Phone size={18} />
-                  Appeler directement
-                </a>
-              </motion.div>
-            </motion.div>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Trophy size={16} color="#FF9F47" aria-hidden="true" /> Technologie premium
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Star size={16} fill="#FFC93C" stroke="none" aria-hidden="true" /> Qualité cinématographique
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Gem size={16} color="#B65EAB" aria-hidden="true" /> Slow-motion tapis rouge
+                  </span>
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.16} className="hero-media">
+              <div className="sticker floaty">Tapis rouge · slow-motion</div>
+              <div className="hm-grid">
+                <div className="hm-frame">
+                  <video
+                    data-fm-vid
+                    src="/videos/video-corcorans-groupe.webm"
+                    poster="/images/posters/video-corcorans-groupe-poster.jpg"
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="Gala de prestige filmé par la Starcam"
+                  />
+                </div>
+                <div className="hm-frame">
+                  <video
+                    data-fm-vid
+                    src="/videos/clips/clip-4.mp4"
+                    poster="/images/posters/clip-4-poster.jpg"
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="Invité filmé en slow-motion sur le tapis rouge"
+                  />
+                </div>
+                <div className="hm-frame">
+                  <video
+                    data-fm-vid
+                    src="/videos/clips/clip-1.mp4"
+                    poster="/images/posters/clip-1-poster.jpg"
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="Invité filmé en slow-motion par la Starcam"
+                  />
+                </div>
+                <div className="hm-frame">
+                  <video
+                    data-fm-vid
+                    src="/videos/video-mp-groupe.webm"
+                    poster="/images/posters/video-mp-groupe-poster.jpg"
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="Soirée de gala filmée par la Starcam"
+                  />
+                </div>
+              </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Ce qui nous différencie */}
-        <section className="py-20 md:py-28 relative overflow-hidden">
-          <div className="container-wide relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
-                Une prestation à la hauteur de <span className="text-amber-400">vos exigences</span>
+        <section className="pad band-sun">
+          <div className="wrap">
+            <Reveal className="sec-head">
+              <span className="eyebrow">Le standard prestige</span>
+              <h2>
+                Une prestation à la hauteur de <span className="em">vos exigences</span>
               </h2>
-              <p className="text-lg text-cream/50 max-w-2xl mx-auto">
-                Pour les événements où chaque détail compte
-              </p>
-            </motion.div>
+              <p>Pour les événements où chaque détail compte.</p>
+            </Reveal>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
-                <FeatureCard key={index} {...feature} index={index} />
+            <div className="why-grid">
+              {features.map(({ cls, Icon, title, description }, i) => (
+                <Reveal key={title} delay={0.08 * i}>
+                  <div className="why-card">
+                    <span className={`why-ico ${cls}`} aria-hidden="true">
+                      <Icon size={26} />
+                    </span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* Types de galas */}
-        <section className="py-20 md:py-28 bg-dark-lighter relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-[200px] pointer-events-none" />
-
-          <div className="container-wide relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
-                Expertise dans tous types de <span className="text-amber-400">galas</span>
+        <section className="pad band-rose">
+          <div className="wrap">
+            <Reveal className="sec-head">
+              <span className="eyebrow">Tous vos galas</span>
+              <h2>
+                Expertise dans tous types de <span className="em">galas</span>
               </h2>
-            </motion.div>
+            </Reveal>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {galaTypes.map((gala, index) => (
-                <GalaTypeCard key={index} {...gala} index={index} />
+            <div className="spec-grid">
+              {galaTypes.map(({ cls, Icon, title, description, tags }, i) => (
+                <Reveal key={title} delay={0.06 * i}>
+                  <div className="cap">
+                    <span className={`cap-ico ${cls}`} aria-hidden="true">
+                      <Icon size={26} />
+                    </span>
+                    <div>
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px' }}>
+                        {tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-[#8E3F84]"
+                            style={{ background: '#FBEFF6', fontSize: '12px', fontWeight: 600, padding: '5px 12px', borderRadius: '999px' }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
+        {/* Showreel partage avec la home */}
+        <Showreel />
+
         {/* L'expérience tapis rouge */}
-        <section className="py-20 md:py-28 relative overflow-hidden">
-          <div className="container-wide relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-medium mb-6"
-                >
-                  <Star size={16} />
-                  L'expérience complète
-                </motion.div>
-
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-cream">
-                  Recréez l'atmosphère des <span className="text-amber-400">plus grandes cérémonies</span>
+        <section className="pad band-peach">
+          <div className="wrap">
+            <div className="how-grid">
+              <Reveal>
+                <span className="eyebrow" style={{ justifyContent: 'flex-start' }}>
+                  L&apos;expérience complète
+                </span>
+                <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', marginBottom: '16px' }}>
+                  Recréez l&apos;atmosphère des{' '}
+                  <span className="em">plus grandes cérémonies</span>
                 </h2>
-
-                <p className="text-lg text-cream/50 mb-8">
-                  Vos invités foulent un véritable tapis rouge, passent devant un mur de marque personnalisé, et repartent avec une vidéo digne des plus grands red carpets.
+                <p style={{ marginBottom: '28px' }}>
+                  Vos invités foulent un véritable tapis rouge, passent devant un
+                  mur de marque personnalisé, et repartent avec une vidéo digne des
+                  plus grands red carpets. Le tout signé{' '}
+                  <Link href="/la-starcam" className="em">la Starcam</Link>.
                 </p>
 
-                <div className="space-y-6">
-                  {[
-                    { title: 'Tapis rouge premium 6 mètres', desc: 'Avec barrières chromées et poteaux à cordes dorées' },
-                    { title: 'Backdrop personnalisé grand format', desc: 'Imprimé avec votre logo et identité visuelle' },
-                    { title: 'Équipe en tenue de soirée', desc: 'Smoking et robes de soirée pour s\'intégrer parfaitement' },
-                    { title: 'Éclairage professionnel', desc: 'Projecteurs cinéma pour un rendu optimal' }
-                  ].map((item, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex items-start gap-4"
-                    >
-                      <CheckCircle size={24} className="text-amber-400 flex-shrink-0 mt-1" />
-                      <div>
-                        <h4 className="font-semibold text-cream">{item.title}</h4>
-                        <p className="text-cream/40 text-sm">{item.desc}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                  {redCarpet.map(({ title, desc }, i) => (
+                    <Reveal key={title} delay={0.08 * i}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+                        <CheckCircle size={24} color="#B65EAB" style={{ flex: 'none', marginTop: '2px' }} aria-hidden="true" />
+                        <div>
+                          <h3 style={{ fontSize: '18px', marginBottom: '4px' }}>{title}</h3>
+                          <p style={{ fontSize: '15px' }}>{desc}</p>
+                        </div>
                       </div>
-                    </motion.div>
+                    </Reveal>
                   ))}
                 </div>
-              </motion.div>
+              </Reveal>
 
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="relative"
-              >
-                <div className="absolute -inset-4 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-3xl blur-2xl opacity-50" />
+              <Reveal delay={0.12}>
+                <div
+                  className="bg-[#FFFBF5] rounded-[32px] p-8 text-center"
+                  style={{ boxShadow: 'var(--shadow-md)' }}
+                >
+                  <span
+                    style={{ display: 'inline-flex', width: '64px', height: '64px', borderRadius: '20px', alignItems: 'center', justifyContent: 'center', background: '#FFF7E0', color: '#B07400', marginBottom: '16px' }}
+                    aria-hidden="true"
+                  >
+                    <Trophy size={32} />
+                  </span>
+                  <h3 style={{ fontSize: '26px', marginBottom: '8px' }}>Formule Prestige</h3>
+                  <p style={{ marginBottom: '24px' }}>
+                    Tout inclus pour une expérience irréprochable.
+                  </p>
 
-                <div className="relative bg-dark-card/80 backdrop-blur-sm border border-amber-500/20 rounded-3xl p-8 text-center">
-                  <div className="text-6xl mb-6">🏆</div>
-                  <h3 className="text-2xl font-bold mb-4 text-cream">Formule Prestige</h3>
-                  <p className="text-cream/40 mb-6">Tout inclus pour une expérience irréprochable</p>
-
-                  <ul className="text-left space-y-3 mb-8">
-                    {prestigeInclusions.map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className="flex items-center gap-2 text-cream/70"
-                      >
-                        <CheckCircle size={18} className="text-amber-400" />
+                  <ul style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px' }}>
+                    {prestigeInclusions.map((item) => (
+                      <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '12px' }} className="text-[#2A2230]">
+                        <CheckCircle size={18} color="#B65EAB" style={{ flex: 'none' }} aria-hidden="true" />
                         {item}
-                      </motion.li>
+                      </li>
                     ))}
                   </ul>
 
                   <Link
                     href="/contact"
                     onClick={() => trackConversion.devisClick('galas_prestige')}
-                    className="block w-full px-6 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-dark rounded-full font-semibold hover:from-amber-400 hover:to-amber-500 transition-all text-center"
+                    className="btn btn-primary btn-lg"
+                    style={{ width: '100%', justifyContent: 'center' }}
                   >
                     Demander un devis Prestige
+                    <ArrowRight size={18} aria-hidden="true" />
                   </Link>
+                  <div style={{ marginTop: '14px' }}>
+                    <Link href="/tarifs" className="em" style={{ fontWeight: 600, fontSize: '14px' }}>
+                      Voir toutes nos formules
+                    </Link>
+                  </div>
                 </div>
-              </motion.div>
+              </Reveal>
             </div>
           </div>
         </section>
 
         {/* Diffusion en direct */}
-        <section className="py-20 md:py-28 bg-dark-lighter relative overflow-hidden">
-          <div className="container-wide relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-cream">
-                Option : diffusion en direct sur <span className="text-amber-400">grand écran</span>
+        <section className="pad band-sky">
+          <div className="wrap">
+            <Reveal className="sec-head">
+              <span className="eyebrow">Option grand écran</span>
+              <h2>
+                Diffusion en direct sur <span className="em">grand écran</span>
               </h2>
-              <p className="text-lg text-cream/50 max-w-3xl mx-auto">
-                Imaginez : vos invités passent devant la Starcam, et quelques secondes plus tard, leur vidéo slow-motion apparaît sur l'écran géant de la salle.
+              <p>
+                Imaginez : vos invités passent devant la Starcam, et quelques
+                secondes plus tard, leur vidéo slow-motion apparaît sur
+                l&apos;écran géant de la salle.
               </p>
-            </motion.div>
+            </Reveal>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              {[
-                { emoji: '📺', title: 'Projection instantanée', description: 'Les vidéos s\'affichent en temps réel sur vos écrans. Créez un moment de partage collectif.' },
-                { emoji: '🎬', title: 'Mosaïque des meilleurs moments', description: 'En fin de soirée, compilation automatique des meilleures vidéos diffusée sur écran.' },
-                { emoji: '🔗', title: 'Compatible tous systèmes', description: 'HDMI, réseau, streaming... On s\'adapte à votre infrastructure technique.' }
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-center p-6 bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-2xl hover:border-amber-500/20 transition-all"
-                >
-                  <div className="text-4xl mb-4">{item.emoji}</div>
-                  <h3 className="font-bold text-lg mb-2 text-cream">{item.title}</h3>
-                  <p className="text-cream/50 text-sm">{item.description}</p>
-                </motion.div>
+            <div className="why-grid">
+              {liveOptions.map(({ Icon, title, description }, i) => (
+                <Reveal key={title} delay={0.08 * i}>
+                  <div className="why-card">
+                    <span className={`why-ico w${i + 1}`} aria-hidden="true">
+                      <Icon size={26} />
+                    </span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* FAQ */}
-        <section className="py-20 md:py-28 relative overflow-hidden">
-          <div className="container-wide relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-cream">
-                Questions <span className="text-amber-400">fréquentes</span>
+        <section className="pad band-rose">
+          <div className="wrap">
+            <Reveal className="sec-head">
+              <span className="eyebrow">Vous vous demandez</span>
+              <h2>
+                Questions <span className="em">fréquentes</span>
               </h2>
-            </motion.div>
+            </Reveal>
 
-            <div className="max-w-4xl mx-auto space-y-4">
-              {galasFAQs.map((faq, index) => (
-                <FAQItem key={index} {...faq} index={index} />
+            <div className="max-w-4xl mx-auto" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {galasFAQs.map((faq, i) => (
+                <Reveal key={faq.question} delay={0.05 * i}>
+                  <div
+                    className="bg-[#FFFBF5] rounded-[26px] p-6"
+                    style={{ boxShadow: 'var(--shadow-sm)' }}
+                  >
+                    <h3 className="text-[#2A2230] text-lg mb-2">{faq.question}</h3>
+                    <p className="text-[#6C6172]">{faq.answer}</p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* CTA Final */}
-        <section className="py-20 md:py-28 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-900/30 via-dark to-amber-800/20" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/15 rounded-full blur-[200px] pointer-events-none" />
-
-          <div className="container-wide relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-center max-w-3xl mx-auto"
-            >
-              <Crown size={48} className="text-amber-400 mx-auto mb-6" />
-
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-cream">
-                Votre gala mérite <span className="text-amber-400">l'excellence</span>
+        <section className="cta-band band-sun">
+          <div className="wrap">
+            <Reveal className="cta-inner">
+              <span className="dotblob cta-d1" aria-hidden="true" />
+              <span className="dotblob cta-d2" aria-hidden="true" />
+              <span
+                style={{ position: 'relative', zIndex: 2, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '18px', background: 'rgba(255,255,255,0.18)', color: '#fff', margin: '0 auto 20px' }}
+                aria-hidden="true"
+              >
+                <Crown size={28} />
+              </span>
+              <h2>
+                Votre gala mérite
+                <br />
+                l&apos;excellence
               </h2>
-
-              <p className="text-lg md:text-xl text-cream/60 mb-10">
-                Discutons de votre projet. Nous vous proposerons une solution sur-mesure.
+              <p>
+                Discutons de votre projet. Nous vous proposerons une solution
+                sur-mesure.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="tel:+33676815953"
-                  onClick={() => trackConversion.phoneClick()}
-                  className="group px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-dark rounded-full font-semibold hover:from-amber-400 hover:to-amber-500 transition-all flex items-center justify-center gap-3"
-                >
-                  <Phone size={20} />
-                  06 76 81 59 53
-                </a>
+              <div className="btn-row">
                 <Link
                   href="/contact"
                   onClick={() => trackConversion.devisClick('galas_cta')}
-                  className="px-8 py-4 border border-cream/20 text-cream rounded-full font-semibold hover:border-amber-500/50 hover:text-amber-300 transition-all"
+                  className="btn btn-white btn-lg"
                 >
                   Demander une proposition
+                  <ArrowRight size={18} aria-hidden="true" stroke="#8E3F84" />
                 </Link>
+                <a
+                  href="tel:+33676815953"
+                  onClick={() => trackConversion.phoneClick()}
+                  className="btn btn-outline btn-lg"
+                >
+                  <Phone size={18} aria-hidden="true" />
+                  06 76 81 59 53
+                </a>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
         </section>
       </div>

@@ -2,183 +2,142 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react'
+import { Instagram, Facebook, Mail } from 'lucide-react'
 import { trackConversion } from '@/app/lib/gtag'
+
+const linkCls =
+  'text-[15px] text-[#6C6172] transition-colors hover:text-[#B65EAB]'
+const socialCls =
+  'flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#5B2A55] shadow-[0_6px_18px_rgba(91,42,85,0.08)] transition-transform hover:-translate-y-0.5'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
-  const navLinks = [
-    { href: '/la-starcam', label: 'La Starcam' },
-    { href: '/tarifs', label: 'Tarifs' },
-    { href: '/a-propos', label: 'À Propos' },
-    { href: '/contact', label: 'Contact' },
-  ]
-
-  const eventLinks = [
-    { href: '/mariages', label: 'Mariages' },
-    { href: '/evenements-corporate', label: 'Événements Corporate' },
-    { href: '/anniversaires', label: 'Anniversaires' },
-    { href: '/galas', label: 'Soirées de Gala' },
-  ]
-
-  const socialLinks = [
-    {
-      href: 'https://www.instagram.com/forevermemories.off/',
-      icon: <Instagram size={22} />,
-      label: 'Instagram'
-    },
-    {
-      href: 'https://www.facebook.com/profile.php?id=61583156844468',
-      icon: <Facebook size={22} />,
-      label: 'Facebook'
-    },
-    {
-      href: 'mailto:hello@forevermemories.fr',
-      icon: <Mail size={22} />,
-      label: 'Email',
-      onClick: () => trackConversion.emailClick()
-    }
-  ]
-
   return (
-    <footer className="bg-dark-lighter border-t border-white/5">
-      <div className="container-wide py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+    <footer
+      className="border-t border-black/[0.08] bg-[#FFFBF5]"
+      style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+    >
+      <div className="mx-auto w-full max-w-[1200px] px-[18px] py-14 min-[560px]:px-6 md:py-16">
+        <div className="grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="inline-block mb-6">
+          <div className="col-span-2 md:col-span-1">
+            <Link
+              href="/"
+              className="mb-4 inline-flex items-center gap-2.5"
+              aria-label="ForeverMemories, accueil"
+            >
               <Image
-                src="/White.png"
+                src="/images/fm-logo-black.png"
                 alt="ForeverMemories"
-                width={200}
-                height={60}
-                className="h-12 w-auto"
+                width={480}
+                height={480}
+                className="h-9 w-auto"
               />
+              <span className="font-display text-[20px] tracking-tight text-[#2A2230]">
+                <b className="font-extrabold">Forever</b>Memories
+              </span>
             </Link>
-            <p className="text-cream-muted mb-6 leading-relaxed">
-              Des vidéos slow-motion et accélérées cinématographiques pour immortaliser vos moments d'exception.
+            <p className="max-w-[300px] text-[15px] text-[#6C6172]">
+              ForeverMemories capture vos événements autrement. La Starcam et le
+              Memory Book, pour des souvenirs qui durent.
             </p>
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('mailto') ? undefined : '_blank'}
-                  rel={social.href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
-                  onClick={social.onClick}
-                  className="w-11 h-11 rounded-xl bg-dark-card border border-white/5 flex items-center justify-center text-cream-muted hover:text-primary-light hover:border-primary/30 transition-all"
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
           </div>
 
-          {/* Navigation */}
+          {/* Produits */}
           <div>
-            <h4 className="text-sm font-semibold text-primary-light uppercase tracking-wider mb-6">
-              Navigation
+            <h4 className="mb-4 text-[13px] font-bold uppercase tracking-[0.1em] text-[#2A2230]">
+              Produits
             </h4>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-cream-muted hover:text-cream transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-2.5">
+              <li><Link href="/la-starcam" className={linkCls}>Starcam</Link></li>
+              <li><Link href="/memory-book" className={linkCls}>Memory Book</Link></li>
+              <li><Link href="/#reel" className={linkCls}>Réalisations</Link></li>
+              <li><Link href="/tarifs" className={linkCls}>Tarifs</Link></li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Événements */}
           <div>
-            <h4 className="text-sm font-semibold text-primary-light uppercase tracking-wider mb-6">
-              Nos Services
+            <h4 className="mb-4 text-[13px] font-bold uppercase tracking-[0.1em] text-[#2A2230]">
+              Événements
             </h4>
-            <ul className="space-y-3">
-              {eventLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-cream-muted hover:text-cream transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-2.5">
+              <li><Link href="/mariages" className={linkCls}>Mariages</Link></li>
+              <li><Link href="/evenements-corporate" className={linkCls}>Corporate</Link></li>
+              <li><Link href="/anniversaires" className={linkCls}>Anniversaires</Link></li>
+              <li><Link href="/galas" className={linkCls}>Galas &amp; Prestige</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-sm font-semibold text-primary-light uppercase tracking-wider mb-6">
+            <h4 className="mb-4 text-[13px] font-bold uppercase tracking-[0.1em] text-[#2A2230]">
               Contact
             </h4>
-            <ul className="space-y-4">
-              <li>
-                <a
-                  href="tel:+33676815953"
-                  onClick={() => trackConversion.phoneClick()}
-                  className="flex items-center gap-3 text-cream-muted hover:text-cream transition-colors group"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-dark-card border border-white/5 flex items-center justify-center text-primary-light group-hover:border-primary/30 transition-all">
-                    <Phone size={18} />
-                  </div>
-                  <span>06 76 81 59 53</span>
-                </a>
-              </li>
+            <ul className="space-y-2.5">
+              <li><Link href="/contact" className={linkCls}>Réserver mon événement</Link></li>
               <li>
                 <a
                   href="mailto:hello@forevermemories.fr"
                   onClick={() => trackConversion.emailClick()}
-                  className="flex items-center gap-3 text-cream-muted hover:text-cream transition-colors group"
+                  className={linkCls}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-dark-card border border-white/5 flex items-center justify-center text-primary-light group-hover:border-primary/30 transition-all">
-                    <Mail size={18} />
-                  </div>
-                  <span className="text-sm">hello@forevermemories.fr</span>
+                  hello@forevermemories.fr
                 </a>
               </li>
-              <li className="flex items-center gap-3 text-cream-muted">
-                <div className="w-10 h-10 rounded-xl bg-dark-card border border-white/5 flex items-center justify-center text-primary-light">
-                  <MapPin size={18} />
-                </div>
-                <span>Île-de-France</span>
+              <li>
+                <a
+                  href="tel:+33676815953"
+                  onClick={() => trackConversion.phoneClick()}
+                  className={linkCls}
+                >
+                  06 76 81 59 53
+                </a>
               </li>
+              <li className="text-[15px] text-[#6C6172]">Île-de-France</li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-white/5 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-cream-muted text-sm">
-              © {currentYear} Forever Memories - Agence ÜMAIN. Tous droits réservés.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm">
-              <Link
-                href="/mentions-legales"
-                className="text-cream-muted hover:text-cream transition-colors"
+        {/* Bottom bar */}
+        <div className="mt-11 flex flex-col items-center justify-between gap-4 border-t border-black/[0.08] pt-6 md:flex-row">
+          <p className="text-[14px] text-[#6C6172]">
+            © {currentYear} Forever Memories - Agence ÜMAIN. Tous droits réservés.
+          </p>
+          <div className="flex items-center gap-5">
+            <div className="flex flex-wrap justify-center gap-4 text-[13px]">
+              <Link href="/mentions-legales" className="text-[#6C6172] transition-colors hover:text-[#B65EAB]">Mentions légales</Link>
+              <Link href="/politique-confidentialite" className="text-[#6C6172] transition-colors hover:text-[#B65EAB]">Confidentialité</Link>
+              <Link href="/cgv" className="text-[#6C6172] transition-colors hover:text-[#B65EAB]">CGV</Link>
+            </div>
+            <div className="flex gap-3">
+              <a
+                href="https://www.instagram.com/forevermemories.off/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className={socialCls}
               >
-                Mentions légales
-              </Link>
-              <Link
-                href="/politique-confidentialite"
-                className="text-cream-muted hover:text-cream transition-colors"
+                <Instagram size={18} />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61583156844468"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className={socialCls}
               >
-                Politique de confidentialité
-              </Link>
-              <Link
-                href="/cgv"
-                className="text-cream-muted hover:text-cream transition-colors"
+                <Facebook size={18} />
+              </a>
+              <a
+                href="mailto:hello@forevermemories.fr"
+                onClick={() => trackConversion.emailClick()}
+                aria-label="Email"
+                className={socialCls}
               >
-                CGV
-              </Link>
+                <Mail size={18} />
+              </a>
             </div>
           </div>
         </div>

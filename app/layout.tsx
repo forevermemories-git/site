@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bricolage_Grotesque, Geist } from 'next/font/google'
+import { Bricolage_Grotesque, Geist, Bungee_Outline, Bungee, Outfit, Newsreader } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import SmoothScroll from './components/ui/SmoothScroll'
@@ -25,11 +25,44 @@ const sans = Geist({
   variable: '--font-sans',
 })
 
+// Outline display: used only by the home marquee band
+const outline = Bungee_Outline({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-outline',
+})
+
+// Solid Bungee: the "fill" words in the home marquee (alternating with the outline ones)
+const bungeeSolid = Bungee({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-bungee',
+})
+
+// Outfit: body/UI font of the validated home mockup (the home must match it)
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  variable: '--font-outfit',
+})
+
+// Newsreader: serif of the Memory Book "Argentique" theme (used in the guest-page mockup)
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-newsreader',
+})
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#0C0C0E',
+  themeColor: '#FFFBF5',
 }
 
 export const metadata: Metadata = {
@@ -39,7 +72,7 @@ export const metadata: Metadata = {
     template: '%s | ForeverMemories'
   },
   description: 'Location de robot Glambot Starcam pour vos événements. Vidéos slow-motion Full HD pour mariages, corporate et soirées. +500 événements réussis.',
-  keywords: ['glambot', 'starcam', 'photobooth', 'vidéo slow-motion', 'événements', 'mariages', 'corporate', 'location glambot', 'robot vidéo', 'slow motion', 'photobooth luxe', 'vidéo Full HD événement'],
+  keywords: ['glambot', 'starcam', 'photobooth', 'vidéo slow-motion', 'événements', 'mariages', 'corporate', 'location glambot', 'robot vidéo', 'slow motion', 'photobooth luxe', 'vidéo Full HD événement', 'memory book', "livre d'or vidéo", "livre d'or audio", 'album photo chronologique', 'album collaboratif événement', 'QR code événement', 'animation mariage Île-de-France'],
   authors: [{ name: 'ForeverMemories', url: 'https://forevermemories.fr' }],
   creator: 'ForeverMemories',
   publisher: 'ForeverMemories',
@@ -108,7 +141,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className={`${sans.variable} ${display.variable}`} suppressHydrationWarning>
+    <html lang="fr" className={`${sans.variable} ${display.variable} ${outline.variable} ${bungeeSolid.variable} ${outfit.variable} ${newsreader.variable}`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

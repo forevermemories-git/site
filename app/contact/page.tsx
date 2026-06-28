@@ -1,12 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Phone, Mail, MapPin, Instagram, Facebook, MessageCircle, Clock, ArrowRight } from 'lucide-react'
+import { Phone, Mail, MapPin, Instagram, Facebook, MessageCircle, ArrowRight, Star } from 'lucide-react'
 import ContactForm from '../components/forms/ContactForm'
 import FAQStructuredData from '@/app/components/seo/FAQStructuredData'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
-import { useRef } from 'react'
+import Reveal from '@/app/components/home/Reveal'
 import { trackConversion } from '@/app/lib/gtag'
 
 const contactFAQs = [
@@ -24,337 +23,273 @@ const contactFAQs = [
   }
 ]
 
-// Contact card component
-function ContactCard({ href, icon, title, value, subtitle, index, onClick }: {
-  href?: string
-  icon: React.ReactNode
-  title: string
-  value: string
-  subtitle?: string
-  index: number
-  onClick?: () => void
-}) {
-  const content = (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="relative group h-full"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+const contactCards = [
+  {
+    href: 'tel:+33676815953',
+    cls: 'w1',
+    Icon: Phone,
+    title: 'Téléphone',
+    value: '06 76 81 59 53',
+    subtitle: 'Du lundi au samedi',
+    onClick: () => trackConversion.phoneClick(),
+  },
+  {
+    href: 'mailto:hello@forevermemories.fr',
+    cls: 'w2',
+    Icon: Mail,
+    title: 'Email',
+    value: 'hello@forevermemories.fr',
+    subtitle: 'Réponse sous 24h',
+    onClick: () => trackConversion.emailClick(),
+  },
+  {
+    cls: 'w4',
+    Icon: MapPin,
+    title: 'Zone d\'intervention',
+    value: 'Île-de-France',
+    subtitle: 'Paris et région parisienne',
+  },
+]
 
-      <div className="relative h-full bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-3xl p-8 group-hover:border-primary/20 transition-all duration-300 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-          {icon}
-        </div>
-        <h3 className="text-lg font-medium mb-2 text-cream/70">{title}</h3>
-        <p className="text-xl md:text-2xl font-bold text-primary mb-1">{value}</p>
-        {subtitle && <p className="text-cream/40 text-sm">{subtitle}</p>}
-      </div>
-    </motion.div>
-  )
+const departments = [
+  'Paris 75', 'Seine-et-Marne 77', 'Yvelines 78', 'Essonne 91',
+  'Hauts-de-Seine 92', 'Seine-Saint-Denis 93', 'Val-de-Marne 94', 'Val-d\'Oise 95',
+]
 
-  if (href) {
-    return (
-      <a href={href} onClick={onClick} className="block h-full">
-        {content}
-      </a>
-    )
-  }
-
-  return content
-}
-
-// Social link component
-function SocialLink({ href, icon, name, handle, index }: {
-  href: string
-  icon: React.ReactNode
-  name: string
-  handle: string
-  index: number
-}) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      whileHover={{ x: 5 }}
-      className="flex items-center gap-4 p-4 bg-dark-card/30 rounded-xl border border-white/5 hover:border-primary/20 transition-all group"
-    >
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <div>
-        <div className="font-semibold text-cream group-hover:text-primary transition-colors">{name}</div>
-        <div className="text-cream/40 text-sm">{handle}</div>
-      </div>
-      <ArrowRight size={18} className="ml-auto text-cream/30 group-hover:text-primary group-hover:translate-x-1 transition-all" />
-    </motion.a>
-  )
-}
-
-// FAQ Item component
-function FAQItem({ question, answer, index }: {
-  question: string
-  answer: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="bg-dark-card/30 backdrop-blur-sm border border-white/5 p-6 rounded-2xl hover:border-primary/20 transition-all"
-    >
-      <h3 className="text-lg font-semibold mb-3 text-cream">{question}</h3>
-      <p className="text-cream/50 leading-relaxed">{answer}</p>
-    </motion.div>
-  )
-}
+const badgeStyle: React.CSSProperties = { boxShadow: 'var(--shadow-sm)' }
+const cardShadow: React.CSSProperties = { boxShadow: 'var(--shadow-sm)' }
 
 export default function ContactPage() {
-  const sectionRef = useRef(null)
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  })
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-
-  const departments = [
-    'Paris 75', 'Seine-et-Marne 77', 'Yvelines 78', 'Essonne 91',
-    'Hauts-de-Seine 92', 'Seine-Saint-Denis 93', 'Val-de-Marne 94', 'Val-d\'Oise 95'
-  ]
-
   return (
-    <>
+    <div className="fm-home overflow-hidden">
       <FAQStructuredData faqs={contactFAQs} />
+      <Breadcrumbs items={[{ name: 'Contact', href: '/contact' }]} />
 
-      <div ref={sectionRef} className="min-h-screen bg-dark">
-        <Breadcrumbs items={[{ name: 'Contact', href: '/contact' }]} />
-
-        {/* Hero Section */}
-        <section className="relative pt-28 md:pt-32 pb-16 md:pb-24 overflow-hidden">
-          {/* Background elements */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none"
-            style={{ y: backgroundY }}
-          >
-            <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px]" />
-            <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px]" />
-          </motion.div>
-
-          {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px'
-          }} />
-
-          <div className="container-wide relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="flex items-center justify-center gap-3 mb-6"
-              >
-                <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-                <span className="text-primary text-sm font-medium uppercase tracking-wider">Contactez-nous</span>
-                <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
-              >
-                <span className="text-cream">Contactez </span>
-                <span className="gradient-text-full">Forever Memories</span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl md:text-2xl text-cream/50 max-w-2xl mx-auto leading-relaxed"
-              >
-                Une question ? Un projet ? Nous vous répondons sous 24h pour concrétiser votre événement d'exception
-              </motion.p>
-            </div>
+      {/* Hero */}
+      <section className="fm-hero">
+        <div className="hero-blob blob1" aria-hidden="true" />
+        <div className="hero-blob blob2" aria-hidden="true" />
+        <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal>
+              <span className="kicker">
+                <Star size={16} fill="#B65EAB" stroke="#B65EAB" aria-hidden="true" />
+                Contactez-nous
+              </span>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h1>
+                Parlons de votre{' '}
+                <span className="fm-grad-text">événement en Île-de-France</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="lead" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                Une question sur la Starcam, le glambot ou le livre d&apos;or vidéo ?
+                Dites-nous tout : on revient vers vous sous 24h avec un devis clair et
+                sans engagement.
+              </p>
+            </Reveal>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Contact Cards */}
-        <section className="py-12 md:py-16">
-          <div className="container-wide">
-            <div className="grid md:grid-cols-3 gap-6">
-              <ContactCard
-                href="tel:+33676815953"
-                icon={<Phone size={28} />}
-                title="Téléphone"
-                value="06 76 81 59 53"
-                index={0}
-                onClick={() => trackConversion.phoneClick()}
-              />
-              <ContactCard
-                href="mailto:hello@forevermemories.fr"
-                icon={<Mail size={28} />}
-                title="Email"
-                value="hello@forevermemories.fr"
-                subtitle="Réponse sous 24h"
-                index={1}
-              />
-              <ContactCard
-                icon={<MapPin size={28} />}
-                title="Localisation"
-                value="Île-de-France"
-                subtitle="Paris et région parisienne"
-                index={2}
-              />
-            </div>
+      {/* Contact cards */}
+      <section className="pad band-rose">
+        <div className="wrap">
+          <div className="why-grid">
+            {contactCards.map(({ href, cls, Icon, title, value, subtitle, onClick }, i) => {
+              const inner = (
+                <div className="why-card" style={{ height: '100%' }}>
+                  <span className={`why-ico ${cls}`} aria-hidden="true">
+                    <Icon size={26} />
+                  </span>
+                  <h3>{title}</h3>
+                  <p style={{ color: '#B65EAB', fontWeight: 700, fontSize: '18px', marginBottom: '4px' }}>
+                    {value}
+                  </p>
+                  {subtitle && <p>{subtitle}</p>}
+                </div>
+              )
+              return (
+                <Reveal key={title} delay={0.06 * i}>
+                  {href ? (
+                    <a href={href} onClick={onClick} style={{ display: 'block', height: '100%' }}>
+                      {inner}
+                    </a>
+                  ) : (
+                    inner
+                  )}
+                </Reveal>
+              )
+            })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Form & Sidebar */}
-        <section className="py-12 md:py-20 bg-dark-lighter relative overflow-hidden">
-          {/* Background glow */}
-          <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
+      {/* Form + sidebar */}
+      <section className="pad" style={{ background: 'var(--tint-cream)' }}>
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">Demande de devis</span>
+            <h2>
+              Racontez-nous <span className="em">votre projet</span>
+            </h2>
+            <p>
+              Mariage, gala, soirée corporate ou anniversaire : décrivez votre date
+              et vos envies, on s&apos;occupe du reste.
+            </p>
+          </Reveal>
 
-          <div className="container-wide relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* Form */}
-              <ContactForm />
+          <div className="proof-grid" style={{ alignItems: 'start' }}>
+            {/* Form */}
+            <Reveal>
+              <div
+                className="rounded-[26px] bg-white p-6 md:p-8"
+                style={{ boxShadow: 'var(--shadow-md)' }}
+              >
+                <ContactForm />
+              </div>
+            </Reveal>
 
-              {/* Sidebar */}
-              <div className="space-y-8">
-                {/* Social Links */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="bg-dark-card/50 backdrop-blur-sm p-8 rounded-3xl border border-white/5"
-                >
-                  <h3 className="text-2xl font-bold mb-6 text-cream">Suivez-nous</h3>
-                  <div className="space-y-4">
-                    <SocialLink
-                      href="https://www.instagram.com/forevermemories.off/"
-                      icon={<Instagram size={24} />}
-                      name="Instagram"
-                      handle="@forevermemories.off"
-                      index={0}
-                    />
-                    <SocialLink
-                      href="https://www.facebook.com/profile.php?id=61583156844468"
-                      icon={<Facebook size={24} />}
-                      name="Facebook"
-                      handle="Forever Memories"
-                      index={1}
-                    />
-                  </div>
-                </motion.div>
-
-                {/* Quick Contact Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-rose/10 rounded-3xl blur-xl" />
-
-                  <div className="relative bg-dark-card/80 backdrop-blur-sm p-8 rounded-3xl border border-white/10">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/30 to-rose/20 flex items-center justify-center mb-4">
-                      <MessageCircle size={24} className="text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-3 text-cream">Besoin d'une réponse rapide ?</h3>
-                    <p className="text-cream/50 mb-6">
-                      Appelez-nous directement pour une réponse immédiate à vos questions.
-                    </p>
+            {/* Sidebar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+              {/* Socials */}
+              <Reveal delay={0.06}>
+                <div className="rounded-[26px] bg-white p-7" style={cardShadow}>
+                  <h3 style={{ fontSize: '20px', marginBottom: '18px' }}>Suivez nos coulisses</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <a
-                      href="tel:+33676815953"
-                      onClick={() => trackConversion.phoneClick()}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-full font-semibold hover:shadow-lg hover:shadow-primary/20 transition-all"
+                      href="https://www.instagram.com/forevermemories.off/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-2xl bg-[#FBEFF6] p-4 transition-transform hover:-translate-y-0.5"
+                      style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
                     >
-                      <Phone size={20} />
-                      06 76 81 59 53
+                      <span className="why-ico w1" aria-hidden="true" style={{ width: 46, height: 46 }}>
+                        <Instagram size={22} />
+                      </span>
+                      <span style={{ display: 'block' }}>
+                        <span className="font-semibold text-[#2A2230]" style={{ display: 'block' }}>Instagram</span>
+                        <span className="text-sm text-[#6C6172]" style={{ display: 'block' }}>@forevermemories.off</span>
+                      </span>
+                      <ArrowRight size={18} className="text-[#B65EAB]" aria-hidden="true" style={{ marginLeft: 'auto' }} />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/profile.php?id=61583156844468"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-2xl bg-[#EEF4FB] p-4 transition-transform hover:-translate-y-0.5"
+                      style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
+                    >
+                      <span className="why-ico w4" aria-hidden="true" style={{ width: 46, height: 46 }}>
+                        <Facebook size={22} />
+                      </span>
+                      <span style={{ display: 'block' }}>
+                        <span className="font-semibold text-[#2A2230]" style={{ display: 'block' }}>Facebook</span>
+                        <span className="text-sm text-[#6C6172]" style={{ display: 'block' }}>Forever Memories</span>
+                      </span>
+                      <ArrowRight size={18} className="text-[#B65EAB]" aria-hidden="true" style={{ marginLeft: 'auto' }} />
                     </a>
                   </div>
-                </motion.div>
+                </div>
+              </Reveal>
 
-                {/* Zone d'intervention */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="bg-dark-card/50 backdrop-blur-sm p-8 rounded-3xl border border-white/5"
+              {/* Quick contact */}
+              <Reveal delay={0.12}>
+                <div
+                  className="cta-inner"
+                  style={{ borderRadius: '26px', padding: '34px 30px', textAlign: 'left' }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <MapPin size={20} className="text-primary" />
-                    <h3 className="text-xl font-bold text-cream">Zone d'intervention</h3>
-                  </div>
-                  <p className="text-cream/50 mb-6">
-                    Nous intervenons dans toute l'Île-de-France sans frais de déplacement supplémentaires :
+                  <span
+                    className="relative z-10 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl"
+                    style={{ background: 'rgba(255,255,255,0.18)', color: '#fff' }}
+                    aria-hidden="true"
+                  >
+                    <MessageCircle size={24} />
+                  </span>
+                  <h3 className="relative z-10" style={{ color: '#fff', fontSize: '22px', marginBottom: '8px' }}>
+                    Besoin d&apos;une réponse rapide ?
+                  </h3>
+                  <p className="relative z-10" style={{ color: 'rgba(255,255,255,0.92)', marginBottom: '20px' }}>
+                    Appelez-nous directement, on adore parler événements.
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {departments.map((dept, index) => (
-                      <motion.span
+                  <a
+                    href="tel:+33676815953"
+                    onClick={() => trackConversion.phoneClick()}
+                    className="btn btn-white relative z-10"
+                  >
+                    <Phone size={18} aria-hidden="true" stroke="#8E3F84" />
+                    06 76 81 59 53
+                  </a>
+                </div>
+              </Reveal>
+
+              {/* Zone d'intervention */}
+              <Reveal delay={0.18}>
+                <div className="rounded-[26px] bg-white p-7" style={cardShadow}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                    <MapPin size={20} aria-hidden="true" color="#B65EAB" />
+                    <h3 style={{ fontSize: '20px' }}>Zone d&apos;intervention</h3>
+                  </div>
+                  <p style={{ marginBottom: '16px' }}>
+                    Nous couvrons toute l&apos;Île-de-France, sans frais de déplacement
+                    supplémentaires :
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {departments.map((dept) => (
+                      <span
                         key={dept}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.2, delay: index * 0.03 }}
-                        className="px-3 py-1.5 bg-dark-card/50 border border-white/10 text-cream/60 rounded-full text-sm hover:border-primary/30 hover:text-primary transition-all"
+                        className="rounded-full bg-[#FFFBF5] px-3 py-1.5 text-sm font-medium text-[#5B2A55]"
+                        style={badgeStyle}
                       >
                         {dept}
-                      </motion.span>
+                      </span>
                     ))}
                   </div>
-                </motion.div>
-              </div>
+                </div>
+              </Reveal>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* FAQ Section */}
-        <section className="py-20 md:py-32 relative overflow-hidden">
-          {/* Background */}
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose/10 rounded-full blur-[150px]" />
+      {/* FAQ */}
+      <section className="pad band-mint">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">Avant de réserver</span>
+            <h2>
+              Questions <span className="em">fréquentes</span>
+            </h2>
+          </Reveal>
 
-          <div className="container-wide relative z-10">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <motion.h2
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="text-3xl md:text-5xl font-bold text-cream"
-                >
-                  Questions <span className="gradient-text">fréquentes</span>
-                </motion.h2>
-              </div>
-
-              <div className="space-y-4">
-                {contactFAQs.map((faq, index) => (
-                  <FAQItem key={index} question={faq.question} answer={faq.answer} index={index} />
-                ))}
-              </div>
-            </div>
+          <div className="mx-auto max-w-3xl" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {contactFAQs.map((faq, i) => (
+              <Reveal key={faq.question} delay={0.06 * i}>
+                <div className="rounded-[22px] bg-white p-6 md:p-7" style={cardShadow}>
+                  <h3 style={{ fontSize: '19px', marginBottom: '8px' }}>{faq.question}</h3>
+                  <p>{faq.answer}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        </section>
-      </div>
-    </>
+
+          <Reveal delay={0.18}>
+            <p className="text-center" style={{ marginTop: '34px', fontSize: '15px' }}>
+              Envie d&apos;en voir plus avant de nous écrire ? Découvrez{' '}
+              <Link href="/la-starcam" className="em" style={{ fontWeight: 600 }}>
+                la Starcam
+              </Link>{' '}
+              ou le{' '}
+              <Link href="/memory-book" className="em" style={{ fontWeight: 600 }}>
+                livre d&apos;or vidéo
+              </Link>
+              .
+            </p>
+          </Reveal>
+        </div>
+      </section>
+    </div>
   )
 }

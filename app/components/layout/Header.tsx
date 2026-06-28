@@ -4,12 +4,21 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { Menu, X, Phone, ChevronDown } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
+
+// Site-wide light navbar (whole site is now the "Confetti" light theme).
+// 4 links + Réserver, matching the validated mockup structure, but pointing
+// to the real key pages for SEO internal-linking + cross-page navigation.
+const siteNav = [
+  { href: '/la-starcam', label: 'La Starcam' },
+  { href: '/memory-book', label: 'Memory Book' },
+  { href: '/#reel', label: 'Réalisations' },
+  { href: '/tarifs', label: 'Tarifs' },
+]
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isEventsDropdownOpen, setIsEventsDropdownOpen] = useState(false)
 
   // Scroll suivi via framer-motion (pas de window.addEventListener)
   const { scrollY } = useScroll()
@@ -35,103 +44,54 @@ export default function Header() {
     }
   }, [isMobileMenuOpen])
 
-  const navLinks = [
-    { href: '/la-starcam', label: 'La Starcam' },
-    { href: '/tarifs', label: 'Formules' },
-    { href: '/a-propos', label: 'À propos' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
-  ]
-
-  const eventLinks = [
-    { href: '/mariages', label: 'Mariages' },
-    { href: '/evenements-corporate', label: 'Corporate' },
-    { href: '/anniversaires', label: 'Anniversaires' },
-    { href: '/galas', label: 'Galas' },
-  ]
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[1000] transition-colors duration-300 ${
         isScrolled
-          ? 'bg-dark/80 backdrop-blur-strong border-b border-white/[0.06]'
+          ? 'bg-[#FFFBF5]/85 backdrop-blur-strong border-b border-black/[0.08]'
           : 'bg-transparent border-b border-transparent'
       }`}
     >
-      <nav className={`container-wide transition-all duration-300 ${isScrolled ? 'py-2.5' : 'py-4'}`}>
+      <nav
+        style={{ fontFamily: 'var(--font-outfit), system-ui, sans-serif' }}
+        className={`mx-auto w-full max-w-[1200px] px-[18px] transition-all duration-300 min-[560px]:px-6 ${isScrolled ? 'py-2.5' : 'py-4'}`}
+      >
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          <Link href="/" className="flex flex-shrink-0 items-center gap-2.5" aria-label="ForeverMemories, accueil">
             <Image
-              src="/White.png"
+              src="/images/fm-logo-black.png"
               alt="ForeverMemories"
-              width={200}
-              height={60}
-              className={`w-auto transition-all duration-300 ${isScrolled ? 'h-10 md:h-11' : 'h-12 md:h-14'}`}
+              width={480}
+              height={480}
+              className="h-9 w-auto"
               priority
             />
+            <span className="font-display text-[20px] tracking-tight text-[#2A2230]">
+              <b className="font-extrabold">Forever</b>Memories
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => (
+          <ul className="hidden items-center gap-[30px] lg:flex">
+            {siteNav.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="nav-link">
+                <Link
+                  href={link.href}
+                  className="inline-flex items-center text-[15px] font-medium leading-none text-[#6C6172] transition-colors hover:text-[#B65EAB]"
+                >
                   {link.label}
                 </Link>
               </li>
             ))}
-
-            {/* Dropdown Événements */}
-            <li
-              className="relative"
-              onMouseEnter={() => setIsEventsDropdownOpen(true)}
-              onMouseLeave={() => setIsEventsDropdownOpen(false)}
-            >
-              <button type="button" className="nav-link inline-flex items-center gap-1">
-                <span>Événements</span>
-                <ChevronDown
-                  size={14}
-                  className={`transition-transform duration-200 ${isEventsDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-
-              <AnimatePresence>
-                {isEventsDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-2 w-48 py-2 bg-dark-card border border-white/[0.08] rounded-xl shadow-card"
-                  >
-                    {eventLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block px-4 py-2.5 text-[14px] text-cream/70 hover:text-cream hover:bg-white/[0.04] transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </li>
           </ul>
 
           {/* CTA Desktop */}
-          <div className="hidden lg:flex items-center gap-5">
-            <a
-              href="tel:+33676815953"
-              className="flex items-center gap-2 text-cream/70 hover:text-cream transition-colors text-[15px]"
-            >
-              <Phone size={16} />
-              <span>06 76 81 59 53</span>
-            </a>
+          <div className="hidden lg:flex">
             <Link
               href="/contact"
-              className="px-5 py-2.5 bg-cream text-dark text-[14px] rounded-full font-semibold hover:bg-white transition-colors active:scale-[0.98]"
+              className="inline-flex items-center rounded-full px-[22px] py-[11px] text-[15px] font-semibold leading-none text-white transition-transform hover:-translate-y-0.5"
+              style={{ background: 'var(--fm-grad)' }}
             >
               Réserver
             </Link>
@@ -140,7 +100,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-cream"
+            className="p-2 text-[#2A2230] lg:hidden"
             aria-label="Menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -156,7 +116,7 @@ export default function Header() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="lg:hidden fixed inset-0 bg-dark/90 backdrop-blur-sm z-[1001]"
+                className="fixed inset-0 z-[1001] bg-[#2A2230]/30 backdrop-blur-sm lg:hidden"
               />
 
               <motion.div
@@ -164,59 +124,37 @@ export default function Header() {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'tween', duration: 0.3 }}
-                className="lg:hidden fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-dark-lighter border-l border-white/[0.06] z-[1002] flex flex-col"
+                className="fixed bottom-0 right-0 top-0 z-[1002] flex w-[80%] max-w-sm flex-col border-l border-black/[0.06] bg-[#FFFBF5] lg:hidden"
               >
-                <div className="flex items-center justify-end p-4 border-b border-white/[0.06]">
+                <div className="flex items-center justify-end border-b border-black/[0.06] p-4">
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="p-2 text-cream hover:bg-white/5 rounded-lg transition-colors"
+                    className="rounded-lg p-2 text-[#2A2230] transition-colors hover:bg-black/[0.04]"
+                    aria-label="Fermer le menu"
                   >
                     <X size={24} />
                   </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto py-4">
-                  {navLinks.map((link) => (
+                  {siteNav.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-6 py-3.5 text-cream text-[16px] font-medium hover:bg-white/[0.04] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-
-                  <div className="px-6 py-3 mt-2">
-                    <span className="text-xs font-medium text-cream/40 uppercase tracking-wider">
-                      Événements
-                    </span>
-                  </div>
-
-                  {eventLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block px-6 py-3 text-cream/70 text-[15px] hover:text-cream hover:bg-white/[0.04] transition-colors"
+                      className="block px-6 py-3.5 text-[16px] font-medium text-[#2A2230] transition-colors hover:bg-black/[0.04]"
                     >
                       {link.label}
                     </Link>
                   ))}
                 </div>
 
-                <div className="p-6 border-t border-white/[0.06]">
-                  <a
-                    href="tel:+33676815953"
-                    className="flex items-center justify-center gap-2 w-full py-3 mb-3 text-cream border border-white/10 rounded-xl hover:bg-white/[0.04] transition-colors"
-                  >
-                    <Phone size={18} />
-                    <span>06 76 81 59 53</span>
-                  </a>
+                <div className="border-t border-black/[0.06] p-6">
                   <Link
                     href="/contact"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full py-3.5 bg-primary text-white text-center rounded-full font-medium hover:bg-primary-dark transition-colors"
+                    className="block w-full rounded-full py-3.5 text-center font-semibold text-white"
+                    style={{ background: 'var(--fm-grad)' }}
                   >
                     Réserver mon événement
                   </Link>

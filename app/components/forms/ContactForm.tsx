@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
 import { trackConversion } from '@/app/lib/gtag'
@@ -17,7 +17,7 @@ interface FieldConfig {
   options?: { value: string; label: string }[]
 }
 
-// Champs définis en data — rendus dynamiquement (pas de markup de formulaire figé)
+// Champs definis en data, rendus dynamiquement (pas de markup de formulaire fige)
 const FIELDS: FieldConfig[] = [
   { name: 'prenom', label: 'Prénom', type: 'text', placeholder: 'Votre prénom', required: true, half: true },
   { name: 'nom', label: 'Nom', type: 'text', placeholder: 'Votre nom', required: true, half: true },
@@ -25,10 +25,24 @@ const FIELDS: FieldConfig[] = [
   { name: 'telephone', label: 'Téléphone', type: 'tel', placeholder: '06 00 00 00 00', half: true },
   { name: 'date', label: 'Date de l’événement', type: 'date', half: true },
   {
+    name: 'produit',
+    label: 'Quel produit ?',
+    type: 'select',
+    required: true,
+    half: true,
+    options: [
+      { value: '', label: 'Sélectionnez' },
+      { value: 'starcam', label: 'La Starcam' },
+      { value: 'memory-book', label: 'Le Memory Book' },
+      { value: 'les-deux', label: 'Les deux' },
+    ],
+  },
+  {
     name: 'type-evenement',
     label: 'Type d’événement',
     type: 'select',
     required: true,
+    half: true,
     options: [
       { value: '', label: 'Sélectionnez un type' },
       { value: 'mariage', label: 'Mariage' },
@@ -48,7 +62,7 @@ const FIELDS: FieldConfig[] = [
 ]
 
 const fieldClasses =
-  'w-full px-4 py-3 bg-dark-card/50 border border-white/10 rounded-xl text-cream placeholder:text-cream/30 focus:ring-2 focus:ring-primary/40 focus:border-primary/40 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+  'w-full px-4 py-3 bg-[#FFFBF5] border border-[rgba(42,34,48,0.16)] rounded-xl text-[#2A2230] placeholder:text-[#6C6172] focus:border-[#B65EAB] focus:ring-2 focus:ring-[#B65EAB]/35 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -56,6 +70,15 @@ export default function ContactForm() {
   const reduce = useReducedMotion()
   const [status, setStatus] = useState<Status>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  // Préremplissage du produit depuis l'URL (ex: /contact?produit=starcam depuis la page Tarifs)
+  const [produit, setProduit] = useState('')
+
+  useEffect(() => {
+    try {
+      const p = new URLSearchParams(window.location.search).get('produit')
+      if (p && ['starcam', 'memory-book', 'les-deux'].includes(p)) setProduit(p)
+    } catch {}
+  }, [])
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -94,19 +117,23 @@ export default function ContactForm() {
       <motion.div
         initial={reduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl border border-primary/20 bg-dark-card/50 p-10 text-center"
+        className="rounded-2xl border border-[rgba(42,34,48,0.10)] bg-white p-10 text-center"
+        style={{ boxShadow: 'var(--shadow-md)' }}
       >
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary-light">
+        <div
+          className="mx-auto mb-5 h-14 w-14 rounded-full bg-[#FBEFF6] text-[#B65EAB]"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
           <CheckCircle size={28} />
         </div>
-        <h3 className="text-2xl font-semibold text-cream">Demande envoyée</h3>
-        <p className="mx-auto mt-3 max-w-md text-cream/55">
+        <h3 className="text-2xl font-semibold text-[#2A2230]">Demande envoyée</h3>
+        <p className="mx-auto mt-3 max-w-md text-[#6C6172]">
           Merci, nous revenons vers vous très vite pour parler de votre événement.
         </p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
-          className="btn-secondary mt-8"
+          className="btn btn-ghost mt-8"
         >
           Envoyer une autre demande
         </button>
@@ -117,14 +144,21 @@ export default function ContactForm() {
   const isLoading = status === 'loading'
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '18px' }}
+    >
       {FIELDS.map((field) => {
-        const span = field.half ? 'sm:col-span-1' : 'sm:col-span-2'
         return (
-          <div key={field.name} className={span}>
-            <label htmlFor={field.name} className="mb-2 block text-sm font-medium text-cream/70">
+          <div key={field.name} style={field.half ? undefined : { gridColumn: '1 / -1' }}>
+            <label
+              htmlFor={field.name}
+              className="mb-2 text-sm font-medium text-[#5B2A55]"
+              style={{ display: 'block' }}
+            >
               {field.label}
-              {field.required && <span className="text-primary-light"> *</span>}
+              {field.required && <span className="text-[#B65EAB]"> *</span>}
             </label>
 
             {field.type === 'textarea' ? (
@@ -143,8 +177,10 @@ export default function ContactForm() {
                 name={field.name}
                 required={field.required}
                 disabled={isLoading}
-                defaultValue=""
-                className={`${fieldClasses} [color-scheme:dark]`}
+                {...(field.name === 'produit'
+                  ? { value: produit, onChange: (e: React.ChangeEvent<HTMLSelectElement>) => setProduit(e.target.value) }
+                  : { defaultValue: '' })}
+                className={`${fieldClasses} [color-scheme:light]`}
               >
                 {field.options?.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -160,7 +196,7 @@ export default function ContactForm() {
                 required={field.required}
                 disabled={isLoading}
                 placeholder={field.placeholder}
-                className={`${fieldClasses}${field.type === 'date' ? ' [color-scheme:dark]' : ''}`}
+                className={`${fieldClasses}${field.type === 'date' ? ' [color-scheme:light]' : ''}`}
               />
             )}
           </div>
@@ -170,15 +206,16 @@ export default function ContactForm() {
       {status === 'error' && (
         <div
           role="alert"
-          className="sm:col-span-2 flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/[0.06] px-4 py-3 text-sm text-red-300"
+          className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700"
+          style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', gap: '8px' }}
         >
-          <AlertCircle size={18} className="shrink-0" />
+          <AlertCircle size={18} style={{ flex: 'none' }} />
           {errorMessage}
         </div>
       )}
 
-      <div className="sm:col-span-2">
-        <button type="submit" disabled={isLoading} className="btn-primary w-full sm:w-auto">
+      <div style={{ gridColumn: '1 / -1' }}>
+        <button type="submit" disabled={isLoading} className="btn btn-primary w-full sm:w-auto">
           {isLoading ? (
             <>
               <Loader2 size={18} className="animate-spin" />

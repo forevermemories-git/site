@@ -66,7 +66,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
       />
       <ReadingProgressBar />
 
-      <div className="min-h-screen bg-dark">
+      <div className="fm-home overflow-hidden">
         {/* Breadcrumbs */}
         <Breadcrumbs
           items={[
@@ -75,101 +75,98 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           ]}
         />
 
-        {/* Hero Section */}
-        <section className="relative pt-28 md:pt-32 pb-12 px-4 md:px-8">
-          {/* Background glow */}
-          <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px] pointer-events-none" />
-          <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px] pointer-events-none" />
-
-          <div className="max-w-4xl mx-auto relative z-10">
-            {/* Back Button */}
+        {/* Hero */}
+        <section className="relative px-4 pb-10 pt-28 md:px-8 md:pt-32">
+          <div className="hero-blob blob1" aria-hidden="true" />
+          <div className="relative z-10 mx-auto max-w-[760px]">
+            {/* Retour */}
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-cream/60 hover:text-primary transition-colors mb-8 group"
+              className="group/back mb-8 inline-flex items-center gap-2 text-sm font-medium !text-[#6C6172] transition-colors hover:!text-[#8E3F84]"
             >
-              <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium">Retour au blog</span>
+              <ArrowLeft size={18} aria-hidden="true" className="transition-transform group-hover/back:-translate-x-1" />
+              Retour au blog
             </Link>
 
-            {/* Category Badge */}
-            <div className="mb-6">
-              <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light text-sm font-semibold rounded-full uppercase tracking-wider">
-                {article.emoji} {article.category}
+            {/* Categorie */}
+            <div className="mb-6 flex flex-wrap items-center gap-3">
+              <span className="inline-block rounded-full bg-[#FBEFF6] px-4 py-1.5 text-sm font-semibold uppercase tracking-wide text-[#8E3F84]">
+                {article.category}
               </span>
               {article.badge && (
-                <span className="ml-3 inline-block px-4 py-1.5 bg-primary text-white text-sm font-semibold rounded-full">
+                <span className="inline-block rounded-full px-4 py-1.5 text-sm font-semibold text-white" style={{ background: 'var(--fm-grad)' }}>
                   {article.badge}
                 </span>
               )}
             </div>
 
-            {/* Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-cream leading-tight">
+            {/* Titre */}
+            <h1 className="mb-6 text-[clamp(34px,5.2vw,52px)] leading-[1.05] text-[#2A2230]">
               {article.title}
             </h1>
 
-            {/* Excerpt */}
-            <p className="text-xl md:text-2xl text-cream/60 mb-8 leading-relaxed font-light">
+            {/* Chapo */}
+            <p className="mb-8 text-xl leading-relaxed text-[#6C6172] md:text-2xl">
               {article.excerpt}
             </p>
 
-            {/* Meta Info */}
-            <div className="flex flex-wrap items-center gap-6 py-6 border-y border-white/10">
+            {/* Meta */}
+            <div className="flex flex-wrap items-center gap-6 border-y border-[rgba(42,34,48,0.10)] py-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full font-bold text-lg text-white" style={{ background: 'var(--fm-grad)' }}>
                   FM
                 </div>
                 <div>
-                  <div className="font-semibold text-cream">{article.author}</div>
-                  <div className="text-sm text-cream/50">Content Specialist</div>
+                  <div className="font-semibold text-[#2A2230]">{article.author}</div>
+                  <div className="text-sm text-[#6C6172]">Equipe editoriale</div>
                 </div>
               </div>
-              <div className="h-8 w-px bg-white/10 hidden md:block" />
-              <div className="flex items-center gap-2 text-cream/60">
-                <Clock size={18} />
+              <div className="hidden h-8 w-px bg-[rgba(42,34,48,0.10)] md:block" />
+              <div className="flex items-center gap-2 text-[#6C6172]">
+                <Clock size={18} aria-hidden="true" />
                 <span className="text-sm font-medium">{article.readTime} de lecture</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Main Content with Sidebar */}
-        <article className="py-12 px-4 md:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row gap-12">
-              {/* Main Article */}
-              <div className="flex-1 max-w-3xl mx-auto lg:mx-0">
-                {/* Article Content - Dark Theme Prose */}
+        {/* Contenu + sidebar */}
+        <article className="px-4 py-12 md:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col gap-12 lg:flex-row">
+              {/* Article */}
+              <div className="mx-auto w-full max-w-[720px] lg:mx-0">
                 <div
-                  className="prose prose-lg prose-invert max-w-none
-                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-cream
-                    prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:scroll-mt-24
+                  className="prose prose-lg max-w-none
+                    prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-[#2A2230]
+                    prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-5 prose-h2:scroll-mt-24
                     prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:scroll-mt-24
-                    prose-p:text-cream/70 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg
-                    prose-a:text-primary-light prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
-                    prose-strong:text-cream prose-strong:font-semibold
-                    prose-ul:my-8 prose-ul:space-y-2 prose-li:text-cream/70 prose-li:text-lg prose-li:marker:text-primary
-                    prose-ol:my-8 prose-ol:space-y-2
-                    prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-cream/70 prose-blockquote:bg-dark-card/50 prose-blockquote:py-4 prose-blockquote:my-8
-                    prose-code:text-primary-light prose-code:bg-dark-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
-                    prose-pre:bg-dark-elevated prose-pre:text-cream/80
-                    prose-table:border-collapse prose-table:w-full prose-table:my-8 prose-table:rounded-lg prose-table:overflow-hidden
-                    prose-th:bg-primary prose-th:text-white prose-th:p-4 prose-th:text-left prose-th:font-semibold prose-th:text-base
-                    prose-td:border prose-td:border-white/10 prose-td:p-4 prose-td:bg-dark-card/50
-                    prose-tr:even:bg-dark-lighter
-                    prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8"
+                    prose-p:text-[#473F50] prose-p:leading-[1.75] prose-p:mb-6 prose-p:text-[1.0625rem]
+                    prose-a:text-[#8E3F84] prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-a:transition-all
+                    prose-strong:text-[#2A2230] prose-strong:font-semibold
+                    prose-ul:my-7 prose-ul:space-y-2 prose-li:text-[#473F50] prose-li:text-[1.0625rem] prose-li:marker:text-[#B65EAB]
+                    prose-ol:my-7 prose-ol:space-y-2
+                    prose-blockquote:border-l-4 prose-blockquote:border-[#B65EAB] prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-[#5B2A55] prose-blockquote:bg-[#FBEFF6] prose-blockquote:py-4 prose-blockquote:rounded-r-xl prose-blockquote:my-8
+                    prose-code:text-[#8E3F84] prose-code:bg-[#FBEFF6] prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                    prose-pre:bg-[#2A2230] prose-pre:text-[#F5F3F0]
+                    prose-table:border-collapse prose-table:w-full prose-table:my-8 prose-table:rounded-xl prose-table:overflow-hidden prose-table:shadow-[0_6px_18px_rgba(91,42,85,0.08)]
+                    prose-th:bg-[#B65EAB] prose-th:p-4 prose-th:text-left prose-th:font-semibold prose-th:text-base prose-th:text-white
+                    prose-td:border prose-td:border-[rgba(42,34,48,0.08)] prose-td:p-4 prose-td:bg-white
+                    prose-img:rounded-2xl prose-img:shadow-[0_16px_40px_rgba(91,42,85,0.14)] prose-img:my-8
+                    [&_p]:!text-[#473F50]
+                    [&_a]:!text-[#8E3F84] [&_a]:!underline [&_a]:decoration-[#B65EAB]/40 [&_a]:underline-offset-2 [&_a:hover]:decoration-[#B65EAB]"
                   dangerouslySetInnerHTML={{ __html: articleContent }}
                 />
 
                 {/* Tags */}
                 {article.keywords && article.keywords.length > 0 && (
-                  <div className="mt-12 pt-8 border-t border-white/10">
-                    <h3 className="text-sm font-semibold text-cream/50 uppercase tracking-wider mb-4">Mots-clés</h3>
+                  <div className="mt-12 border-t border-[rgba(42,34,48,0.10)] pt-8">
+                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-[#6C6172]">Mots-cles</h3>
                     <div className="flex flex-wrap gap-2">
                       {article.keywords.map((keyword) => (
                         <span
                           key={keyword}
-                          className="px-4 py-2 bg-dark-card/50 text-cream/70 rounded-full text-sm font-medium hover:bg-primary/20 hover:text-primary-light transition-colors cursor-pointer border border-white/5"
+                          className="rounded-full border border-[rgba(42,34,48,0.08)] bg-white px-4 py-2 text-sm font-medium text-[#6C6172] transition-colors hover:bg-[#FBEFF6] hover:text-[#8E3F84]"
                         >
                           {keyword}
                         </span>
@@ -179,48 +176,50 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 )}
               </div>
 
-              {/* Sidebar - Desktop Only */}
-              <aside className="hidden lg:block w-80 shrink-0">
+              {/* Sidebar */}
+              <aside className="hidden w-80 shrink-0 lg:block">
                 <div className="sticky top-24 space-y-8">
-                  {/* Share Buttons */}
+                  {/* Partage */}
                   <ShareButtons title={article.title} slug={slug} />
 
-                  {/* Author Card */}
-                  <div className="bg-dark-card/50 backdrop-blur-sm rounded-2xl p-6 border border-primary/20">
-                    <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-bold text-2xl mb-4 mx-auto">
+                  {/* Carte auteur */}
+                  <div className="rounded-2xl border border-[rgba(42,34,48,0.08)] bg-white p-6 shadow-[0_6px_18px_rgba(91,42,85,0.08)]">
+                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white" style={{ background: 'var(--fm-grad)' }}>
                       FM
                     </div>
-                    <h3 className="font-bold text-center mb-2 text-cream">Forever Memories</h3>
-                    <p className="text-sm text-cream/60 text-center mb-4">
-                      Experts en animation événementielle avec notre Glambot exclusif
+                    <h3 className="mb-2 text-center text-[#2A2230]">Forever Memories</h3>
+                    <p className="mb-4 text-center text-sm text-[#6C6172]">
+                      Experts en animation evenementielle avec la Starcam, notre glambot robotise.
                     </p>
                     <Link
+                      href="/la-starcam"
+                      className="mb-3 block w-full rounded-full border border-[rgba(42,34,48,0.12)] px-4 py-2.5 text-center font-semibold !text-[#8E3F84] transition-colors hover:bg-[#FBEFF6]"
+                    >
+                      Decouvrir la Starcam
+                    </Link>
+                    <Link
                       href="/contact"
-                      className="block w-full px-4 py-3 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all text-center"
+                      className="block w-full rounded-full px-4 py-2.5 text-center font-semibold !text-white transition-transform hover:-translate-y-0.5"
+                      style={{ background: 'var(--fm-grad)' }}
                     >
                       Nous contacter
                     </Link>
                   </div>
 
-                  {/* Popular Articles */}
-                  <div className="bg-dark-card/50 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
-                    <h3 className="font-bold text-lg mb-4 text-cream">Articles populaires</h3>
+                  {/* Articles populaires */}
+                  <div className="rounded-2xl border border-[rgba(42,34,48,0.08)] bg-white p-6 shadow-[0_6px_18px_rgba(91,42,85,0.08)]">
+                    <h3 className="mb-4 text-lg text-[#2A2230]">Articles populaires</h3>
                     <div className="space-y-4">
                       {blogArticles.filter(a => a.badge).slice(0, 3).map((popularArticle) => (
                         <Link
                           key={popularArticle.slug}
                           href={`/blog/${popularArticle.slug}`}
-                          className="block group"
+                          className="group/pop block"
                         >
-                          <div className="flex items-start gap-3">
-                            <span className="text-2xl">{popularArticle.emoji}</span>
-                            <div>
-                              <h4 className="font-semibold text-sm text-cream group-hover:text-primary-light transition-colors line-clamp-2">
-                                {popularArticle.title}
-                              </h4>
-                              <p className="text-xs text-cream/50 mt-1">{popularArticle.readTime}</p>
-                            </div>
-                          </div>
+                          <h4 className="text-sm font-semibold text-[#2A2230] transition-colors group-hover/pop:text-[#8E3F84] line-clamp-2">
+                            {popularArticle.title}
+                          </h4>
+                          <p className="mt-1 text-xs text-[#6C6172]">{popularArticle.readTime} de lecture</p>
                         </Link>
                       ))}
                     </div>
@@ -231,78 +230,72 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           </div>
         </article>
 
-        {/* Share Buttons - Mobile */}
-        <div className="lg:hidden px-4 md:px-8 pb-12">
-          <div className="max-w-3xl mx-auto">
+        {/* Partage mobile */}
+        <div className="px-4 pb-12 md:px-8 lg:hidden">
+          <div className="mx-auto max-w-[720px]">
             <ShareButtons title={article.title} slug={slug} />
           </div>
         </div>
 
-        {/* CTA Section */}
-        <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-primary/20 via-dark-lighter to-rose/10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="text-6xl mb-6">✨</div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-cream">
-              Prêt à créer des souvenirs inoubliables ?
-            </h2>
-            <p className="text-lg md:text-xl text-cream/60 mb-8 max-w-2xl mx-auto">
-              Découvrez notre Glambot et offrez à vos invités une expérience digne d'Hollywood
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-primary text-white rounded-full font-semibold hover:bg-primary-dark transition-all"
-              >
-                Demander un devis gratuit
-              </Link>
-              <Link
-                href="/la-starcam"
-                className="px-8 py-4 border border-white/20 text-cream rounded-full font-semibold hover:bg-white/5 transition-all"
-              >
-                Découvrir la technologie
-              </Link>
+        {/* CTA */}
+        <section className="cta-band band-rose">
+          <div className="wrap">
+            <div className="cta-inner">
+              <span className="dotblob cta-d1" aria-hidden="true" />
+              <span className="dotblob cta-d2" aria-hidden="true" />
+              <h2>
+                Prets a creer des
+                <br />
+                souvenirs inoubliables ?
+              </h2>
+              <p>Offrez a vos invites leur moment de star avec la Starcam, filme en slow-motion.</p>
+              <div className="btn-row">
+                <Link href="/contact" className="btn btn-white btn-lg">
+                  Demander un devis
+                  <ArrowRight size={18} aria-hidden="true" stroke="#8E3F84" />
+                </Link>
+                <Link href="/la-starcam" className="btn btn-outline btn-lg">
+                  Decouvrir la Starcam
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Navigation Articles */}
-        <section className="py-16 px-4 md:px-8 bg-dark-lighter">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-cream text-center">Continuer la lecture</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Previous Article */}
+        {/* Navigation articles */}
+        <section className="px-4 py-16 md:px-8" style={{ background: 'var(--tint-sky)' }}>
+          <div className="mx-auto max-w-6xl">
+            <h2 className="mb-8 text-center text-2xl text-[#2A2230] md:text-3xl">Continuer la lecture</h2>
+            <div className="grid gap-6 md:grid-cols-2">
               {prevArticle && (
                 <Link
                   href={`/blog/${prevArticle.slug}`}
-                  className="group relative overflow-hidden bg-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-primary/30 transition-all p-8"
+                  className="group/nav rounded-2xl border border-[rgba(42,34,48,0.08)] bg-white p-7 shadow-[0_6px_18px_rgba(91,42,85,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(91,42,85,0.14)]"
                 >
-                  <div className="text-sm text-cream/50 mb-2 flex items-center gap-2">
-                    <ArrowLeft size={14} />
-                    Article précédent
+                  <div className="mb-2 flex items-center gap-2 text-sm text-[#6C6172]">
+                    <ArrowLeft size={14} aria-hidden="true" />
+                    Article precedent
                   </div>
-                  <div className="text-3xl mb-3">{prevArticle.emoji}</div>
-                  <h3 className="font-bold text-xl text-cream group-hover:text-primary-light transition-colors line-clamp-2 mb-2">
+                  <h3 className="mb-2 text-xl text-[#2A2230] transition-colors group-hover/nav:text-[#8E3F84] line-clamp-2">
                     {prevArticle.title}
                   </h3>
-                  <p className="text-cream/60 text-sm line-clamp-2">{prevArticle.excerpt}</p>
+                  <p className="text-sm text-[#6C6172] line-clamp-2">{prevArticle.excerpt}</p>
                 </Link>
               )}
 
-              {/* Next Article */}
               {nextArticle && (
                 <Link
                   href={`/blog/${nextArticle.slug}`}
-                  className="group relative overflow-hidden bg-dark-card/50 backdrop-blur-sm rounded-2xl border border-white/5 hover:border-primary/30 transition-all p-8"
+                  className="group/nav rounded-2xl border border-[rgba(42,34,48,0.08)] bg-white p-7 text-right shadow-[0_6px_18px_rgba(91,42,85,0.08)] transition-all hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(91,42,85,0.14)]"
                 >
-                  <div className="text-sm text-cream/50 mb-2 flex items-center justify-end gap-2">
+                  <div className="mb-2 flex items-center justify-end gap-2 text-sm text-[#6C6172]">
                     Article suivant
-                    <ArrowRight size={14} />
+                    <ArrowRight size={14} aria-hidden="true" />
                   </div>
-                  <div className="text-3xl mb-3 text-right">{nextArticle.emoji}</div>
-                  <h3 className="font-bold text-xl text-cream group-hover:text-primary-light transition-colors line-clamp-2 mb-2 text-right">
+                  <h3 className="mb-2 text-xl text-[#2A2230] transition-colors group-hover/nav:text-[#8E3F84] line-clamp-2">
                     {nextArticle.title}
                   </h3>
-                  <p className="text-cream/60 text-sm line-clamp-2 text-right">{nextArticle.excerpt}</p>
+                  <p className="text-sm text-[#6C6172] line-clamp-2">{nextArticle.excerpt}</p>
                 </Link>
               )}
             </div>

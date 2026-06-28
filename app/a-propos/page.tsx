@@ -1,514 +1,337 @@
 'use client'
 
-import { Metadata } from 'next'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, Heart, Users, Award, Sparkles, CheckCircle, Star, Phone, MapPin, Clock, Video, MessageCircle } from 'lucide-react'
+import {
+  ArrowRight,
+  Heart,
+  Users,
+  Award,
+  Sparkles,
+  Star,
+  Phone,
+  MapPin,
+  Video,
+  MessageCircle,
+} from 'lucide-react'
 import Breadcrumbs from '@/app/components/seo/Breadcrumbs'
-import { useRef } from 'react'
+import Reveal from '@/app/components/home/Reveal'
 import { trackConversion } from '@/app/lib/gtag'
 
-// Metadata doit être exportée depuis un fichier séparé pour les composants client
-// Pour l'instant, nous la gardons ici car Next.js gère ce cas
+const values = [
+  {
+    cls: 'w1',
+    Icon: Heart,
+    title: 'Passion',
+    description:
+      'Nous aimons ce que nous faisons et cela se ressent dans chaque prestation. Votre bonheur est notre vraie récompense.',
+  },
+  {
+    cls: 'w2',
+    Icon: Award,
+    title: 'Excellence',
+    description:
+      'Bras robotisé de dernière génération, opérateurs formés et service premium. Nous visons l\'excellence à chaque image.',
+  },
+  {
+    cls: 'w4',
+    Icon: Users,
+    title: 'Proximité',
+    description:
+      'Nous sommes à votre écoute du premier message au jour J. Un accompagnement personnalisé, réactif et sans jargon.',
+  },
+]
 
-// Composant carte de valeur
-function ValueCard({ icon, title, description, index }: {
-  icon: React.ReactNode
-  title: string
-  description: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
-      className="relative group h-full"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+const engagements = [
+  {
+    cls: 'c1',
+    Icon: Video,
+    title: 'Matériel de dernière génération',
+    description:
+      'La Starcam est un bras robotisé 5 axes de qualité cinématographique. Nous réinvestissons en continu pour vous garantir la meilleure image.',
+  },
+  {
+    cls: 'c2',
+    Icon: Users,
+    title: 'Opérateurs professionnels',
+    description:
+      'Notre équipe maîtrise les dernières techniques et reste en veille sur les tendances. Expérience, professionnalisme et bonne humeur garantis.',
+  },
+  {
+    cls: 'c3',
+    Icon: Sparkles,
+    title: 'Service sur-mesure',
+    description:
+      'Chaque événement est unique. Nous adaptons la prestation à vos envies, votre budget et votre identité visuelle.',
+  },
+  {
+    cls: 'c4',
+    Icon: MessageCircle,
+    title: 'Réactivité et disponibilité',
+    description:
+      'Nous répondons vite et restons joignables avant, pendant et après votre événement. Un seul interlocuteur, du devis au livrable.',
+  },
+]
 
-      <div className="relative h-full bg-dark-card/50 backdrop-blur-sm border border-white/5 rounded-3xl p-8 group-hover:border-primary/20 transition-all duration-300 flex flex-col items-center text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold mb-3 text-cream">{title}</h3>
-        <p className="text-cream/60 leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  )
-}
+const promises = [
+  'Une animation qui fait briller vos invités',
+  'Des vidéos slow-motion de qualité professionnelle',
+  'Un service clé en main, installation et démontage compris',
+  'Une galerie en ligne et des souvenirs à garder à vie',
+]
 
-// Composant engagement item
-function EngagementItem({ icon, title, description, index }: {
-  icon: React.ReactNode
-  title: string
-  description: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="flex items-start gap-4 group"
-    >
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </div>
-      <div>
-        <h3 className="font-semibold text-lg mb-2 text-cream group-hover:text-primary transition-colors">{title}</h3>
-        <p className="text-cream/50 leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  )
-}
+const departments = [
+  'Paris 75', 'Seine-et-Marne 77', 'Yvelines 78', 'Essonne 91',
+  'Hauts-de-Seine 92', 'Seine-Saint-Denis 93', 'Val-de-Marne 94', 'Val-d\'Oise 95',
+]
 
-// Composant stat animé
-function AnimatedStat({ value, suffix, label, index }: {
-  value: string
-  suffix?: string
-  label: string
-  index: number
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="text-center"
-    >
-      <div className="text-4xl md:text-5xl font-bold mb-2">
-        <span className="gradient-text-full">
-          {value}
-        </span>
-        {suffix && <span className="text-primary">{suffix}</span>}
-      </div>
-      <div className="text-cream/50">{label}</div>
-    </motion.div>
-  )
-}
+const stats = [
+  { cls: 's1', num: '1000+', lab: 'Vidéos produites' },
+  { cls: 's2', num: '5/5', lab: 'Note Google' },
+  { cls: 's3', num: '8', lab: 'Départements couverts' },
+  { cls: 's1', num: '24h', lab: 'Délai de réponse' },
+]
 
-// Badge département
-function DepartmentBadge({ name, code, index }: { name: string; code: string; index: number }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      whileHover={{ scale: 1.05, y: -2 }}
-      className="px-4 py-2 bg-dark-card/50 backdrop-blur-sm border border-white/10 text-cream/80 rounded-full font-medium hover:border-primary/30 hover:text-primary transition-all cursor-default"
-    >
-      {name} ({code})
-    </motion.span>
-  )
-}
+const cardShadow: React.CSSProperties = { boxShadow: 'var(--shadow-sm)' }
 
 export default function AProposPage() {
-  const sectionRef = useRef(null)
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"]
-  })
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
-
-  const values = [
-    {
-      icon: <Heart size={28} />,
-      title: 'Passion',
-      description: 'Nous aimons ce que nous faisons et cela se ressent dans chaque prestation. Votre bonheur est notre récompense.'
-    },
-    {
-      icon: <Award size={28} />,
-      title: 'Excellence',
-      description: 'Équipement de dernière génération, opérateurs formés et service premium. Nous visons l\'excellence à chaque instant.'
-    },
-    {
-      icon: <Users size={28} />,
-      title: 'Proximité',
-      description: 'Nous sommes à votre écoute du premier contact au jour J. Un accompagnement personnalisé et réactif.'
-    }
-  ]
-
-  const engagements = [
-    {
-      icon: <Video size={20} />,
-      title: 'Matériel de dernière génération',
-      description: 'Nous investissons continuellement dans notre équipement pour vous garantir la meilleure qualité possible. Notre Starcam est un robot professionnel de qualité cinématographique.'
-    },
-    {
-      icon: <Users size={20} />,
-      title: 'Opérateurs professionnels',
-      description: 'Notre équipe est formée aux dernières techniques et reste en veille constante sur les tendances. Expérience, professionnalisme et bonne humeur garantis.'
-    },
-    {
-      icon: <Sparkles size={20} />,
-      title: 'Service sur-mesure',
-      description: 'Chaque événement est unique. Nous personnalisons notre prestation selon vos besoins, votre budget et votre vision.'
-    },
-    {
-      icon: <MessageCircle size={20} />,
-      title: 'Réactivité et disponibilité',
-      description: 'Nous répondons rapidement à vos demandes et restons disponibles avant, pendant et après votre événement.'
-    }
-  ]
-
-  const promises = [
-    'Une expérience inoubliable pour vos invités',
-    'Des vidéos de qualité professionnelle',
-    'Un service clé en main sans stress',
-    'Des souvenirs à conserver toute une vie'
-  ]
-
-  const departments = [
-    { name: 'Paris', code: '75' },
-    { name: 'Seine-et-Marne', code: '77' },
-    { name: 'Yvelines', code: '78' },
-    { name: 'Essonne', code: '91' },
-    { name: 'Hauts-de-Seine', code: '92' },
-    { name: 'Seine-Saint-Denis', code: '93' },
-    { name: 'Val-de-Marne', code: '94' },
-    { name: 'Val-d\'Oise', code: '95' }
-  ]
-
-  const stats = [
-    { value: '1000', suffix: '+', label: 'Vidéos produites' },
-    { value: '5/5', suffix: '', label: 'Note Google' },
-    { value: '8', suffix: '', label: 'Départements couverts' },
-    { value: '24h', suffix: '', label: 'Délai de réponse' }
-  ]
-
   return (
-    <div ref={sectionRef} className="min-h-screen bg-dark">
+    <div className="fm-home overflow-hidden">
       <Breadcrumbs items={[{ name: 'À Propos', href: '/a-propos' }]} />
 
-      {/* Hero Section */}
-      <section className="relative pt-28 md:pt-32 pb-20 md:pb-32 overflow-hidden">
-        {/* Background elements */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          style={{ y: backgroundY }}
-        >
-          <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/15 rounded-full blur-[150px]" />
-          <div className="absolute top-40 -right-32 w-80 h-80 bg-rose/10 rounded-full blur-[120px]" />
-        </motion.div>
-
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }} />
-
-        <div className="container-wide relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center justify-center gap-3 mb-6"
-            >
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-              <span className="text-primary text-sm font-medium uppercase tracking-wider">Notre histoire</span>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1]"
-            >
-              <span className="gradient-text-full">Forever Memories</span>
-              <br />
-              <span className="text-cream">Des souvenirs qui durent</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xl md:text-2xl text-cream/50 max-w-2xl mx-auto leading-relaxed"
-            >
-              Nous mettons notre passion et notre expertise au service de vos événements d'exception
-            </motion.p>
+      {/* Hero */}
+      <section className="fm-hero">
+        <div className="hero-blob blob1" aria-hidden="true" />
+        <div className="hero-blob blob2" aria-hidden="true" />
+        <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal>
+              <span className="kicker">
+                <Star size={16} fill="#B65EAB" stroke="#B65EAB" aria-hidden="true" />
+                Notre histoire
+              </span>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h1>
+                Forever Memories, des{' '}
+                <span className="fm-grad-text">souvenirs qui durent</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="lead" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
+                Une équipe passionnée d&apos;événementiel qui met la technologie des
+                tapis rouges au service de vos plus belles soirées, en Île-de-France.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* Notre histoire - texte */}
-      <section className="py-20 md:py-32">
-        <div className="container-wide">
-          <div className="max-w-3xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative"
+      {/* Notre histoire */}
+      <section className="pad band-rose">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">D&apos;où vient Forever Memories</span>
+            <h2>
+              Rendre le cinéma <span className="em">accessible à chaque fête</span>
+            </h2>
+          </Reveal>
+          <Reveal>
+            <div
+              className="mx-auto max-w-3xl"
+              style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '18px', lineHeight: 1.6 }}
             >
-              {/* Quote decoration */}
-              <div className="absolute -top-8 -left-4 text-8xl text-primary/10 font-serif">"</div>
-
-              <div className="relative space-y-6 text-lg md:text-xl text-cream/70 leading-relaxed">
-                <p>
-                  Forever Memories est née d'une passion : celle de capturer et d'immortaliser les moments d'exception
-                  de la vie. Fascinés par la technologie Starcam utilisée lors des plus grandes cérémonies mondiales,
-                  nous avons décidé de la rendre accessible à tous les événements, des mariages intimistes aux galas
-                  les plus prestigieux.
-                </p>
-
-                <p>
-                  Basés en Île-de-France, nous intervenons dans toute la région parisienne avec une mission claire :
-                  offrir à chaque client une expérience premium et des souvenirs cinématographiques inoubliables.
-                </p>
-
-                <p>
-                  Aujourd'hui, avec plus de <span className="text-primary font-semibold">1000 vidéos</span> produites et des dizaines d'événements réussis, nous continuons
-                  d'innover et de perfectionner notre service pour rester le partenaire privilégié de vos moments d'exception.
-                </p>
-              </div>
-            </motion.div>
-          </div>
+              <p>
+                Forever Memories est née d&apos;une passion : capturer et immortaliser
+                les moments d&apos;exception. Fascinés par la technologie utilisée lors
+                des plus grandes cérémonies, nous avons décidé de rendre{' '}
+                <Link href="/la-starcam" className="em" style={{ fontWeight: 600 }}>
+                  la Starcam
+                </Link>{' '}
+                accessible à tous les événements, des mariages intimistes aux galas les
+                plus prestigieux.
+              </p>
+              <p>
+                Basés en Île-de-France, nous intervenons dans toute la région parisienne
+                avec une mission claire : offrir une expérience premium et des souvenirs
+                cinématographiques inoubliables, du glambot animé sur place au{' '}
+                <Link href="/memory-book" className="em" style={{ fontWeight: 600 }}>
+                  livre d&apos;or vidéo
+                </Link>{' '}
+                à garder à vie.
+              </p>
+              <p>
+                Aujourd&apos;hui, avec plus de <span className="em" style={{ fontWeight: 700 }}>1000 vidéos</span>{' '}
+                produites et des dizaines d&apos;événements réussis, nous continuons
+                d&apos;affiner notre service pour rester le partenaire privilégié de vos
+                moments d&apos;exception.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Nos valeurs */}
-      <section className="py-20 md:py-32 bg-dark-lighter relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
-
-        <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center justify-center gap-3 mb-6"
-            >
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-              <span className="text-primary text-sm font-medium uppercase tracking-wider">Ce qui nous définit</span>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-3xl md:text-5xl font-bold mb-4 text-cream"
-            >
-              Nos <span className="gradient-text">valeurs</span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg text-cream/50"
-            >
-              Les principes qui guident notre travail au quotidien
-            </motion.p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-            {values.map((value, index) => (
-              <ValueCard key={index} {...value} index={index} />
+      <section className="pad band-mint">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">Ce qui nous définit</span>
+            <h2>
+              Nos <span className="em">valeurs</span>
+            </h2>
+            <p>Les principes qui guident notre travail au quotidien.</p>
+          </Reveal>
+          <div className="why-grid">
+            {values.map(({ cls, Icon, title, description }, i) => (
+              <Reveal key={title} delay={0.06 * i}>
+                <div className="why-card" style={{ height: '100%' }}>
+                  <span className={`why-ico ${cls}`} aria-hidden="true">
+                    <Icon size={26} />
+                  </span>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Notre engagement */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose/10 rounded-full blur-[150px]" />
+      {/* Notre engagement qualité */}
+      <section className="pad band-sun">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">Notre promesse</span>
+            <h2>
+              Notre engagement <span className="em">qualité</span>
+            </h2>
+          </Reveal>
 
-        <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold mb-4 text-cream"
-            >
-              Notre engagement <span className="gradient-text">qualité</span>
-            </motion.h2>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Engagements list */}
-            <div className="space-y-8">
-              {engagements.map((engagement, index) => (
-                <EngagementItem key={index} {...engagement} index={index} />
+          <div className="proof-grid" style={{ alignItems: 'start' }}>
+            <div className="caps">
+              {engagements.map(({ cls, Icon, title, description }, i) => (
+                <Reveal key={title} delay={0.06 * i}>
+                  <div className="cap">
+                    <span className={`cap-ico ${cls}`} aria-hidden="true">
+                      <Icon size={24} />
+                    </span>
+                    <div>
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
 
-            {/* Promise card */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-rose/10 rounded-3xl blur-xl" />
-
-              <div className="relative bg-dark-card/80 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-10">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/30 to-rose/20 flex items-center justify-center mx-auto mb-4">
-                    <Sparkles size={32} className="text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-cream">Notre promesse</h3>
-                </div>
-
-                <div className="space-y-4">
-                  {promises.map((promise, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center gap-3"
-                    >
-                      <Star size={18} className="text-primary flex-shrink-0 fill-primary" />
-                      <span className="text-cream/70">{promise}</span>
-                    </motion.div>
+            <Reveal delay={0.1}>
+              <div className="rounded-[32px] bg-white p-8 md:p-10" style={{ boxShadow: 'var(--shadow-md)' }}>
+                <span className="cap-ico c1" aria-hidden="true" style={{ marginBottom: '18px' }}>
+                  <Sparkles size={26} />
+                </span>
+                <h3 style={{ fontSize: '24px', marginBottom: '18px' }}>Ce qu&apos;on vous garantit</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {promises.map((promise) => (
+                    <div key={promise} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                      <Star size={18} fill="#FFC93C" stroke="#FFC93C" aria-hidden="true" style={{ flex: 'none', marginTop: '3px' }} />
+                      <span style={{ color: 'var(--ink)' }}>{promise}</span>
+                    </div>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Zone d'intervention */}
-      <section className="py-20 md:py-32 bg-dark-lighter relative overflow-hidden">
-        <div className="container-wide relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex items-center justify-center gap-3 mb-6"
+      <section className="pad band-sky">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">Île-de-France</span>
+            <h2>
+              <MapPin size={26} color="#B65EAB" aria-hidden="true" style={{ display: 'inline', verticalAlign: '-4px', marginRight: '6px' }} />
+              Notre zone d&apos;<span className="em">intervention</span>
+            </h2>
+            <p>Basés en Île-de-France, nous intervenons dans toute la région parisienne.</p>
+          </Reveal>
+          <Reveal>
+            <div
+              className="mx-auto"
+              style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', maxWidth: '720px' }}
             >
-              <MapPin size={20} className="text-primary" />
-              <span className="text-primary text-sm font-medium uppercase tracking-wider">Île-de-France</span>
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-bold mb-6 text-cream"
-            >
-              Notre zone d'<span className="gradient-text">intervention</span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-lg text-cream/50 mb-10"
-            >
-              Basés en Île-de-France, nous intervenons dans toute la région parisienne
-            </motion.p>
-
-            <div className="flex flex-wrap justify-center gap-3 mb-10">
-              {departments.map((dept, index) => (
-                <DepartmentBadge key={index} {...dept} index={index} />
+              {departments.map((dept) => (
+                <span
+                  key={dept}
+                  className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#5B2A55]"
+                  style={cardShadow}
+                >
+                  {dept}
+                </span>
               ))}
             </div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-              className="text-cream/40 text-sm"
-            >
-              Nous pouvons également intervenir en dehors de l'Île-de-France pour vos événements exceptionnels.
-            </motion.p>
-          </div>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="text-center" style={{ marginTop: '24px', fontSize: '15px' }}>
+              Nous pouvons aussi intervenir en dehors de l&apos;Île-de-France pour vos
+              événements exceptionnels.
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Chiffres clés */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-dark to-rose/5" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/10 rounded-full blur-[200px]" />
-
-        <div className="container-wide relative z-10">
-          <div className="text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-bold text-cream"
-            >
-              Forever Memories en <span className="gradient-text">chiffres</span>
-            </motion.h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {stats.map((stat, index) => (
-              <AnimatedStat key={index} {...stat} index={index} />
+      <section className="pad band-peach">
+        <div className="wrap">
+          <Reveal className="sec-head">
+            <span className="eyebrow">En quelques chiffres</span>
+            <h2>
+              Forever Memories en <span className="em">chiffres</span>
+            </h2>
+          </Reveal>
+          <div className="events-grid">
+            {stats.map(({ cls, num, lab }, i) => (
+              <Reveal key={lab} delay={0.06 * i}>
+                <div className={`stat ${cls}`}>
+                  <span className="num">{num}</span>
+                  <span className="lab">{lab}</span>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="container-wide relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl"
-          >
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-rose" />
-            <div className="absolute inset-0 bg-dark/20" />
-
-            <div className="relative p-10 md:p-16 text-center">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-                Envie de nous confier votre événement ?
-              </h2>
-              <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                Contactez-nous pour discuter de votre projet et obtenir un devis personnalisé
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  href="tel:+33676815953"
-                  onClick={() => trackConversion.phoneClick()}
-                  className="group px-8 py-4 bg-white text-dark rounded-full font-semibold hover:bg-cream transition-all flex items-center justify-center gap-2"
-                >
-                  <Phone size={20} />
-                  06 76 81 59 53
-                </Link>
-                <Link
-                  href="/contact"
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white rounded-full font-semibold hover:bg-white hover:text-dark transition-all flex items-center justify-center gap-2"
-                >
-                  Demander un devis
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
+      {/* CTA */}
+      <section className="cta-band" style={{ background: 'var(--tint-cream)' }}>
+        <div className="wrap">
+          <Reveal className="cta-inner">
+            <span className="dotblob cta-d1" aria-hidden="true" />
+            <span className="dotblob cta-d2" aria-hidden="true" />
+            <h2>
+              Envie de nous confier
+              <br />
+              votre événement ?
+            </h2>
+            <p>Parlons de votre projet et recevez un devis personnalisé sous 24h.</p>
+            <div className="btn-row">
+              <Link
+                href="/contact"
+                onClick={() => trackConversion.devisClick('apropos_page_cta')}
+                className="btn btn-white btn-lg"
+              >
+                Demander un devis
+                <ArrowRight size={18} aria-hidden="true" stroke="#8E3F84" />
+              </Link>
+              <a
+                href="tel:+33676815953"
+                onClick={() => trackConversion.phoneClick()}
+                className="btn btn-outline btn-lg"
+              >
+                <Phone size={18} aria-hidden="true" />
+                06 76 81 59 53
+              </a>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
     </div>

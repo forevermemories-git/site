@@ -19,10 +19,10 @@ export default function ReadingProgressBar() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[101] h-1 bg-gray-200">
+    <div className="fixed left-0 right-0 top-0 z-[101] h-1 bg-[#F1E5EE]">
       <div
-        className="h-full bg-gradient-primary transition-all duration-150"
-        style={{ width: `${scrollProgress}%` }}
+        className="h-full transition-all duration-150"
+        style={{ width: `${scrollProgress}%`, background: 'var(--fm-grad)' }}
       />
     </div>
   )
